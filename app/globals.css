@@ -14,8 +14,115 @@
   }
 }
 
+/* Uttils*/
+
+@layer components {
+  .social-btn-ligth {
+    @apply text-primary hover:text-secondary transition-all text-xl;
+  }
+
+  .btn-main {
+    @apply font-semibold tracking-wide uppercase py-2 px-4 rounded-lg bg-secondary border-2 border-transparent text-white hover:bg-secondary-dark transition-all dark:hover:bg-primary-ligth dark:hover:text-white;
+  }
+  .btn-transparent {
+    @apply font-semibold tracking-wide uppercase py-2 px-4 rounded-lg bg-transparent border-2 border-secondary text-secondary dark:text-white hover:bg-secondary hover:text-white transition-all dark:hover:border-primary-ligth dark:hover:bg-primary;
+  }
+
+  .btn-ligth {
+    @apply hover:bg-secondary-ligth;
+  }
+}
+
 body {
   color: var(--foreground);
   background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Navigation styles */
+/* Ensure the root list items are positioned relatively */
+ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  position: relative; /* Needed to position nested items */
+}
+
+li {
+  position: relative;
+}
+
+/* Level 1: Show the dropdown below */
+.level-1 > ul {
+  display: none;
+  position: absolute;
+  left: 0;
+  top: 100%;
+  z-index: 10;
+  background-color: #fff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 0;
+  margin: 0;
+}
+
+.level-1:hover > ul {
+  display: block;
+}
+
+/* Level 2: Show the dropdown to the right of the parent */
+.level-2 > ul {
+  display: none;
+  position: absolute;
+  left: 100%;
+  top: 0;
+  z-index: 10;
+  background-color: #fff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 0;
+  margin: 0;
+}
+
+.level-2:hover > ul {
+  display: block;
+}
+
+/* Level 3 and deeper levels show to the right of the parent */
+.level-3 > ul,
+.level-4 > ul,
+.level-5 > ul {
+  display: none;
+  position: absolute;
+  left: 100%;
+  top: 0;
+  z-index: 10;
+  background-color: #fff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 0px;
+  margin: 0;
+}
+
+.level-3:hover > ul,
+.level-4:hover > ul,
+.level-5:hover > ul {
+  display: block;
+}
+
+/* Prevent wrapping text and ensure smooth layout */
+.level-2 > ul li,
+.level-3 > ul li,
+.level-4 > ul li,
+.level-5 > ul li {
+  white-space: nowrap;
+}
+
+/* General link styling */
+li > a {
+  padding: 10px;
+  display: block;
+  text-decoration: none;
+  color: #333;
+}
+
+li > a:hover {
+  background-color: #f0f0f0;
 }

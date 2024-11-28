@@ -1,5 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
+  darkMode: "selector",
   content: [
     "./pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
@@ -10,6 +11,24 @@ module.exports = {
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
+        primary: {
+          ligth: "#4C4A4A",
+          DEFAULT: "#1E1E1E",
+          dark: "#FFF8F0",
+        },
+        secondary: {
+          ligther: "#9ff1da",
+          ligth: "#0fdba2",
+          DEFAULT: "#09BC8A",
+          dark: "#03291e",
+        },
+        white: {
+          DEFAULT: "#ffffff",
+          dark: "#d1d5db",
+        },
+      },
+      fontFamily: {
+        heading: ["Bebas Neue", "sans-serif"],
       },
     },
   },
