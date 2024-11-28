@@ -13,27 +13,51 @@ export default function SocialLinksHeader({ data }) {
   return (
     <div className="flex gap-2 items-center">
       {facebook && (
-        <Link href={facebook} target="_blank">
+        <Link
+          href={facebook}
+          target="_blank"
+          aria-label="Visit our Facebook page"
+        >
           <FaFacebookF className="social-btn-ligth" />
         </Link>
       )}
       {linkedin && (
-        <Link href={linkedin} target="_blank" className="social-btn-ligth">
+        <Link
+          href={linkedin}
+          target="_blank"
+          className="social-btn-ligth"
+          aria-label="Visit our LinkedIn page"
+        >
           <FaLinkedinIn />
         </Link>
       )}
       {instagram && (
-        <Link href={instagram} target="_blank" className="social-btn-ligth">
+        <Link
+          href={instagram}
+          target="_blank"
+          className="social-btn-ligth"
+          aria-label="Visit our Instagram page"
+        >
           <FaInstagram />
         </Link>
       )}
       {youtube && (
-        <Link href={youtube} target="_blank" className="social-btn-ligth">
+        <Link
+          href={youtube}
+          target="_blank"
+          className="social-btn-ligth"
+          aria-label="Visit our Youtube page"
+        >
           <FaYoutube />
         </Link>
       )}
       {twitter && (
-        <Link href={twitter} target="_blank" className="social-btn-ligth">
+        <Link
+          href={twitter}
+          target="_blank"
+          className="social-btn-ligth"
+          aria-label="Visit our Twitter/X page"
+        >
           <FaXTwitter />
         </Link>
       )}
