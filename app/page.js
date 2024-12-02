@@ -1,5 +1,6 @@
 import Sections from "../components/Sections";
 import { fetchFrontPageID, pageContentById } from "@/lib/api";
+import Newsletter from "@/components/Newsletter";
 
 export default async function HomePage() {
   try {

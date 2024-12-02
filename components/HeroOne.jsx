@@ -16,7 +16,7 @@ export default function HeroOne({ data }) {
   return (
     <>
       <div className="bg-white dark:bg-secondary-dark flex relative items-center overflow-hidden hero-one">
-        <div className="mx-auto 2xl:container flex px-3 py-10 md:py-16 ">
+        <div className="mx-auto 2xl:container w-full flex px-3 py-10 md:py-16 ">
           <div className="sm:w-2/4 lg:w-2/5 flex flex-col">
             <span className="w-20 h-2 bg-primary dark:bg-white mb-12"></span>
             {title && (

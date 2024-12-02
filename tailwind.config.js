@@ -30,6 +30,9 @@ module.exports = {
       fontFamily: {
         heading: ["Bebas Neue", "sans-serif"],
       },
+      screens: {
+        xs: "400px",
+      },
     },
   },
   plugins: [],

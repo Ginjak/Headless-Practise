@@ -9,10 +9,21 @@ import {
 
 export default function SocialLinksHeader({ data }) {
   console.log("links data", data[0]?.meta);
-  const { facebook, linkedin, instagram, youtube, twitter } = data[0]?.meta;
+  const {
+    facebook,
+    linkedin,
+    instagram,
+    youtube,
+    twitter,
+    show_facebook_icon: show_facebook,
+    show_linkedin_icon: show_linkedin,
+    show_instagram_icon: show_instagram,
+    show_youtube_icon: show_youtube,
+    show_twitter_icon: show_twitter,
+  } = data[0]?.meta;
   return (
     <div className="flex gap-2 items-center">
-      {facebook && (
+      {facebook && show_facebook === "true" && (
         <Link
           href={facebook}
           target="_blank"
@@ -21,7 +32,7 @@ export default function SocialLinksHeader({ data }) {
           <FaFacebookF className="social-btn-ligth" />
         </Link>
       )}
-      {linkedin && (
+      {linkedin && show_linkedin === "true" && (
         <Link
           href={linkedin}
           target="_blank"
@@ -31,7 +42,7 @@ export default function SocialLinksHeader({ data }) {
           <FaLinkedinIn />
         </Link>
       )}
-      {instagram && (
+      {instagram && show_instagram === "true" && (
         <Link
           href={instagram}
           target="_blank"
@@ -41,7 +52,7 @@ export default function SocialLinksHeader({ data }) {
           <FaInstagram />
         </Link>
       )}
-      {youtube && (
+      {youtube && show_youtube === "true" && (
         <Link
           href={youtube}
           target="_blank"
@@ -51,7 +62,7 @@ export default function SocialLinksHeader({ data }) {
           <FaYoutube />
         </Link>
       )}
-      {twitter && (
+      {twitter && show_twitter === "true" && (
         <Link
           href={twitter}
           target="_blank"

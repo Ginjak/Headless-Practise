@@ -1,3 +1,4 @@
+import Sections from "@/components/Sections";
 import {
   fetchFrontPageID,
   fetchPageData,
@@ -17,7 +18,7 @@ const Page = async ({ params }) => {
 
   console.log("Slug", slug);
   console.log("Front Page ID:", frontPageID);
-  console.log("Page Data:", pageData);
+  console.log("Page Data:", pageData[0]);
   console.log("All slugs", allPagesSlugs);
   console.log("Posts", postsBySlug);
   console.log("Posts length", postsBySlug.length);
@@ -55,9 +56,9 @@ const Page = async ({ params }) => {
 
   if (pageData.length > 0) {
     return (
-      <div>
-        <h1>This is page</h1>
-      </div>
+      <main>
+        <Sections data={pageData[0]} />
+      </main>
     );
   }
   return (

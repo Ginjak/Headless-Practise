@@ -2,7 +2,7 @@ import React from "react";
 import HeroOne from "./HeroOne";
 import HeroTwo from "./HeroTwo";
 import NewsletterOne from "./NewsletterOne";
-import { v4 as uuidv4 } from "uuid";
+// import { v4 as uuidv4 } from "uuid";
 
 const MemoizedHeroOne = React.memo(HeroOne);
 const MemoizedHeroTwo = React.memo(HeroTwo);
@@ -13,8 +13,9 @@ export default function Sections({ data }) {
 
   return (
     <>
-      {sections.map((section) => {
-        const uniqueId = uuidv4(); // Generate a unique ID for each section
+      {sections.map((section, index) => {
+        console.log("section", section);
+        // const uniqueId = uuidv4();
         let componentToRender;
 
         // Switch statement based on the value of section.select_option
@@ -32,11 +33,7 @@ export default function Sections({ data }) {
             componentToRender = null;
         }
 
-        return (
-          <section key={uniqueId} id={uniqueId}>
-            {componentToRender}
-          </section>
-        );
+        return <section key={index}>{componentToRender}</section>;
       })}
     </>
   );
