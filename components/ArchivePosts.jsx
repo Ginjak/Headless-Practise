@@ -7,16 +7,27 @@ export default async function ArchivePosts({ posts }) {
   return (
     <>
       {posts.map((post) => {
+        const featuredImage = post?.meta?.featured_image[0];
+        const featuredImageAltText = post?.meta?.featured_image_alt_text;
+        const postLink = replaceBaseURL(post?.link);
+
+        console.log("Post URL:", postLink); // Log the post link
+        console.log("Featured Image URL:", featuredImage); // Log the featured image URL
+        console.log("Featured Image Alt Text:", featuredImageAltText); // Log the alt text
+
         return (
-          <Link href={replaceBaseURL(post?.link)} key={post?.id}>
+          <Link href={postLink} key={post?.id}>
             <div>
-              <img src={post?.meta?.featured_image} alt="" />
-              <Image
-                src={post?.meta?.featured_image}
-                width={500}
-                height={500}
-                alt={post?.meta?.featured_image_alt_text}
-              ></Image>
+              {/* Conditionally render the image if the URL is available */}
+              {featuredImage && (
+                <Image
+                  src={featuredImage}
+                  width={500}
+                  height={500}
+                  alt={featuredImageAltText || "Image"}
+                />
+              )}
+
               <h2>{post?.title}</h2>
               <p>{post?.meta?.price}</p>
             </div>

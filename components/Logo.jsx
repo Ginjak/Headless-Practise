@@ -5,7 +5,7 @@ import Link from "next/link";
 export default async function Logo() {
   const defaultLogo = `${process.env.NEXT_DOMAIN_NAME}/wp-content/themes/twentytwentyfive/images/Logo_default.webp`;
   const headerLogo = (await fetchPosts("website-settings"))?.[0]?.meta
-    ?.header_logo;
+    ?.header_logo[0];
 
   const headerLogoAlt = (await fetchPosts("website-settings"))?.[0]?.meta
     ?.header_logo_alt;
