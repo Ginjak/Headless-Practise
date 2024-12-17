@@ -18,14 +18,16 @@ export default async function ArchivePosts({ posts }) {
         return (
           <Link href={postLink} key={post?.id}>
             <div>
-              {/* Conditionally render the image if the URL is available */}
               {featuredImage && (
-                <Image
-                  src={featuredImage}
-                  width={500}
-                  height={500}
-                  alt={featuredImageAltText || "Image"}
-                />
+                <div className="relative w-[500px] h-64">
+                  <Image
+                    src={featuredImage}
+                    alt={featuredImageAltText || "Image"}
+                    fill
+                    className="object-cover"
+                    priority={true}
+                  />
+                </div>
               )}
 
               <h2>{post?.title}</h2>
