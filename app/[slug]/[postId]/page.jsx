@@ -1,4 +1,4 @@
-import { fetchPostById, fetchPostIdBySlug } from "@/lib/api";
+import { fetchPostById, fetchPostIdBySlug, fetchCptPost } from "@/lib/api";
 
 // Page component that uses async behavior
 const Page = async ({ params }) => {
@@ -7,11 +7,11 @@ const Page = async ({ params }) => {
   console.log(postUrl);
 
   try {
-    const postId = await fetchPostIdBySlug(slug, postUrl);
-    const postData = await fetchPostById(slug, postId);
+    const cptId = await fetchCptPost(slug, postUrl);
+    const postData = await fetchPostById(slug, cptId);
 
     console.log("Post info", postData);
-    console.log("Post Id", postId);
+    console.log("CPT id", cptId);
 
     if (!postData) {
       return (

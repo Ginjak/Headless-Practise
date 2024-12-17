@@ -1,9 +1,13 @@
+import ArchiveButton from "@/components/ArchiveButton";
+import ArchivePosts from "@/components/ArchivePosts";
 import Sections from "@/components/Sections";
 import {
   fetchFrontPageID,
   fetchPageData,
   fetchPagesSlugs,
   fetchPosts,
+  fetchPostsByCategory,
+  fetchCptNames,
 } from "@/lib/api";
 import Link from "next/link";
 import { redirect } from "next/navigation"; // Correct redirect import
@@ -14,17 +18,23 @@ const Page = async ({ params }) => {
   const allPagesSlugs = await fetchPagesSlugs();
   const pageData = await fetchPageData(slug); // Fetch page data based on slug
   const frontPageID = await fetchFrontPageID(); // Fetch the front page ID from WP
-  const postsBySlug = await fetchPosts(slug);
+  const posts = await fetchPosts(slug);
+  const test = await fetchPosts("recipies");
+  const postsByCat = await fetchPostsByCategory(slug, "first");
+  const postTypes = await fetchCptNames();
 
   console.log("Slug", slug);
   console.log("Front Page ID:", frontPageID);
   console.log("Page Data:", pageData[0]);
   console.log("All slugs", allPagesSlugs);
-  console.log("Posts", postsBySlug);
-  console.log("Posts length", postsBySlug.length);
+  console.log("Posts", posts);
+  console.log("Posts length", posts.length);
+  console.log("Test", test);
+  console.log("Post by categories", postsByCat);
+  console.log("Post types", postTypes);
 
   if (
-    (postsBySlug.length === 0 && pageData.length === 0) ||
+    (posts.length === 0 && pageData.length === 0) ||
     slug === "website-settings"
   ) {
     return (
@@ -41,15 +51,12 @@ const Page = async ({ params }) => {
     redirect("/");
   }
 
-  if (postsBySlug.length > 0 && slug !== "website-settings") {
+  if (posts.length > 0 && slug !== "website-settings") {
     return (
       <div>
         <h1>This is archive page</h1>
-        {postsBySlug.map((post) => (
-          <Link key={post.id} href={`${slug}/${post.slug}`}>
-            {post?.title?.rendered}
-          </Link>
-        ))}
+        <ArchiveButton label={"Dance"} />
+        <ArchivePosts posts={posts} />
       </div>
     );
   }
