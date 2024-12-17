@@ -21,7 +21,7 @@ export default async function Logo() {
         width={200}
         height={100}
         className="w-full max-w-[150px] h-auto"
-        priority
+        priority={true}
       />
     </Link>
   );
