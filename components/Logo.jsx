@@ -1,14 +1,11 @@
-import { fetchPosts } from "@/lib/api";
 import Image from "next/image";
 import Link from "next/link";
 
-export default async function Logo() {
+export default async function Logo({ settings }) {
   const defaultLogo = `${process.env.NEXT_DOMAIN_NAME}/wp-content/themes/twentytwentyfive/images/Logo_default.webp`;
-  const headerLogo = (await fetchPosts("website-settings"))?.[0]?.meta
-    ?.header_logo[0];
+  const headerLogo = settings[0]?.meta?.header_logo[0];
 
-  const headerLogoAlt = (await fetchPosts("website-settings"))?.[0]?.meta
-    ?.header_logo_alt;
+  const headerLogoAlt = settings[0].meta.header_logo_alt[0];
 
   console.log("asdasd", headerLogo);
   console.log("alt", headerLogoAlt);

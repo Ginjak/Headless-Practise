@@ -8,7 +8,7 @@ export default async function Header({}) {
   return (
     <header className="bg-white  border-b-2 border-b-gray-100 py-2">
       <div className="2xl:container mx-auto px-3 flex justify-between items-center relative">
-        <Logo />
+        <Logo settings={settings} />
         <Navigation />
         <SocialLinksHeader data={settings} />
       </div>
