@@ -15,8 +15,8 @@ export default async function Logo() {
   return (
     <Link href="/">
       <Image
-        // src={headerLogo || defaultLogo}
-        src="http://headless-practise.local/wp-content/uploads/2024/11/Logo_blue.svg"
+        src={headerLogo || defaultLogo}
+        // src="http://headless-practise.local/wp-content/uploads/2024/11/Logo_blue.svg"
         alt={headerLogoAlt}
         width={200}
         height={100}
