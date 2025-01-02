@@ -51,15 +51,15 @@ const Page = async ({ params }) => {
     redirect("/");
   }
 
-  if (posts.length > 0 && slug !== "website-settings") {
-    return (
-      <div>
-        <h1>This is archive page</h1>
-        <ArchiveButton label={"Dance"} />
-        <ArchivePosts posts={posts} />
-      </div>
-    );
-  }
+  // if (posts.length > 0 && slug !== "website-settings") {
+  //   return (
+  //     <div>
+  //       <h1>This is archive page</h1>
+  //       <ArchiveButton label={"Dance"} />
+  //       <ArchivePosts posts={posts} />
+  //     </div>
+  //   );
+  // }
 
   if (pageData.length > 0) {
     return (

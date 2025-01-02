@@ -26,6 +26,18 @@ module.exports = {
           DEFAULT: "#ffffff",
           dark: "#d1d5db",
         },
+        mainTxt: {
+          ligther: "#828181",
+          ligth: "#4C4A4A",
+          DEFAULT: "#1E1E1E",
+          dark: "#F3FFFA",
+        },
+        mainBg: {
+          ligther: "#12FFBC",
+          ligth: "#0CDDA2",
+          DEFAULT: "#09BC8A ",
+          dark: "#06533D",
+        },
       },
       fontFamily: {
         heading: ["Bebas Neue", "sans-serif"],
