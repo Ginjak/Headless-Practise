@@ -249,6 +249,8 @@ export default async function Page({ params }) {
               </div>
             </div>
             <AgentSinglePage
+              agentPhoto2={data.team_member_company_logo}
+              compnayPhoto={data.team_member_picture}
               data={data}
               imagesId={imageId}
               name={data?.team_member_name}
