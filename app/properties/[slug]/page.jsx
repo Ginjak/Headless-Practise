@@ -19,6 +19,7 @@ import Slider from "@/components/Slider";
 import Link from "next/link";
 import { bebas } from "@/app/fonts/BebasFont";
 import Image from "next/image";
+import AgentSinglePage from "@/components/AgentSinglePage";
 
 export default async function Page({ params }) {
   const { slug } = await params; // No need to await params
@@ -238,6 +239,16 @@ export default async function Page({ params }) {
                 />
               </div>
             </div>
+            <AgentSinglePage
+              name={data?.team_member_name}
+              surname={data?.team_member_surname}
+              phone={data?.team_member_phone}
+              email={data?.team_member_email}
+              agentPhoto={memberPhoto?.source_url}
+              agentPhotoAlt={memberPhoto?.alt_text}
+              companyPhoto={companyLogo?.source_url}
+              companyPhotoAlt={companyLogo?.alt_text}
+            />
           </div>
         </div>
       </>
