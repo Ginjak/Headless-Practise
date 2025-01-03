@@ -38,6 +38,7 @@ export default async function Page({ params }) {
 
   const imageId = [data.team_member_company_logo, data.team_member_picture];
 
+  console.log("Image id testing now", imageId);
   console.log("Company logo", companyLogo);
   console.log("Team avatar", memberPhoto);
 
@@ -248,6 +249,7 @@ export default async function Page({ params }) {
               </div>
             </div>
             <AgentSinglePage
+              data={data}
               imagesId={imageId}
               name={data?.team_member_name}
               surname={data?.team_member_surname}

@@ -12,8 +12,10 @@ export default function AgentSinglePage({
   companyPhoto,
   companyPhotoAlt,
   imagesId,
+  data,
 }) {
   console.log("Images ID", imagesId);
+  console.log("Data about post", data);
   return (
     <div className="team-member-wraper bg-mainBg p-10 rounded-xl mt-4 text-white shadow-small">
       <div className="flex justify-between items-center mb-6">
