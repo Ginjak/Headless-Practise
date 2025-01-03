@@ -36,6 +36,8 @@ export default async function Page({ params }) {
     data.team_member_picture,
   ]);
 
+  const imageId = [data.team_member_company_logo, data.team_member_picture];
+
   console.log("Company logo", companyLogo);
   console.log("Team avatar", memberPhoto);
 
@@ -213,6 +215,7 @@ export default async function Page({ params }) {
                     alt={memberPhoto?.alt_text || "Avatar placeholder"}
                     fill
                     className="object-cover"
+                    priority
                   />
                 </div>
               </div>
@@ -236,10 +239,12 @@ export default async function Page({ params }) {
                   alt={companyLogo?.alt_text || "Logo placeholder"}
                   width={115}
                   height={56}
+                  priority
                 />
               </div>
             </div>
             <AgentSinglePage
+              imagesId={imageId}
               name={data?.team_member_name}
               surname={data?.team_member_surname}
               phone={data?.team_member_phone}

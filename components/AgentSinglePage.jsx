@@ -10,7 +10,9 @@ export default function AgentSinglePage({
   agentPhotoAlt,
   companyPhoto,
   companyPhotoAlt,
+  imagesId,
 }) {
+  console.log("Images ID", imagesId);
   return (
     <div className="team-member-wraper bg-mainBg p-10 rounded-xl mt-4 text-white shadow-small">
       <div className="flex justify-between items-center mb-6">
