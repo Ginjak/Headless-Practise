@@ -11,18 +11,16 @@ import Image from "next/image"; // Import the Image component from Next.js
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
-import "swiper/css/scrollbar";
+// import "swiper/css/scrollbar";
 
 export default function Slider({ images }) {
   console.log("Received images:", images);
 
-  // If the images data is a string, split it into an array
-  const imageArray = typeof images === "string" ? images.split(",") : images;
+  // const imageArray = typeof images === "string" ? images.split(",") : images;
 
-  // Ensure that imageArray is an array before proceeding
-  if (!Array.isArray(imageArray)) {
-    return <div>Error: images prop is not a valid array or string.</div>;
-  }
+  // if (!Array.isArray(imageArray)) {
+  //   return <div>Error: images prop is not a valid array or string.</div>;
+  // }
 
   return (
     <div className="relative">
@@ -37,15 +35,17 @@ export default function Slider({ images }) {
         pagination={{ clickable: true }}
         loop={true}
         className="h-[500px] rounded-xl"
+        // priority
       >
-        {imageArray.map((image, index) => (
-          <SwiperSlide key={index}>
+        {images.map((image) => (
+          <SwiperSlide key={image?.id}>
             {/* Using next/image for optimized image handling */}
             <Image
-              src={image}
-              alt={`Slide ${index + 1}`}
+              src={image?.source_url}
+              alt={image?.alt_text}
               fill
               className="object-cover"
+              priority
             />
           </SwiperSlide>
         ))}

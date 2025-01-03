@@ -1,4 +1,4 @@
-import { fetchCptSinglePost } from "@/lib/api";
+import { fetchCptSinglePost, fetchImageData } from "@/lib/api";
 import { IoIosBed } from "react-icons/io";
 import { TbBathFilled } from "react-icons/tb";
 import { PiArmchairFill } from "react-icons/pi";
@@ -11,6 +11,9 @@ export default async function Page({ params }) {
   const data = await fetchCptSinglePost("properties", slug);
   console.log("Single property page data", data);
 
+  const images = await fetchImageData(data.slider_images.split(","));
+  console.log("Image Data", images);
+
   // Check if data is available and render accordingly
   if (data && data.ID) {
     return (
@@ -19,7 +22,7 @@ export default async function Page({ params }) {
         <div className="2xl:container mx-auto flex">
           <div className="content w-2/3">
             <div className="slider-wraper">
-              <Slider images={data?.slider_images} />
+              <Slider images={images} />
             </div>
 
             <div className="description-wraper p-10 rounded-xl bg-mainBg-dark text-white w-full">
