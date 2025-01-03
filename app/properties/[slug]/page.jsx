@@ -1,8 +1,19 @@
 import { fetchCptSinglePost, fetchImageData } from "@/lib/api";
 import { IoIosBed } from "react-icons/io";
 import { TbBathFilled } from "react-icons/tb";
-import { PiArmchairFill } from "react-icons/pi";
+import { PiArmchairFill, PiStairsBold } from "react-icons/pi";
 import { RiCustomSize } from "react-icons/ri";
+import { FaRoad, FaHotTubPerson } from "react-icons/fa6";
+import { BiSolidCarGarage } from "react-icons/bi";
+import { TbParkingCircleFilled } from "react-icons/tb";
+import { GiFlowerPot, GiFireplace, GiRingingAlarm } from "react-icons/gi";
+import { BiSolidCameraMovie, BiSolidCctv } from "react-icons/bi";
+import {
+  MdOutlineBalcony,
+  MdDeck,
+  MdOutlinePool,
+  MdSportsTennis,
+} from "react-icons/md";
 import Slider from "@/components/Slider";
 export default async function Page({ params }) {
   const { slug } = await params; // No need to await params
@@ -21,12 +32,30 @@ export default async function Page({ params }) {
         <p>Back to search + Share buttons</p>
         <div className="2xl:container mx-auto flex">
           <div className="content w-2/3">
-            <div className="slider-wraper">
+            <div className="slider-wraper mb-6">
               <Slider images={images} />
             </div>
+            <div className="main-details-wraper mb-6 mx-10">
+              <h2 className="text-mainTxt font-heading text-2xl font-medium tracking-wide">
+                {data?.address_line},{" "}
+                {data?.borough ? data?.borough : data?.city}{" "}
+                {data?.postcode?.split(" ")[0]}
+              </h2>
 
-            <div className="description-wraper p-10 rounded-xl bg-mainBg-dark text-white w-full">
-              <h5 className="font-heading font-bold pb-5 text-2xl tracking-wide">
+              <div className="price-date-wraper flex justify-between items-center">
+                <p className="text-mainTxt font-heading text-2xl font-medium tracking-wide">
+                  £{data?.original_price}
+                </p>
+                <p className="text-mainTxt-ligther font-heading opacity-70">
+                  Added on{" "}
+                  {new Date(data?.post_date)
+                    .toLocaleDateString("en-GB")
+                    .replace(/-/g, "/")}
+                </p>
+              </div>
+            </div>
+            <div className="description-wraper p-10 rounded-xl bg-mainBg-dark text-white w-full mb-6">
+              <h5 className="font-heading font-medium pb-5 text-2xl tracking-wide">
                 Description
               </h5>
               <p className="text-white/80">{data?.property_description}</p>
@@ -86,7 +115,63 @@ export default async function Page({ params }) {
                 )}
               </div>
             </div>
-            <div className="features-wraper p-10 rounded-xl bg-mainBg-ligth text-mainTxt w-full"></div>
+            <div className="features-wraper p-10 rounded-xl bg-mainBg-dark text-white w-full mb-6">
+              <h5 className="font-heading font-medium pb-5 text-2xl tracking-wide">
+                Features
+              </h5>
+              <ul className="flex flex-row gap-5 flex-wrap">
+                {data?.features.map((feature) => {
+                  const featureIcons = {
+                    driveway: <FaRoad className="text-white h-6 w-6" />,
+                    garage: <BiSolidCarGarage className="text-white h-6 w-6" />,
+                    "off-street-parking": (
+                      <TbParkingCircleFilled className="text-white h-6 w-6" />
+                    ),
+                    garden: <GiFlowerPot className="text-white h-6 w-6" />,
+                    balcony: (
+                      <MdOutlineBalcony className="text-white h-6 w-6" />
+                    ),
+                    terrace: <MdDeck className="text-white h-6 w-6" />,
+                    patio: <MdDeck className="text-white h-6 w-6" />,
+                    "swimming-pool": (
+                      <MdOutlinePool className="text-white h-6 w-6" />
+                    ),
+                    jacuzzi: <FaHotTubPerson className="text-white h-6 w-6" />,
+                    "tennis-court": (
+                      <MdSportsTennis className="text-white h-6 w-6" />
+                    ),
+                    "cinema-room": (
+                      <BiSolidCameraMovie className="text-white h-6 w-6" />
+                    ),
+                    fireplace: <GiFireplace className="text-white h-6 w-6" />,
+                    basement: <PiStairsBold className="text-white h-6 w-6" />,
+
+                    cctv: <BiSolidCctv className="text-white h-6 w-6" />,
+                    "alarm-system": (
+                      <GiRingingAlarm className="text-white h-6 w-6" />
+                    ),
+                  };
+
+                  const formattedFeature = feature
+                    .replace(/-/g, " ")
+                    .replace(/^(.)/, (match) => match.toUpperCase());
+
+                  return (
+                    <li
+                      key={feature}
+                      className="flex gap-2 items-center min-w-40"
+                    >
+                      {featureIcons[feature]}
+                      <span className="text-white/80">
+                        {formattedFeature === "Cctv"
+                          ? "CCTV"
+                          : formattedFeature}
+                      </span>
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
           </div>
 
           <div className="agent-info w-1/3 p-4 sticky top-0 h-screen overflow-y-auto">

@@ -33,7 +33,7 @@ module.exports = {
           dark: "#F3FFFA",
         },
         mainBg: {
-          ligther: "#12FFBC",
+          ligther: "#eef8f2",
           ligth: "#0CDDA2",
           DEFAULT: "#09BC8A ",
           dark: "#06533D",

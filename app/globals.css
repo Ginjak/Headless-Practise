@@ -14,6 +14,15 @@
   }
 }
 
+/* Fonts */
+
+@font-face {
+  font-family: "Bebas Neue";
+  src: url("./fonts/bebasneue.woff2") format("woff2");
+  font-weight: normal;
+  font-style: normal;
+}
+
 /* Uttils*/
 
 @layer components {
