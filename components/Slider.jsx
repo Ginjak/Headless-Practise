@@ -1,5 +1,5 @@
 "use client";
-import { Navigation, Pagination, Scrollbar, A11y } from "swiper/modules";
+import { Navigation, Autoplay } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import {
   TbSquareRoundedArrowLeftFilled,
@@ -19,17 +19,18 @@ export default function Slider({ images }) {
   return (
     <div className="relative">
       <Swiper
-        modules={[Navigation, Pagination, Scrollbar, A11y]}
+        modules={[Navigation, Autoplay]}
         spaceBetween={50}
         slidesPerView={1}
         navigation={{
           prevEl: ".custom-prev",
           nextEl: ".custom-next",
         }}
-        pagination={{ clickable: true }}
+        autoplay={{
+          delay: 3000,
+        }}
         loop={true}
-        className="h-[500px] rounded-xl"
-        // priority
+        className="h-[500px] rounded-xl shadow-small"
       >
         {images.map((image) => (
           <SwiperSlide key={image?.id}>

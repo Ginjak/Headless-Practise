@@ -13,8 +13,13 @@ import {
   MdDeck,
   MdOutlinePool,
   MdSportsTennis,
+  MdOutlinePets,
 } from "react-icons/md";
 import Slider from "@/components/Slider";
+import Link from "next/link";
+import { bebas } from "@/app/fonts/BebasFont";
+import Image from "next/image";
+
 export default async function Page({ params }) {
   const { slug } = await params; // No need to await params
 
@@ -25,25 +30,37 @@ export default async function Page({ params }) {
   const images = await fetchImageData(data.slider_images.split(","));
   console.log("Image Data", images);
 
+  const [companyLogo, memberPhoto] = await fetchImageData([
+    data.team_member_company_logo,
+    data.team_member_picture,
+  ]);
+
+  console.log("Company logo", companyLogo);
+  console.log("Team avatar", memberPhoto);
+
   // Check if data is available and render accordingly
   if (data && data.ID) {
     return (
       <>
         <p>Back to search + Share buttons</p>
         <div className="2xl:container mx-auto flex">
-          <div className="content w-2/3">
+          <div className="content w-2/3 mt-20">
             <div className="slider-wraper mb-6">
               <Slider images={images} />
             </div>
             <div className="main-details-wraper mb-6 mx-10">
-              <h2 className="text-mainTxt font-heading text-2xl font-medium tracking-wide">
+              <h2
+                className={`text-mainTxt font-heading text-2xl font-medium tracking-wide ${bebas.className}`}
+              >
                 {data?.address_line},{" "}
                 {data?.borough ? data?.borough : data?.city}{" "}
                 {data?.postcode?.split(" ")[0]}
               </h2>
 
               <div className="price-date-wraper flex justify-between items-center">
-                <p className="text-mainTxt font-heading text-2xl font-medium tracking-wide">
+                <p
+                  className={`text-mainTxt font-heading text-2xl font-medium tracking-wide ${bebas.className}`}
+                >
                   £{data?.original_price}
                 </p>
                 <p className="text-mainTxt-ligther font-heading opacity-70">
@@ -54,7 +71,7 @@ export default async function Page({ params }) {
                 </p>
               </div>
             </div>
-            <div className="description-wraper p-10 rounded-xl bg-mainBg-dark text-white w-full mb-6">
+            <div className="description-wraper p-10 rounded-xl bg-mainBg-dark text-white w-full mb-6 shadow-small">
               <h5 className="font-heading font-medium pb-5 text-2xl tracking-wide">
                 Description
               </h5>
@@ -115,7 +132,7 @@ export default async function Page({ params }) {
                 )}
               </div>
             </div>
-            <div className="features-wraper p-10 rounded-xl bg-mainBg-dark text-white w-full mb-6">
+            <div className="features-wraper p-10 rounded-xl bg-mainBg-dark text-white w-full mb-6 shadow-small">
               <h5 className="font-heading font-medium pb-5 text-2xl tracking-wide">
                 Features
               </h5>
@@ -170,12 +187,57 @@ export default async function Page({ params }) {
                     </li>
                   );
                 })}
+                {data?.pet_friendly === "true" && (
+                  <li className="flex gap-2 items-center min-w-40">
+                    <MdOutlinePets className="text-white h-6 w-6" />
+                    <span className="text-white/80">Pet friendly</span>
+                  </li>
+                )}
               </ul>
             </div>
           </div>
 
-          <div className="agent-info w-1/3 p-4 sticky top-0 h-screen overflow-y-auto">
-            <p>Agent name</p>
+          <div className="agent-info w-1/3 px-4 sticky top-0 h-screen overflow-y-auto mt-16">
+            <div className="team-member-wraper bg-mainBg p-10 rounded-xl mt-4 text-white shadow-small">
+              <div className="flex justify-between items-center mb-6">
+                <div className="name-surname">
+                  <p className="text-white/80 text-xs">Agent</p>
+                  <p className="text-xl font-bold tracking-wider">
+                    {data?.team_member_name} {data?.team_member_surname}
+                  </p>
+                </div>
+                <div className="avatar w-32 h-32 relative rounded-full overflow-hidden shadow-medium border-2 border-slate-100/50">
+                  <Image
+                    src={memberPhoto?.source_url || "/avatar_placeholder.webp"}
+                    alt={memberPhoto?.alt_text || "Avatar placeholder"}
+                    fill
+                    className="object-cover"
+                  />
+                </div>
+              </div>
+              <div className="contacts flex flex-col text-center bg-mainBg-dark p-4 rounded-lg gap-3">
+                <Link
+                  href={`tel:${data?.team_member_phone}`}
+                  className="rounded-lg border-2 border-mainBg/80 hover:bg-mainBg/80 text-white py-3 px-4 transition-all duration-200 uppercase font-bold tracking-wider"
+                >
+                  Phone number
+                </Link>
+                <Link
+                  href={`mailto:${data?.team_member_email}`}
+                  className="rounded-lg border-2 border-mainBg/80 bg-mainBg/80 hover:bg-mainBg/50 hover:border-mainBg/50 text-white py-3 px-4 transition-all duration-200 uppercase font-bold tracking-wider"
+                >
+                  Email
+                </Link>
+              </div>
+              <div className="company-avatar relative mt-4 flex justify-end items-end">
+                <Image
+                  src={companyLogo?.source_url}
+                  alt={companyLogo?.alt_text || "Logo placeholder"}
+                  width={115}
+                  height={56}
+                />
+              </div>
+            </div>
           </div>
         </div>
       </>

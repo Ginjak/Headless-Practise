@@ -42,6 +42,10 @@ module.exports = {
       fontFamily: {
         heading: ["Bebas Neue", "sans-serif"],
       },
+      boxShadow: {
+        small: "0 0px 10px rgba(0, 0, 0, 0.2)",
+        medium: "0 0px 25px rgba(0, 0, 0, 0.5)",
+      },
       screens: {
         xs: "400px",
       },
