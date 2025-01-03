@@ -210,13 +210,17 @@ export default async function Page({ params }) {
                   </p>
                 </div>
                 <div className="avatar w-32 h-32 relative rounded-full overflow-hidden shadow-medium border-2 border-slate-100/50">
-                  <Image
-                    src={memberPhoto?.source_url || "/avatar_placeholder.webp"}
-                    alt={memberPhoto?.alt_text || "Avatar placeholder"}
-                    fill
-                    className="object-cover"
-                    priority
-                  />
+                  {memberPhoto?.source_url && (
+                    <Image
+                      src={
+                        memberPhoto?.source_url || "/avatar_placeholder.webp"
+                      }
+                      alt={memberPhoto?.alt_text || "Avatar placeholder"}
+                      fill
+                      className="object-cover"
+                      priority
+                    />
+                  )}
                 </div>
               </div>
               <div className="contacts flex flex-col text-center bg-mainBg-dark p-4 rounded-lg gap-3">
