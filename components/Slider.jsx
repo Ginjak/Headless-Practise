@@ -16,12 +16,6 @@ import "swiper/css/pagination";
 export default function Slider({ images }) {
   console.log("Received images:", images);
 
-  // const imageArray = typeof images === "string" ? images.split(",") : images;
-
-  // if (!Array.isArray(imageArray)) {
-  //   return <div>Error: images prop is not a valid array or string.</div>;
-  // }
-
   return (
     <div className="relative">
       <Swiper
