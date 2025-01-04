@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import PhoneRevealBtn from "./PhoneRevealBtn";
 
 export default function AgentSinglePage({
   name,
@@ -30,12 +31,8 @@ export default function AgentSinglePage({
         </div>
       </div>
       <div className="contacts flex flex-col text-center bg-mainTxt p-4 rounded-lg gap-3">
-        <Link
-          href={`tel:${phone}`}
-          className="rounded-lg border-2 border-mainBg/80 hover:bg-mainBg/80 text-white py-3 px-4 transition-all duration-200 uppercase font-bold tracking-wider"
-        >
-          Phone number
-        </Link>
+        <PhoneRevealBtn text={"Phone number"} phone={phone} />
+
         <Link
           href={`mailto:${email}`}
           className="rounded-lg border-2 border-mainBg/80 bg-mainBg/80 hover:bg-mainBg/50 hover:border-mainBg/50 text-white py-3 px-4 transition-all duration-200 uppercase font-bold tracking-wider"

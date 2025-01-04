@@ -5,6 +5,7 @@ import KeyFeatures from "@/components/singlePage/KeyFeatures";
 import SinglePostDivider from "@/components/singlePage/SinglePostDivider";
 import SinglePostDescription from "@/components/singlePage/SinglePostDescription";
 import SinglePostFeatures from "@/components/singlePage/SinglePostFeatures";
+import SinglePostLocalAreaInfo from "@/components/singlePage/SinglePostLocalAreaInfo";
 
 export default async function Page({ params }) {
   const { slug } = await params;
@@ -83,6 +84,8 @@ export default async function Page({ params }) {
                 features={data?.features}
                 pet_friendly={data?.pet_friendly}
               />
+              <SinglePostDivider />
+              <SinglePostLocalAreaInfo postcode={data?.postcode} />
             </div>
           </div>
 
