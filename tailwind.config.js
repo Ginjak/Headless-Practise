@@ -35,8 +35,8 @@ module.exports = {
         mainBg: {
           ligther: "#eef8f2",
           ligth: "#0CDDA2",
-          DEFAULT: "#09BC8A ",
-          dark: "#06533D",
+          DEFAULT: "#09BC8A",
+          dark: "#0C8D68",
         },
       },
       fontFamily: {

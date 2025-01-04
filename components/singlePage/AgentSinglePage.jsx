@@ -1,4 +1,3 @@
-"use client";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -11,18 +10,10 @@ export default function AgentSinglePage({
   agentPhotoAlt,
   companyPhoto,
   companyPhotoAlt,
-  imagesId,
-  data,
-  agentPhoto2,
-  compnayPhoto,
 }) {
-  console.log("Images ID", imagesId);
-  console.log("Data about post", data);
-  console.log("Agent photo id", agentPhoto2);
-  console.log("Compnay photo ID", compnayPhoto);
   return (
-    <div className="team-member-wraper bg-mainBg p-10 rounded-xl mt-4 text-white shadow-small">
-      <div className="flex justify-between items-center mb-6">
+    <div className="team-member-wraper bg-mainBg py-10 px-6 rounded-xl mt-4 text-white shadow-small">
+      <div className="flex justify-between items-center mb-6 px-4">
         <div className="name-surname">
           <p className="text-white/80 text-xs">Agent</p>
           <p className="text-xl font-bold tracking-wider">
@@ -38,7 +29,7 @@ export default function AgentSinglePage({
           />
         </div>
       </div>
-      <div className="contacts flex flex-col text-center bg-mainBg-dark p-4 rounded-lg gap-3">
+      <div className="contacts flex flex-col text-center bg-mainTxt p-4 rounded-lg gap-3">
         <Link
           href={`tel:${phone}`}
           className="rounded-lg border-2 border-mainBg/80 hover:bg-mainBg/80 text-white py-3 px-4 transition-all duration-200 uppercase font-bold tracking-wider"
