@@ -31,12 +31,28 @@ export default async function SinglePostLocalAreaInfo({ postcode }) {
   }
 
   // Now fetch the nearby places (schools, stations, shops) using Overpass API
-  const radius = 10000; // Search radius in meters (1 km)
+  const radius = 5000; // Search radius in meters (1 km)
   const overpassUrl = `https://overpass-api.de/api/interpreter?data=[out:json];(
     node["amenity"="school"](around:${radius},${latitude},${longitude});
     node["railway"="station"](around:${radius},${latitude},${longitude});
-    node["shop"](around:${radius},${latitude},${longitude});
+    node["shop"="supermarket"](around:${radius},${latitude},${longitude});
   );out body qt;`;
+
+  const overpassUrlTwo = `https://overpass-api.de/api/interpreter?data=[out:json];(
+    node["subway"="yes"](around:${radius},${latitude},${longitude});
+  );out body qt;`;
+
+  try {
+    const shopsResponse = await fetch(overpassUrlTwo);
+    if (!shopsResponse.ok) {
+      throw new Error("Failed to fetch shops");
+    }
+
+    const shopsData = await shopsResponse.json(); // Parse the JSON data
+    console.log("Shops", shopsData); // Now this will log the actual data
+  } catch (err) {
+    console.error("Error fetching shops:", err.message);
+  }
 
   let placesError = null;
   let closestSchools = [];
