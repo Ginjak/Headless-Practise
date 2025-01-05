@@ -1,6 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useFilterContext } from "../context/FilterContext";
 import Filter from "./Filter";
