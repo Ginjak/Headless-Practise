@@ -27,6 +27,7 @@ export default function AgentSinglePage({
             alt={agentPhotoAlt || "Avatar placeholder"}
             fill
             className="object-cover"
+            placeholder="blur"
           />
         </div>
       </div>
@@ -46,6 +47,7 @@ export default function AgentSinglePage({
           alt={companyPhotoAlt || "Logo placeholder"}
           width={115}
           height={56}
+          placeholder="blur"
         />
       </div>
     </div>

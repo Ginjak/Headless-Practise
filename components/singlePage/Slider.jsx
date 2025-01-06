@@ -31,7 +31,6 @@ export default function Slider({ images }) {
         }}
         loop={true}
         className="h-[500px] rounded-xl shadow-small"
-        placeholder="blur"
       >
         {images.map((image) => (
           <SwiperSlide key={image?.id}>
@@ -42,6 +41,7 @@ export default function Slider({ images }) {
               fill
               className="object-cover"
               priority
+              placeholder="blur"
             />
           </SwiperSlide>
         ))}
