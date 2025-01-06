@@ -28,6 +28,7 @@ export default function AgentSinglePage({
             fill
             className="object-cover"
             placeholder="blur"
+            blurDataURL="/avatar_placeholder.webp"
           />
         </div>
       </div>
