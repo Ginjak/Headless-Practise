@@ -22,10 +22,11 @@ export async function generateStaticParams() {
 }
 
 export default async function PropertyPage({ params }) {
-  const { slug } = params;
+  const { slug } = await params;
 
   // Fetch single property data
   const data = await fetchCptSinglePost("properties", slug);
+  console.log("Single post data", data);
 
   // If no data is found, return a fallback page
   if (!data) {
@@ -102,7 +103,10 @@ export default async function PropertyPage({ params }) {
               pet_friendly={data?.pet_friendly}
             />
             <SinglePostDivider />
-            <SinglePostLocalAreaInfo postcode={data?.postcode} />
+            <SinglePostLocalAreaInfo
+              longitude={data?.longitude}
+              latitude={data?.latitude}
+            />
           </div>
         </div>
         <div className="agent-info w-full hidden lg:block lg:w-1/3 ps-4 sticky top-0 h-screen overflow-y-auto mt-16">

@@ -1,34 +1,32 @@
-// app/[postcode]/page.js or app/posts/[postcode]/page.js
+export default async function SinglePostLocalAreaInfo({ longitude, latitude }) {
+  // const url = `https://api.postcodes.io/postcodes/${postcode}`;
 
-export default async function SinglePostLocalAreaInfo({ postcode }) {
-  const url = `https://api.postcodes.io/postcodes/${postcode}`;
+  // let longitude = null;
+  // let latitude = null;
+  // let error = null;
 
-  let longitude = null;
-  let latitude = null;
-  let error = null;
+  // try {
+  //   // Fetch location info using postcode
+  //   const response = await fetch(url);
+  //   if (!response.ok) {
+  //     throw new Error("Failed to fetch location info");
+  //   }
+  //   const locationInfo = await response.json();
 
-  try {
-    // Fetch location info using postcode
-    const response = await fetch(url);
-    if (!response.ok) {
-      throw new Error("Failed to fetch location info");
-    }
-    const locationInfo = await response.json();
+  //   if (locationInfo.result) {
+  //     longitude = locationInfo.result.longitude;
+  //     latitude = locationInfo.result.latitude;
+  //   } else {
+  //     throw new Error("Location result not found");
+  //   }
+  // } catch (err) {
+  //   error = err.message;
+  // }
 
-    if (locationInfo.result) {
-      longitude = locationInfo.result.longitude;
-      latitude = locationInfo.result.latitude;
-    } else {
-      throw new Error("Location result not found");
-    }
-  } catch (err) {
-    error = err.message;
-  }
-
-  // Handle error scenario
-  if (error) {
-    return <p>Error: {error}</p>;
-  }
+  // // Handle error scenario
+  // if (error) {
+  //   return <p>Error: {error}</p>;
+  // }
 
   // Now fetch the nearby places (schools, stations, shops) using Overpass API
   const radius = 5000; // Search radius in meters (1 km)
@@ -40,7 +38,7 @@ export default async function SinglePostLocalAreaInfo({ postcode }) {
 
   const overpassUrlTwo = `https://overpass-api.de/api/interpreter?data=[out:json];(
     node["subway"="yes"](around:${radius},${latitude},${longitude});
-  );out body qt;`;
+  );out body qt 8;`;
 
   try {
     const shopsResponse = await fetch(overpassUrlTwo);
@@ -60,13 +58,14 @@ export default async function SinglePostLocalAreaInfo({ postcode }) {
   let closestShops = [];
 
   try {
-    const placesResponse = await fetch(overpassUrl);
+    const placesResponse = await fetch(overpassUrlTwo);
     if (!placesResponse.ok) {
       throw new Error("Failed to fetch nearby places");
     }
     const placesData = await placesResponse.json();
 
     // Process the data to categorize places and calculate distances
+    const uniqueStations = new Set();
     const schools = [];
     const stations = [];
     const shops = [];
@@ -82,7 +81,12 @@ export default async function SinglePostLocalAreaInfo({ postcode }) {
 
         if (place.tags && place.tags.amenity === "school") {
           schools.push({ ...place, distance });
-        } else if (place.tags && place.tags.railway === "station") {
+        } else if (
+          place.tags.subway === "yes" &&
+          place.tags.name &&
+          !uniqueStations.has(place.tags.name)
+        ) {
+          uniqueStations.add(place.tags.name);
           stations.push({ ...place, distance });
         } else if (place.tags && place.tags.shop) {
           shops.push({ ...place, distance });
@@ -96,7 +100,7 @@ export default async function SinglePostLocalAreaInfo({ postcode }) {
     shops.sort((a, b) => a.distance - b.distance);
 
     closestSchools = schools.slice(0, 2);
-    closestStations = stations.slice(0, 2);
+    closestStations = stations.slice(0, 5);
     closestShops = shops.slice(0, 2);
   } catch (err) {
     placesError = err.message;
@@ -110,7 +114,6 @@ export default async function SinglePostLocalAreaInfo({ postcode }) {
   // Display results
   return (
     <div>
-      <p>Postcode: {postcode}</p>
       <p>Longitude: {longitude}</p>
       <p>Latitude: {latitude}</p>
 
