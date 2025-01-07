@@ -41,7 +41,6 @@ export default function Slider({ images }) {
               fill
               className="object-cover"
               priority
-              placeholder="blur"
             />
           </SwiperSlide>
         ))}

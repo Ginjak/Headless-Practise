@@ -103,11 +103,11 @@ export default async function PropertyPage({ params }) {
               pet_friendly={data?.pet_friendly}
             />
             <SinglePostDivider />
-            <SinglePostLocalAreaInfo
-              longitude={data?.longitude}
-              latitude={data?.latitude}
-            />
           </div>
+          <SinglePostLocalAreaInfo
+            longitude={data?.longitude}
+            latitude={data?.latitude}
+          />
         </div>
         <div className="agent-info w-full hidden lg:block lg:w-1/3 ps-4 sticky top-0 h-screen overflow-y-auto mt-16">
           <AgentSinglePage

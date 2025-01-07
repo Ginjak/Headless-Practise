@@ -1,76 +1,62 @@
+import { calculateDistance } from "@/lib/functions";
+import Image from "next/image";
+import { TiShoppingCart } from "react-icons/ti";
+import SinglePostAmenities from "./SinglePostAmenities";
 export default async function SinglePostLocalAreaInfo({ longitude, latitude }) {
-  // const url = `https://api.postcodes.io/postcodes/${postcode}`;
+  const radius = 8000; // Search radius in meters (1 km)
 
-  // let longitude = null;
-  // let latitude = null;
-  // let error = null;
-
-  // try {
-  //   // Fetch location info using postcode
-  //   const response = await fetch(url);
-  //   if (!response.ok) {
-  //     throw new Error("Failed to fetch location info");
-  //   }
-  //   const locationInfo = await response.json();
-
-  //   if (locationInfo.result) {
-  //     longitude = locationInfo.result.longitude;
-  //     latitude = locationInfo.result.latitude;
-  //   } else {
-  //     throw new Error("Location result not found");
-  //   }
-  // } catch (err) {
-  //   error = err.message;
-  // }
-
-  // // Handle error scenario
-  // if (error) {
-  //   return <p>Error: {error}</p>;
-  // }
-
-  // Now fetch the nearby places (schools, stations, shops) using Overpass API
-  const radius = 5000; // Search radius in meters (1 km)
-  const overpassUrl = `https://overpass-api.de/api/interpreter?data=[out:json];(
-    node["amenity"="school"](around:${radius},${latitude},${longitude});
-    node["railway"="station"](around:${radius},${latitude},${longitude});
-    node["shop"="supermarket"](around:${radius},${latitude},${longitude});
-  );out body qt;`;
-
-  const overpassUrlTwo = `https://overpass-api.de/api/interpreter?data=[out:json];(
+  const overpassUrlUnderground = `https://overpass-api.de/api/interpreter?data=[out:json];(
     node["subway"="yes"](around:${radius},${latitude},${longitude});
-  );out body qt 8;`;
+  );out body qt 10;`;
+  const overpassUrlShops = `https://overpass-api.de/api/interpreter?data=[out:json];
+  node["shop"="supermarket"](around:${radius},${latitude},${longitude});
+  out body qt 4;`;
+  const overpassUrlTrain = `https://overpass-api.de/api/interpreter?data=[out:json];
+  node["railway"="station"]["network"="National Rail"](around:${radius},${latitude},${longitude});
+  out body qt 20;`;
 
-  try {
-    const shopsResponse = await fetch(overpassUrlTwo);
-    if (!shopsResponse.ok) {
-      throw new Error("Failed to fetch shops");
-    }
-
-    const shopsData = await shopsResponse.json(); // Parse the JSON data
-    console.log("Shops", shopsData); // Now this will log the actual data
-  } catch (err) {
-    console.error("Error fetching shops:", err.message);
-  }
-
-  let placesError = null;
-  let closestSchools = [];
-  let closestStations = [];
+  // Initialize arrays for results
+  let closestUnderground = [];
+  let closestTrainStation = [];
   let closestShops = [];
+  const uniqueUndergroundNames = new Set(); // Track unique station names
 
+  // Fetch and filter data from both endpoints
   try {
-    const placesResponse = await fetch(overpassUrlTwo);
-    if (!placesResponse.ok) {
-      throw new Error("Failed to fetch nearby places");
+    const [undergroundResponse, shopsResponse, trainResponse] =
+      await Promise.all([
+        fetch(overpassUrlUnderground),
+        fetch(overpassUrlShops),
+        fetch(overpassUrlTrain),
+      ]);
+
+    if (!undergroundResponse.ok || !shopsResponse.ok || !trainResponse.ok) {
+      throw new Error("Failed to fetch data for places");
     }
-    const placesData = await placesResponse.json();
 
-    // Process the data to categorize places and calculate distances
-    const uniqueStations = new Set();
-    const schools = [];
-    const stations = [];
-    const shops = [];
+    const undergroundData = await undergroundResponse.json();
+    const trainData = await trainResponse.json();
+    const shopsData = await shopsResponse.json();
 
-    placesData.elements.forEach((place) => {
+    // Process Underground data
+    undergroundData.elements.forEach((place) => {
+      if (place.lat && place.lon && place.tags && place.tags.name) {
+        // Filter duplicates by name
+        if (!uniqueUndergroundNames.has(place.tags.name)) {
+          const distance = calculateDistance(
+            latitude,
+            longitude,
+            place.lat,
+            place.lon
+          );
+          closestUnderground.push({ ...place, distance });
+          uniqueUndergroundNames.add(place.tags.name); // Add name to set
+        }
+      }
+    });
+
+    // Process Shops data
+    shopsData.elements.forEach((place) => {
       if (place.lat && place.lon) {
         const distance = calculateDistance(
           latitude,
@@ -78,98 +64,46 @@ export default async function SinglePostLocalAreaInfo({ longitude, latitude }) {
           place.lat,
           place.lon
         );
-
-        if (place.tags && place.tags.amenity === "school") {
-          schools.push({ ...place, distance });
-        } else if (
-          place.tags.subway === "yes" &&
-          place.tags.name &&
-          !uniqueStations.has(place.tags.name)
-        ) {
-          uniqueStations.add(place.tags.name);
-          stations.push({ ...place, distance });
-        } else if (place.tags && place.tags.shop) {
-          shops.push({ ...place, distance });
+        if (place.tags && place.tags.shop) {
+          closestShops.push({ ...place, distance });
         }
       }
     });
 
-    // Sort by distance and get the closest two places
-    schools.sort((a, b) => a.distance - b.distance);
-    stations.sort((a, b) => a.distance - b.distance);
-    shops.sort((a, b) => a.distance - b.distance);
+    trainData.elements.forEach((place) => {
+      if (place.lat && place.lon && place.tags && place.tags.name) {
+        // Check for 'name' instead of 'shop'
+        const distance = calculateDistance(
+          latitude,
+          longitude,
+          place.lat,
+          place.lon
+        );
+        closestTrainStation.push({ ...place, distance });
+      }
+    });
 
-    closestSchools = schools.slice(0, 2);
-    closestStations = stations.slice(0, 5);
-    closestShops = shops.slice(0, 2);
+    // Sort both arrays by distance
+    closestUnderground.sort((a, b) => a.distance - b.distance);
+    closestTrainStation.sort((a, b) => a.distance - b.distance);
+    closestShops.sort((a, b) => a.distance - b.distance);
+
+    // Slice to get only the closest 4 places from each category
+    closestUnderground = closestUnderground.slice(0, 4);
+    closestTrainStation = closestTrainStation.slice(0, 4);
+    closestShops = closestShops.slice(0, 4);
+    console.log("Train stations details", closestTrainStation);
+    console.log("Shop details", closestShops);
   } catch (err) {
-    placesError = err.message;
-  }
-
-  // Handle error fetching places
-  if (placesError) {
-    return <p>Error fetching nearby places: {placesError}</p>;
+    console.error("Error fetching data:", err.message);
   }
 
   // Display results
   return (
-    <div>
-      <p>Longitude: {longitude}</p>
-      <p>Latitude: {latitude}</p>
-
-      <h3>Closest Schools:</h3>
-      {closestSchools.length > 0 ? (
-        <ul>
-          {closestSchools.map((school, index) => (
-            <li key={index}>
-              {school.tags.name} - {school.distance.toFixed(2)} miles away
-            </li>
-          ))}
-        </ul>
-      ) : (
-        <p>No schools found.</p>
-      )}
-
-      <h3>Closest Train Stations:</h3>
-      {closestStations.length > 0 ? (
-        <ul>
-          {closestStations.map((station, index) => (
-            <li key={index}>
-              {station.tags.name} - {station.distance.toFixed(2)} miles away
-            </li>
-          ))}
-        </ul>
-      ) : (
-        <p>No train stations found.</p>
-      )}
-
-      <h3>Closest Shops:</h3>
-      {closestShops.length > 0 ? (
-        <ul>
-          {closestShops.map((shop, index) => (
-            <li key={index}>
-              {shop.tags.name} - {shop.distance.toFixed(2)} miles away
-            </li>
-          ))}
-        </ul>
-      ) : (
-        <p>No shops found.</p>
-      )}
+    <div className="p-10 rounded-xl  bg-white w-full mb-6 shadow-small">
+      <SinglePostAmenities data={closestUnderground} title={"Underground"} />
+      <SinglePostAmenities data={closestTrainStation} title={"Train"} />
+      <SinglePostAmenities data={closestShops} title={"Shops"} />
     </div>
   );
-}
-
-// Helper function to calculate distance between two coordinates (in miles)
-function calculateDistance(lat1, lon1, lat2, lon2) {
-  const R = 3958.8; // Radius of the Earth in miles
-  const dLat = ((lat2 - lat1) * Math.PI) / 180;
-  const dLon = ((lon2 - lon1) * Math.PI) / 180;
-  const a =
-    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-    Math.cos((lat1 * Math.PI) / 180) *
-      Math.cos((lat2 * Math.PI) / 180) *
-      Math.sin(dLon / 2) *
-      Math.sin(dLon / 2);
-  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-  return R * c; // Distance in miles
 }
