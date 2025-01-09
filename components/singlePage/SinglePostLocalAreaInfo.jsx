@@ -1,9 +1,7 @@
 import { calculateDistance } from "@/lib/functions";
-import Image from "next/image";
-import { TiShoppingCart } from "react-icons/ti";
 import SinglePostAmenities from "./SinglePostAmenities";
 export default async function SinglePostLocalAreaInfo({ longitude, latitude }) {
-  const radius = 8000; // Search radius in meters (1 km)
+  const radius = 8000;
 
   const overpassUrlUnderground = `https://overpass-api.de/api/interpreter?data=[out:json];(
     node["subway"="yes"](around:${radius},${latitude},${longitude});
@@ -95,10 +93,9 @@ export default async function SinglePostLocalAreaInfo({ longitude, latitude }) {
     console.log("Train stations details", closestTrainStation);
     console.log("Shop details", closestShops);
   } catch (err) {
-    console.error("Error fetching data:", err.message);
+    return null;
   }
 
-  // Display results
   return (
     <div className="p-10 rounded-xl  bg-white w-full mb-6 shadow-small">
       <SinglePostAmenities data={closestUnderground} title={"Underground"} />

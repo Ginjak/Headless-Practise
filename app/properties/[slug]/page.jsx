@@ -10,6 +10,7 @@ import SinglePostDivider from "@/components/singlePage/SinglePostDivider";
 import SinglePostDescription from "@/components/singlePage/SinglePostDescription";
 import SinglePostFeatures from "@/components/singlePage/SinglePostFeatures";
 import SinglePostLocalAreaInfo from "@/components/singlePage/SinglePostLocalAreaInfo";
+import SinglePostMap from "@/components/singlePage/SinglePostMap";
 
 // Generate static paths for all properties
 export async function generateStaticParams() {
@@ -108,6 +109,7 @@ export default async function PropertyPage({ params }) {
             longitude={data?.longitude}
             latitude={data?.latitude}
           />
+          <SinglePostMap lat={data?.latitude} lng={data?.longitude} />
         </div>
         <div className="agent-info w-full hidden lg:block lg:w-1/3 ps-4 sticky top-0 h-screen overflow-y-auto mt-16">
           <AgentSinglePage

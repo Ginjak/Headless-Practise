@@ -1,8 +1,9 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@import "https://unpkg.com/leaflet@1.9.4/dist/leaflet.css";
 
-:root {
+:root  {
   --background: #ffffff;
   --foreground: #171717;
   --font-bebas: "Bebas Neue", sans-serif;
