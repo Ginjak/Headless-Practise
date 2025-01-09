@@ -45,9 +45,15 @@ const fetchCptPosts = async (filters = {}) => {
 
   // Construct the final URL with query parameters
   const url = `/api/cptPosts?${queryParams.join("&")}`;
-  console.log("Request URL:", url); // Log to inspect the URL
+  console.log("Request URL2:", url); // Log to inspect the URL
 
-  const { data } = await axios.get(url);
+  // const hardcodedPassword = "123456";
+
+  const { data } = await axios.get(url, {
+    headers: {
+      password: process.env.NEXT_PUBLIC_API_PASSWORD, // Use the same password as in your API route
+    },
+  });
   console.log("Fetched post data:", data); // Logs data when fetched
   console.log("Total posts:", data.total_posts);
   return data;
