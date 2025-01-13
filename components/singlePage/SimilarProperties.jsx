@@ -46,7 +46,9 @@ export default async function SimilarProperties({
 
     return (
       <div>
-        <h1>Properties within {Math.round(location.radius / 1600)} miles</h1>
+        <h5 className="font-medium pb-5 text-2xl tracking-wide text-property-txt-700 px-10">
+          Similar properties
+        </h5>
         <SimilarPropertiesSlider
           data={filteredPropertiesByDistanceWithImages}
         />

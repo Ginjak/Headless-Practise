@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import PhoneRevealBtn from "./PhoneRevealBtn";
+import { BsEnvelopeAt } from "react-icons/bs";
 
 export default function AgentSinglePage({
   name,
@@ -13,15 +14,15 @@ export default function AgentSinglePage({
   companyPhotoAlt,
 }) {
   return (
-    <div className="team-member-wraper bg-mainBg py-10 px-6 rounded-xl mt-4 text-white shadow-small">
+    <div className="team-member-wraper bg-property-bg-200 py-10 px-6 rounded-xl mt-4 text-property-txt-700 border-[1px] border-property-txt-700/10 shadow-md">
       <div className="flex justify-between items-center mb-6 px-4">
         <div className="name-surname">
-          <p className="text-white/80 text-xs">Agent</p>
+          <p className="text-property-txt-700/60 text-xs">Agent</p>
           <p className="text-xl font-bold tracking-wider">
             {name} {surname}
           </p>
         </div>
-        <div className="avatar w-32 h-32 relative rounded-full overflow-hidden shadow-medium border-2 border-slate-100/50">
+        <div className="avatar w-32 h-32 relative rounded-full overflow-hidden shadow-medium border-2 border-property-bg-100">
           <Image
             src={agentPhoto || "/avatar_placeholder.webp"}
             alt={agentPhotoAlt || "Avatar placeholder"}
@@ -30,13 +31,14 @@ export default function AgentSinglePage({
           />
         </div>
       </div>
-      <div className="contacts flex flex-col text-center bg-mainTxt p-4 rounded-lg gap-3">
+      <div className="contacts flex flex-col text-center bg-property-pr-300/20 p-4 rounded-lg gap-3">
         <PhoneRevealBtn text={"Phone number"} phone={phone} />
 
         <Link
           href={`mailto:${email}`}
-          className="rounded-lg border-2 border-mainBg/80 bg-mainBg/80 hover:bg-mainBg/50 hover:border-mainBg/50 text-white py-3 px-4 transition-all duration-200 uppercase font-bold tracking-wider"
+          className="rounded-lg bg-property-acc-100 hover:bg-property-acc-300  text-property-bg-100 py-3 px-4 transition-all duration-200 uppercase font-bold tracking-wider flex items-center justify-center gap-2"
         >
+          <BsEnvelopeAt className="text-property-bg-100 text-2xl font-bold" />
           Email
         </Link>
       </div>

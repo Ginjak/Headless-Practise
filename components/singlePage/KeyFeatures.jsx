@@ -9,12 +9,12 @@ export default function KeyFeatures({ bedrooms, bathrooms, receptions, size }) {
       <div className="key-features flex flex-wrap">
         {bedrooms && bedrooms !== "0" && (
           <div className="bedrooms-wraper flex flex-col gap-1 py-3 pe-4">
-            <p className="text-white/80">Bedrooms</p>
+            <p className="text-property-txt-700 font-medium">Bedrooms</p>
             <p className="flex items-center gap-2">
               <span>
-                <IoIosBed className="text-white h-6 w-6" />
+                <IoIosBed className="text-property-acc-100 h-6 w-6" />
               </span>
-              <span className="font-bold text-white text-lg">
+              <span className="font-bold text-property-txt-700 text-lg">
                 {bedrooms?.toString().padStart(2, "0")}
               </span>
             </p>
@@ -22,12 +22,12 @@ export default function KeyFeatures({ bedrooms, bathrooms, receptions, size }) {
         )}
         {bathrooms && bathrooms !== "0" && (
           <div className="bathrooms-wraper flex flex-col gap-1 py-3 pe-4">
-            <p className="text-white/80">Bathrooms</p>
+            <p className="text-property-txt-700 font-medium">Bathrooms</p>
             <p className="flex items-center gap-2">
               <span>
-                <TbBathFilled className="text-white h-6 w-6" />
+                <TbBathFilled className="text-property-acc-100 h-6 w-6" />
               </span>
-              <span className="font-bold text-white text-lg">
+              <span className="font-bold text-property-txt-700 text-lg">
                 {bathrooms?.toString().padStart(2, "0")}
               </span>
             </p>
@@ -35,12 +35,12 @@ export default function KeyFeatures({ bedrooms, bathrooms, receptions, size }) {
         )}
         {receptions && receptions !== "0" && (
           <div className="receptions-wraper flex flex-col gap-1 py-3 pe-4">
-            <p className="text-white/80">Receptions</p>
+            <p className="text-property-txt-700 font-medium">Receptions</p>
             <p className="flex items-center gap-2">
               <span>
-                <PiArmchairFill className="text-white h-6 w-6" />
+                <PiArmchairFill className="text-property-acc-100 h-6 w-6" />
               </span>
-              <span className="font-bold text-white text-lg">
+              <span className="font-bold text-property-txt-700 text-lg">
                 {receptions?.toString().padStart(2, "0")}
               </span>
             </p>
@@ -48,12 +48,12 @@ export default function KeyFeatures({ bedrooms, bathrooms, receptions, size }) {
         )}
         {size && size !== "0" && (
           <div className="area-size-wraper flex flex-col gap-1 py-3 pe-4">
-            <p className="text-white/80">Area</p>
+            <p className="text-property-txt-700 font-medium">Area</p>
             <p className="flex items-center gap-2">
               <span>
-                <RiCustomSize className="text-white h-6 w-6" />
+                <RiCustomSize className="text-property-acc-100 h-6 w-6" />
               </span>
-              <span className="font-bold text-white text-lg">
+              <span className="font-bold  text-property-txt-700 text-lg">
                 {size?.toString().padStart(2, "0")}
               </span>
             </p>

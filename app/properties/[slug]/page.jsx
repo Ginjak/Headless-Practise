@@ -12,6 +12,7 @@ import SinglePostFeatures from "@/components/singlePage/SinglePostFeatures";
 import SinglePostLocalAreaInfo from "@/components/singlePage/SinglePostLocalAreaInfo";
 import SinglePostMap from "@/components/singlePage/SinglePostMap";
 import SimilarProperties from "@/components/singlePage/SimilarProperties";
+import ShareOnSocials from "@/components/singlePage/ShareOnSocials";
 
 // Generate static paths for all properties
 export async function generateStaticParams() {
@@ -58,27 +59,30 @@ export default async function PropertyPage({ params }) {
   return (
     <>
       <p>Back to search + Share buttons</p>
+      <ShareOnSocials postTitle={"Title text in the email"} postData={data} />
       <div className="max-w-7xl mx-auto flex px-3">
         <div className="content w-full lg:w-2/3 mt-20">
           <div className="slider-wraper mb-6">
             <Slider images={images} />
           </div>
           <div className="main-details-wraper my-16 mx-10">
-            <h2 className="text-mainTxt text-lg font-medium tracking-wide mb-3">
+            <h2 className="text-property-txt-700 text-lg font-medium tracking-wide mb-3">
               {data?.bedrooms} bed {data?.property_type} for sale{" "}
-              <span className="font-normal text-mainTxt-ligther">
+              <span className="font-normal text-property-txt-700/60">
                 {data?.address_line},{" "}
                 {data?.borough ? data?.borough : data?.city}{" "}
                 {data?.postcode?.split(" ")[0]}
               </span>
             </h2>
             <div className="price-date-wraper flex justify-between items-center">
-              <p className={`text-mainTxt text-4xl font-bold tracking-wide`}>
+              <p
+                className={`text-property-txt-700 text-4xl font-bold tracking-wide`}
+              >
                 £
                 {data?.original_price &&
                   new Intl.NumberFormat().format(data.original_price)}
               </p>
-              <p className="text-mainTxt-ligther/70 font-heading">
+              <p className="text-property-txt-700/60 font-heading">
                 Added on{" "}
                 {new Date(data?.post_date)
                   .toLocaleDateString("en-GB")
@@ -86,7 +90,7 @@ export default async function PropertyPage({ params }) {
               </p>
             </div>
           </div>
-          <div className="description-wraper p-10 rounded-xl bg-mainBg-dark text-white w-full mb-6 shadow-small">
+          <div className="description-wraper p-10 rounded-xl bg-property-pr-300/20 text-white w-full mb-6 ">
             <KeyFeatures
               bedrooms={data?.bedrooms}
               bathrooms={data?.bathrooms}
