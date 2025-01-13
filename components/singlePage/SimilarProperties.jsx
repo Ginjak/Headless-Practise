@@ -1,4 +1,4 @@
-import { fetchCptPosts } from "@/lib/api";
+import { fetchCptPostsForSimilarPropertiesSlider } from "@/lib/api";
 import { similarPropertiesFetch } from "@/lib/functions";
 import { fetchImageData } from "@/lib/api"; // Assuming this is where fetchImageData is defined
 import SimilarPropertiesSlider from "./SimilarPropertiesSlider";
@@ -12,36 +12,44 @@ export default async function SimilarProperties({
   bathrooms = 1,
   property_type = ["bungalow"],
 }) {
-  // Combine locationData and filters into a single object
-  const data = {
-    locationData: {
-      userLat: latitudePoint,
-      userLng: longitudePoint,
-      radius: radiusKm,
-    },
-    filters: { bedrooms, bathrooms, property_type },
+  const location = {
+    userLat: latitudePoint,
+    userLng: longitudePoint,
+    radius: radiusKm,
+  };
+
+  const filterData = {
+    cpt: "properties",
+    bedroomsFrom: 1,
+    bedroomsTo: 2,
+    propertyType: ["bungalow", "detached"],
   };
 
   try {
-    const fetchedData = await fetchCptPosts("properties");
-    const filteredProperties = similarPropertiesFetch(fetchedData.posts, data);
-
+    const similarPostWithFilters =
+      await fetchCptPostsForSimilarPropertiesSlider(filterData);
+    const filteredPropertiesByDistance = similarPropertiesFetch(
+      similarPostWithFilters.posts,
+      location
+    );
     // Fetch image data for the filtered properties
-    const imageIds = filteredProperties.map(
+    const imageIds = filteredPropertiesByDistance.map(
       (property) => property.featured_image
     );
     const images = await fetchImageData(imageIds);
-
     // Enrich filtered properties with image data
-    const enrichedProperties = filteredProperties.map((property, index) => ({
-      ...property,
-      image: images[index], // Match images by index
-    }));
+    const filteredPropertiesByDistanceWithImages =
+      filteredPropertiesByDistance.map((property, index) => ({
+        ...property,
+        image: images[index],
+      }));
 
     return (
       <div>
-        <h1>Properties within {data.locationData.radius / 1000} km</h1>
-        <SimilarPropertiesSlider data={enrichedProperties} />
+        <h1>Properties within {Math.round(location.radius / 1600)} miles</h1>
+        <SimilarPropertiesSlider
+          data={filteredPropertiesByDistanceWithImages}
+        />
       </div>
     );
   } catch (error) {
