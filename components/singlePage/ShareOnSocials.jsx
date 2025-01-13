@@ -65,7 +65,7 @@ export default function ShareOnSocials({ postData }) {
   };
 
   return (
-    <div>
+    <div className="flex flex-col gap-3">
       <Toaster
         toastOptions={{
           success: {
@@ -78,7 +78,7 @@ export default function ShareOnSocials({ postData }) {
       {/* Email share button */}
       <button
         onClick={() => (window.location.href = emailLink)}
-        className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 mr-4"
+        className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 "
       >
         Share via Email
       </button>
@@ -86,7 +86,7 @@ export default function ShareOnSocials({ postData }) {
       {/* Facebook share button */}
       <button
         onClick={() => window.open(facebookLink, "_blank")}
-        className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 mr-4"
+        className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 "
       >
         Share on Facebook
       </button>
@@ -94,7 +94,7 @@ export default function ShareOnSocials({ postData }) {
       {/* WhatsApp share button */}
       <button
         onClick={() => window.open(whatsappLink, "_blank")}
-        className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 mr-4"
+        className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 "
       >
         Share on WhatsApp
       </button>
@@ -102,14 +102,14 @@ export default function ShareOnSocials({ postData }) {
       {/* X (Twitter) share button */}
       <button
         onClick={() => window.open(twitterLink, "_blank")}
-        className="px-4 py-2 bg-blue-400 text-white rounded hover:bg-blue-500 mr-4"
+        className="px-4 py-2 bg-blue-400 text-white rounded hover:bg-blue-500 "
       >
         Share on X (Twitter)
       </button>
 
       <button
         onClick={() => window.open(linkedinLink, "_blank")}
-        className="px-4 py-2 bg-blue-700 text-white rounded hover:bg-blue-800 mr-4"
+        className="px-4 py-2 bg-blue-700 text-white rounded hover:bg-blue-800 "
       >
         Share on LinkedIn
       </button>

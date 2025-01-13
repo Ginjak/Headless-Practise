@@ -58,7 +58,6 @@ export default async function PropertyPage({ params }) {
   return (
     <>
       <p>Back to search + Share buttons</p>
-      <ShareOnSocials postTitle={"Title text in the email"} postData={data} />
       <ShareButton data={data} image={featuredImage} />
       <div className="max-w-7xl mx-auto flex px-3">
         <div className="content w-full lg:w-2/3 mt-20">

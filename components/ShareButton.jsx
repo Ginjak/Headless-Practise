@@ -5,6 +5,7 @@ import Image from "next/image";
 import { IoIosBed } from "react-icons/io";
 import { PiArmchairFill } from "react-icons/pi";
 import { TbBathFilled } from "react-icons/tb";
+import ShareOnSocials from "./singlePage/ShareOnSocials";
 
 export default function ShareButton({ data, image }) {
   const {} = data;
@@ -41,7 +42,7 @@ export default function ShareButton({ data, image }) {
             height={150}
           />
           <div>
-            <p>
+            <p className="text-property-txt-700 font-medium">
               {data?.address_line && (
                 <>
                   {data.address_line}
@@ -92,6 +93,7 @@ export default function ShareButton({ data, image }) {
             )}
           </ul>
         </div>
+        <ShareOnSocials postData={data} />
       </Modal>
     </div>
   );
