@@ -1,6 +1,7 @@
 "use client";
 import { capitalize } from "@/lib/functions";
 import { usePathname } from "next/navigation";
+import toast, { Toaster } from "react-hot-toast";
 
 export default function ShareOnSocials({ postData }) {
   const {
@@ -59,12 +60,21 @@ export default function ShareOnSocials({ postData }) {
   // Function to copy the page URL to clipboard
   const copyToClipboard = () => {
     navigator.clipboard.writeText(pageUrl).then(() => {
-      alert("Link copied to clipboard!");
+      toast.success("Link Copied");
     });
   };
 
   return (
     <div>
+      <Toaster
+        toastOptions={{
+          success: {
+            iconTheme: {
+              primary: "#09BC8A",
+            },
+          },
+        }}
+      />
       {/* Email share button */}
       <button
         onClick={() => (window.location.href = emailLink)}

@@ -13,12 +13,11 @@ import SinglePostLocalAreaInfo from "@/components/singlePage/SinglePostLocalArea
 import SinglePostMap from "@/components/singlePage/SinglePostMap";
 import SimilarProperties from "@/components/singlePage/SimilarProperties";
 import ShareOnSocials from "@/components/singlePage/ShareOnSocials";
+import ShareButton from "@/components/ShareButton";
 
 // Generate static paths for all properties
 export async function generateStaticParams() {
   const posts = await fetchAllCptPosts({ slug: "properties" });
-  console.log(posts);
-
   return posts.posts.map((post) => ({
     slug: post.slug,
   }));
@@ -29,7 +28,6 @@ export default async function PropertyPage({ params }) {
 
   // Fetch single property data
   const data = await fetchCptSinglePost("properties", slug);
-  console.log("Single post data", data);
 
   // If no data is found, return a fallback page
   if (!data) {
@@ -38,28 +36,30 @@ export default async function PropertyPage({ params }) {
 
   // Fetch additional images
   let images = [];
-  let companyLogo, memberPhoto;
+  let companyLogo, memberPhoto, featuredImage;
 
   const imagePromises = [
     data?.slider_images && fetchImageData(data.slider_images.split(",")),
     data?.team_member_company_logo &&
       fetchImageData([data.team_member_company_logo]),
     data?.team_member_picture && fetchImageData([data.team_member_picture]),
+    data?.featured_image && fetchImageData([data.featured_image]),
   ].filter(Boolean);
 
-  const [sliderImages, companyLogoData, memberPhotoData] = await Promise.all(
-    imagePromises
-  );
+  const [sliderImages, companyLogoData, memberPhotoData, featuredImageData] =
+    await Promise.all(imagePromises);
 
   images = sliderImages || [];
   companyLogo = companyLogoData?.[0];
   memberPhoto = memberPhotoData?.[0];
+  featuredImage = featuredImageData?.[0];
 
   // Render the static property page
   return (
     <>
       <p>Back to search + Share buttons</p>
       <ShareOnSocials postTitle={"Title text in the email"} postData={data} />
+      <ShareButton data={data} image={featuredImage} />
       <div className="max-w-7xl mx-auto flex px-3">
         <div className="content w-full lg:w-2/3 mt-20">
           <div className="slider-wraper mb-6">
