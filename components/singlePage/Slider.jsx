@@ -29,7 +29,7 @@ export default function Slider({ images }) {
         loop={true}
         className="h-[500px] rounded-xl shadow-small"
       >
-        {images.map((image) => (
+        {images.map((image, index) => (
           <SwiperSlide key={image?.id}>
             {/* Using next/image for optimized image handling */}
             <Image
