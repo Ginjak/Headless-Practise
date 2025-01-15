@@ -57,6 +57,7 @@ export default function Slider({ images }) {
                 }`}
                 fill
                 priority={index === 0}
+                loading={index === 0 ? "eager" : "lazy"}
                 onLoad={() => handleImageLoad(index)}
               />
             </div>
