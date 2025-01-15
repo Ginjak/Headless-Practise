@@ -1,5 +1,4 @@
 "use client";
-import { useState } from "react";
 import { Navigation, Autoplay } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import {
@@ -38,6 +37,7 @@ export default function Slider({ images }) {
           {images.map((image, index) => (
             <SwiperSlide key={image?.id}>
               <div className="relative w-full h-full">
+                {/* Image with blur effect */}
                 <Image
                   src={image?.source_url}
                   alt={image?.alt_text}
@@ -45,8 +45,6 @@ export default function Slider({ images }) {
                   fill
                   priority={index === 0}
                   loading={index === 0 ? "eager" : "lazy"}
-                  placeholder="blur" // Enable blur-up effect
-                  blurDataURL="/avatar_placeholder.webp" // Low-res placeholder image from public folder
                 />
               </div>
             </SwiperSlide>
