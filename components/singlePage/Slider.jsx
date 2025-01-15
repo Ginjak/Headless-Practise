@@ -38,7 +38,6 @@ export default function Slider({ images }) {
               fill
               className="object-cover"
               priority={index === 0}
-              rity
             />
           </SwiperSlide>
         ))}

@@ -13,6 +13,8 @@ import SinglePostLocalAreaInfo from "@/components/singlePage/SinglePostLocalArea
 import SinglePostMap from "@/components/singlePage/SinglePostMap";
 import SimilarProperties from "@/components/singlePage/SimilarProperties";
 import ShareButton from "@/components/ShareButton";
+import { Suspense, lazy } from "react";
+import Image from "next/image"; // Import next/image for optimization
 
 // Generate static paths for all properties
 export async function generateStaticParams() {
@@ -61,7 +63,10 @@ export default async function PropertyPage({ params }) {
       <div className="max-w-7xl mx-auto flex px-3">
         <div className="content w-full lg:w-2/3 mt-20">
           <div className="slider-wraper mb-6">
-            <Slider images={images} />
+            {/* Consider loading the slider only when images are ready */}
+            <Suspense fallback={<div>Loading Slider...</div>}>
+              <Slider images={images} />
+            </Suspense>
           </div>
           <div className="main-details-wraper my-16 mx-10">
             <h2 className="text-property-txt-700 text-lg font-medium tracking-wide mb-3">
