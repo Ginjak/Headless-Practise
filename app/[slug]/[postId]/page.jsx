@@ -3,16 +3,10 @@ import { fetchPostById, fetchPostIdBySlug, fetchCptPost } from "@/lib/api";
 // Page component that uses async behavior
 const Page = async ({ params }) => {
   const { slug, postId: postUrl } = await params; // Destructure params correctly
-  console.log(slug);
-  console.log(postUrl);
 
   try {
     const cptId = await fetchCptPost(slug, postUrl);
     const postData = await fetchPostById(slug, cptId);
-
-    console.log("Post info", postData);
-    console.log("CPT id", cptId);
-
     if (!postData) {
       return (
         <div>

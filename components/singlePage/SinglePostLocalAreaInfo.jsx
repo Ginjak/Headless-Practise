@@ -90,8 +90,6 @@ export default async function SinglePostLocalAreaInfo({ longitude, latitude }) {
     closestUnderground = closestUnderground.slice(0, 4);
     closestTrainStation = closestTrainStation.slice(0, 4);
     closestShops = closestShops.slice(0, 4);
-    console.log("Train stations details", closestTrainStation);
-    console.log("Shop details", closestShops);
   } catch (err) {
     return null;
   }

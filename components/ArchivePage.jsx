@@ -15,17 +15,11 @@ const fetchCptPosts = async (filters = {}) => {
     )
   );
 
-  // Debug log to check what filters are being passed
-  console.log("Filters received:", validFilters);
-
   // Create query parameters for the API request
   const queryParams = [];
 
   // Iterate over each filter
   Object.entries(validFilters).forEach(([key, value]) => {
-    // Debug log to check if value is an array
-    console.log(`${key}:`, value);
-
     if (Array.isArray(value)) {
       // Manually push each array item for 'features[]' into the query string
       if (key === "features") {
@@ -45,7 +39,6 @@ const fetchCptPosts = async (filters = {}) => {
 
   // Construct the final URL with query parameters
   const url = `/api/cptPosts?${queryParams.join("&")}`;
-  console.log("Request URL2:", url); // Log to inspect the URL
 
   // const hardcodedPassword = "123456";
 
@@ -54,8 +47,7 @@ const fetchCptPosts = async (filters = {}) => {
       password: process.env.NEXT_PUBLIC_API_PASSWORD, // Use the same password as in your API route
     },
   });
-  console.log("Fetched post data:", data); // Logs data when fetched
-  console.log("Total posts:", data.total_posts);
+
   return data;
 };
 

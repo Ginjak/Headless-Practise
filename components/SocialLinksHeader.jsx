@@ -8,7 +8,6 @@ import {
 } from "react-icons/fa6";
 
 export default function SocialLinksHeader({ data }) {
-  console.log("links data", data[0]?.meta);
   const {
     facebook,
     linkedin,

@@ -14,8 +14,6 @@ export default function Sections({ data }) {
   return (
     <>
       {sections.map((section, index) => {
-        console.log("section", section);
-        // const uniqueId = uuidv4();
         let componentToRender;
 
         // Switch statement based on the value of section.select_option

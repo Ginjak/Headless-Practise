@@ -12,7 +12,6 @@ import SinglePostFeatures from "@/components/singlePage/SinglePostFeatures";
 import SinglePostLocalAreaInfo from "@/components/singlePage/SinglePostLocalAreaInfo";
 import SinglePostMap from "@/components/singlePage/SinglePostMap";
 import SimilarProperties from "@/components/singlePage/SimilarProperties";
-import ShareOnSocials from "@/components/singlePage/ShareOnSocials";
 import ShareButton from "@/components/ShareButton";
 
 // Generate static paths for all properties
@@ -114,13 +113,13 @@ export default async function PropertyPage({ params }) {
             latitude={data?.latitude}
           />
           <SinglePostMap lat={data?.latitude} lng={data?.longitude} />
-          <SimilarProperties
+          {/* <SimilarProperties
             latitudePoint={data?.latitude}
             longitudePoint={data?.longitude}
             bedrooms={data?.bedrooms}
             bathrooms={data?.bathrooms}
             property_type={["bungalow"]}
-          />
+          /> */}
         </div>
         <div className="agent-info w-full hidden lg:block lg:w-1/3 ps-4 sticky top-0 h-screen overflow-y-auto mt-16">
           <AgentSinglePage

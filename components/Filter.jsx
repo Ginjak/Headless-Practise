@@ -27,8 +27,6 @@ const Filter = ({ cpt }) => {
         queryParams["features[]"] = [];
       }
 
-      console.log("Query Parameters:", queryParams);
-
       // Parse query params to match form fields
       const parsedFilters = {
         page: queryParams.page || 1,

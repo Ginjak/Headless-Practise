@@ -8,7 +8,6 @@ export default async function HomePage() {
 
     // Ensure the front page ID is valid
     if (!frontPageID) {
-      console.log("No front page ID found.");
       return (
         <div>
           <h1>No front page set</h1>
@@ -27,8 +26,6 @@ export default async function HomePage() {
         </div>
       );
     }
-
-    console.log("Fetched home page data:", homePageData); // For debugging purposes
 
     return (
       <main>

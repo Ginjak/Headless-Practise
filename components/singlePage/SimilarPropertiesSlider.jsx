@@ -14,7 +14,6 @@ import "swiper/css/pagination";
 // import "swiper/css/scrollbar";
 
 export default function SimilarPropertiesSlider({ data }) {
-  console.log("More details", data);
   return (
     <div className="relative">
       <Swiper

@@ -14,8 +14,6 @@ import "swiper/css/pagination";
 // import "swiper/css/scrollbar";
 
 export default function Slider({ images }) {
-  console.log("Received images:", images);
-
   return (
     <div className="relative">
       <Swiper
