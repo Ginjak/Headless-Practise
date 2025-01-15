@@ -35,8 +35,9 @@ export default function Slider({ images }) {
             <Image
               src={image?.source_url}
               alt={image?.alt_text}
-              fill
               className="object-cover"
+              width={800}
+              height={500}
               priority={index === 0}
             />
           </SwiperSlide>

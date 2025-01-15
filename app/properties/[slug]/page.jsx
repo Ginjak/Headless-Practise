@@ -11,10 +11,7 @@ import SinglePostDescription from "@/components/singlePage/SinglePostDescription
 import SinglePostFeatures from "@/components/singlePage/SinglePostFeatures";
 import SinglePostLocalAreaInfo from "@/components/singlePage/SinglePostLocalAreaInfo";
 import SinglePostMap from "@/components/singlePage/SinglePostMap";
-import SimilarProperties from "@/components/singlePage/SimilarProperties";
 import ShareButton from "@/components/ShareButton";
-import { Suspense, lazy } from "react";
-import Image from "next/image"; // Import next/image for optimization
 
 // Generate static paths for all properties
 export async function generateStaticParams() {
@@ -35,10 +32,7 @@ export default async function PropertyPage({ params }) {
     return <p>No data found for this property.</p>;
   }
 
-  // Fetch additional images
-  let images = [];
-  let companyLogo, memberPhoto, featuredImage;
-
+  // Fetch images concurrently using Promise.all for better performance
   const imagePromises = [
     data?.slider_images && fetchImageData(data.slider_images.split(",")),
     data?.team_member_company_logo &&
@@ -47,27 +41,25 @@ export default async function PropertyPage({ params }) {
     data?.featured_image && fetchImageData([data.featured_image]),
   ].filter(Boolean);
 
+  // Resolve all image data
   const [sliderImages, companyLogoData, memberPhotoData, featuredImageData] =
     await Promise.all(imagePromises);
 
-  images = sliderImages || [];
-  companyLogo = companyLogoData?.[0];
-  memberPhoto = memberPhotoData?.[0];
-  featuredImage = featuredImageData?.[0];
+  const images = sliderImages || [];
+  const companyLogo = companyLogoData?.[0];
+  const memberPhoto = memberPhotoData?.[0];
+  const featuredImage = featuredImageData?.[0];
 
-  // Render the static property page
+  // Reduce unnecessary re-renders and improve LCP by rendering above-the-fold content first
   return (
     <>
-      <p>Back to search + Share buttons</p>
-      <ShareButton data={data} image={featuredImage} />
       <div className="max-w-7xl mx-auto flex px-3">
         <div className="content w-full lg:w-2/3 mt-20">
+          {/* Slider and property details */}
           <div className="slider-wraper mb-6">
-            {/* Consider loading the slider only when images are ready */}
-            <Suspense fallback={<div>Loading Slider...</div>}>
-              <Slider images={images} />
-            </Suspense>
+            <Slider images={images} />
           </div>
+
           <div className="main-details-wraper my-16 mx-10">
             <h2 className="text-property-txt-700 text-lg font-medium tracking-wide mb-3">
               {data?.bedrooms} bed {data?.property_type} for sale{" "}
@@ -77,10 +69,9 @@ export default async function PropertyPage({ params }) {
                 {data?.postcode?.split(" ")[0]}
               </span>
             </h2>
+
             <div className="price-date-wraper flex justify-between items-center">
-              <p
-                className={`text-property-txt-700 text-4xl font-bold tracking-wide`}
-              >
+              <p className="text-property-txt-700 text-4xl font-bold tracking-wide">
                 £
                 {data?.original_price &&
                   new Intl.NumberFormat().format(data.original_price)}
@@ -93,7 +84,9 @@ export default async function PropertyPage({ params }) {
               </p>
             </div>
           </div>
-          <div className="description-wraper p-10 rounded-xl bg-property-pr-300/20 text-white w-full mb-6 ">
+
+          {/* Description and Features */}
+          <div className="description-wraper p-10 rounded-xl bg-property-pr-300/20 text-white w-full mb-6">
             <KeyFeatures
               bedrooms={data?.bedrooms}
               bathrooms={data?.bathrooms}
@@ -102,30 +95,27 @@ export default async function PropertyPage({ params }) {
             />
             <SinglePostDivider />
             <SinglePostDescription
-              title={"Description"}
+              title="Description"
               description={data?.property_description}
             />
             <SinglePostDivider />
             <SinglePostFeatures
-              title={"Features"}
+              title="Features"
               features={data?.features}
               pet_friendly={data?.pet_friendly}
             />
             <SinglePostDivider />
           </div>
+
+          {/* Local Area and Map */}
           <SinglePostLocalAreaInfo
             longitude={data?.longitude}
             latitude={data?.latitude}
           />
           <SinglePostMap lat={data?.latitude} lng={data?.longitude} />
-          {/* <SimilarProperties
-            latitudePoint={data?.latitude}
-            longitudePoint={data?.longitude}
-            bedrooms={data?.bedrooms}
-            bathrooms={data?.bathrooms}
-            property_type={["bungalow"]}
-          /> */}
         </div>
+
+        {/* Agent Information (only visible on larger screens) */}
         <div className="agent-info w-full hidden lg:block lg:w-1/3 ps-4 sticky top-0 h-screen overflow-y-auto mt-16">
           <AgentSinglePage
             name={data?.team_member_name}
@@ -140,6 +130,9 @@ export default async function PropertyPage({ params }) {
           />
         </div>
       </div>
+
+      {/* Share Button for quick social sharing */}
+      <ShareButton data={data} image={featuredImage} />
     </>
   );
 }
