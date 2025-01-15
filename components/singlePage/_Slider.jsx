@@ -13,6 +13,17 @@ import "swiper/css/pagination";
 import Head from "next/head";
 
 export default function Slider({ images }) {
+  // Track loading state for each image
+  const [loadingStates, setLoadingStates] = useState(
+    Array(images.length).fill(true)
+  );
+
+  const handleImageLoad = (index) => {
+    setLoadingStates((prev) =>
+      prev.map((isLoading, i) => (i === index ? false : isLoading))
+    );
+  };
+
   return (
     <>
       <Head>
@@ -38,15 +49,23 @@ export default function Slider({ images }) {
           {images.map((image, index) => (
             <SwiperSlide key={image?.id}>
               <div className="relative w-full h-full">
+                {/* Show spinner while image is loading */}
+                {loadingStates[index] && (
+                  <div className="absolute inset-0 flex justify-center items-center bg-property-pr-300/20">
+                    <div className="w-8 h-8 border-4 border-t-4 border-property-acc-100 border-t-transparent rounded-full animate-spin"></div>
+                  </div>
+                )}
+
                 <Image
                   src={image?.source_url}
                   alt={image?.alt_text}
-                  className="object-cover transition-opacity duration-300"
+                  className={`object-cover transition-opacity duration-300 ${
+                    loadingStates[index] ? "opacity-0" : "opacity-100"
+                  }`}
                   fill
                   priority={index === 0}
                   loading={index === 0 ? "eager" : "lazy"}
-                  placeholder="blur" // Enable blur-up effect
-                  blurDataURL="/avatar_placeholder.webp" // Low-res placeholder image from public folder
+                  onLoad={() => handleImageLoad(index)}
                 />
               </div>
             </SwiperSlide>
