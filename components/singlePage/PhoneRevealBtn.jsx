@@ -26,9 +26,13 @@ export default function PhoneRevealBtn({ text, phone }) {
     <Link
       href={href || ""} // Use empty string as a valid initial value
       onClick={handleClick}
-      className="rounded-lg bg-property-sec-300/20 hover:bg-property-sec-300/50 hover:text-property-bg-100 text-property-txt-700/80 py-3 px-4 uppercase font-bold tracking-wider transition-all duration-200"
+      className="rounded-lg bg-property-sec-300/20 hover:bg-property-sec-300/50 hover:text-property-bg-100 text-property-txt-700/80 py-3 px-4 uppercase font-bold tracking-wider transition-all duration-200 flex justify-center"
     >
-      {loading ? <SmallSpinner /> : buttonText}
+      {loading ? (
+        <div className="w-6 h-6 border-4 border-t-4 border-property-txt-700/80 border-t-transparent rounded-full animate-spin "></div>
+      ) : (
+        buttonText
+      )}
     </Link>
   );
 }

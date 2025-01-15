@@ -3,7 +3,6 @@
 "use client";
 import { useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
-import SmallSpinner from "./SmallSpinner";
 
 export default function Newsletter({ type }) {
   const [formData, setFormData] = useState({

@@ -1,7 +1,5 @@
 "use client";
 import { GoogleMap, Marker, useLoadScript } from "@react-google-maps/api";
-import LargeSpinner from "../LargeSpinner";
-import SmallSpinner from "../SmallSpinner";
 
 const containerStyle = {
   width: "100%",
@@ -230,12 +228,7 @@ export default function Map({ lat, lng }) {
     googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_API, // Ensure this is defined in your .env file
   });
 
-  if (!isLoaded)
-    return (
-      <div>
-        <SmallSpinner />
-      </div>
-    );
+  if (!isLoaded) return <div></div>;
 
   const center = {
     lat: Number(lat),
