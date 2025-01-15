@@ -5,13 +5,12 @@ import {
   TbSquareRoundedArrowLeftFilled,
   TbSquareRoundedArrowRightFilled,
 } from "react-icons/tb";
-import Image from "next/image"; // Import the Image component from Next.js
+import Image from "next/image";
 
 // Import Swiper styles
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
-// import "swiper/css/scrollbar";
 
 export default function Slider({ images }) {
   return (
@@ -38,7 +37,8 @@ export default function Slider({ images }) {
               alt={image?.alt_text}
               fill
               className="object-cover"
-              priority
+              priority={index === 0}
+              rity
             />
           </SwiperSlide>
         ))}

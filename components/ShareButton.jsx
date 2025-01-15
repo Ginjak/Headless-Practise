@@ -10,7 +10,6 @@ import ShareOnSocials from "./singlePage/ShareOnSocials";
 export default function ShareButton({ data, image }) {
   const {} = data;
   const [isModalOpen, setIsModalOpen] = useState(false);
-  console.log(image);
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
 
