@@ -118,7 +118,7 @@ export default function Newsletter({ type }) {
           />
 
           <button type="submit" className={styles.button}>
-            {loading ? "Add spinner" : "Subscribe"}
+            {loading ? "Add spinnerr" : "Subscribe"}
           </button>
         </div>
       </form>
