@@ -131,7 +131,6 @@ export default async function PropertyPage({ params }) {
         </div>
       </div>
 
-      {/* Share Button for quick social sharing */}
       <ShareButton data={data} image={featuredImage} />
     </>
   );

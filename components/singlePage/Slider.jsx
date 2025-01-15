@@ -10,7 +10,6 @@ import Image from "next/image";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
-import SmallSpinner from "../SmallSpinner";
 
 export default function Slider({ images }) {
   // Track loading state for each image
@@ -44,7 +43,11 @@ export default function Slider({ images }) {
           <SwiperSlide key={image?.id}>
             <div className="relative h-full">
               {/* Show spinner while image is loading */}
-              {!loadingStates[index] && <SmallSpinner />}
+              {loadingStates[index] && (
+                <div className="absolute inset-0 flex items-center justify-center bg-gray-200">
+                  <div className="w-10 h-10 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+                </div>
+              )}
               {/* Using next/image for optimized image handling */}
               <Image
                 src={image?.source_url}
