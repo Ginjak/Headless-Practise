@@ -5,7 +5,10 @@ export default function SmallSpinner({
   spinnerFilLClass = "fill-secondary",
 }) {
   return (
-    <div role="status" className="flex justify-center items-center gap-2">
+    <div
+      role="status"
+      className="w-full h-full flex justify-center items-center gap-2"
+    >
       <svg
         aria-hidden="true"
         className={`${spinnerHeighClass} ${spinnerWidthClass} ${spinnerColorClass} animate-spin ${spinnerFilLClass}`}

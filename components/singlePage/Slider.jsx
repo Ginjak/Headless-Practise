@@ -1,4 +1,5 @@
 "use client";
+import { useState } from "react";
 import { Navigation, Autoplay } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import {
@@ -6,13 +7,23 @@ import {
   TbSquareRoundedArrowRightFilled,
 } from "react-icons/tb";
 import Image from "next/image";
-
-// Import Swiper styles
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
+import SmallSpinner from "../SmallSpinner";
 
 export default function Slider({ images }) {
+  // Track loading state for each image
+  const [loadingStates, setLoadingStates] = useState(
+    Array(images.length).fill(true)
+  );
+
+  const handleImageLoad = (index) => {
+    setLoadingStates((prev) =>
+      prev.map((isLoading, i) => (i === index ? false : isLoading))
+    );
+  };
+
   return (
     <div className="relative">
       <Swiper
@@ -31,14 +42,21 @@ export default function Slider({ images }) {
       >
         {images.map((image, index) => (
           <SwiperSlide key={image?.id}>
-            {/* Using next/image for optimized image handling */}
-            <Image
-              src={image?.source_url}
-              alt={image?.alt_text}
-              className="object-cover"
-              fill
-              priority={index === 0}
-            />
+            <div className="relative h-full">
+              {/* Show spinner while image is loading */}
+              {!loadingStates[index] && <SmallSpinner />}
+              {/* Using next/image for optimized image handling */}
+              <Image
+                src={image?.source_url}
+                alt={image?.alt_text}
+                className={`object-cover transition-opacity duration-300 ${
+                  loadingStates[index] ? "opacity-0" : "opacity-100"
+                }`}
+                fill
+                priority={index === 0}
+                onLoad={() => handleImageLoad(index)}
+              />
+            </div>
           </SwiperSlide>
         ))}
 
