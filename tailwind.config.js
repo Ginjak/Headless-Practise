@@ -50,6 +50,7 @@ module.exports = {
           800: "#033A21",
           900: "#022716",
           950: "#01130B",
+          spinner: "#033f240d",
         },
         "property-bg": {
           50: "#fffff",
