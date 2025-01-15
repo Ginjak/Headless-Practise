@@ -3,7 +3,6 @@
 "use client";
 import { useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
-import SmallSpinner from "./SmallSpinner";
 
 export default function Newsletter({ type }) {
   const [formData, setFormData] = useState({
@@ -119,7 +118,7 @@ export default function Newsletter({ type }) {
           />
 
           <button type="submit" className={styles.button}>
-            {loading ? <SmallSpinner /> : "Subscribe"}
+            {loading ? "Add spinner" : "Subscribe"}
           </button>
         </div>
       </form>
