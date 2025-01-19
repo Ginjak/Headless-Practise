@@ -1,9 +1,11 @@
 "use client";
-import { capitalize } from "@/lib/functions";
+import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import toast, { Toaster } from "react-hot-toast";
 
-export default function ShareOnSocials({ postData }) {
+export default function ShareButton({ postData }) {
+  const [isMobile, setIsMobile] = useState(false);
+
   const {
     bedrooms,
     listing_type: type,
@@ -20,56 +22,59 @@ export default function ShareOnSocials({ postData }) {
   const currentPath = usePathname();
   const pageUrl = `${process.env.NEXT_PUBLIC_BASE_URL}${currentPath}`;
 
-  const subject = `Check out this ${bedrooms} bedroom ${capitalize(
-    property
-  )} for ${type} on Properties.com`;
-
-  const body = `Check out this ${bedrooms} bedroom ${capitalize(
-    property
-  )} for ${type} in ${address}, ${borough}, ${city}, ${
+  const shareTitle = `Check out this ${bedrooms} bedroom ${property} for ${type}`;
+  const shareText = `Check out this ${bedrooms} bedroom ${property} for ${type} in ${address}, ${borough}, ${city}, ${
     postcode.split(" ")[0]
   } for £${new Intl.NumberFormat().format(
     price
-  )}. Marketed by ${name} ${surname} on Properties.com\n${pageUrl}`;
+  )}. Marketed by ${name} ${surname} on Properties.com.`;
 
-  // Deep linking schemes
-  const links = {
-    facebook: `fb://facewebmodal/f?href=${encodeURIComponent(pageUrl)}`, // Fallback link: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(pageUrl)}`
-    linkedin: `linkedin://shareArticle?mini=true&url=${encodeURIComponent(
-      pageUrl
-    )}`, // Fallback link: `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(pageUrl)}`
-    whatsapp: `whatsapp://send?text=${encodeURIComponent(body)}`, // Fallback link: `https://api.whatsapp.com/send?text=${encodeURIComponent(body)}`
-    twitter: `twitter://post?message=${encodeURIComponent(body)}`, // Fallback link: `https://twitter.com/intent/tweet?text=${encodeURIComponent(body)}`
+  // Detect if user is on mobile
+  useEffect(() => {
+    const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+    setIsMobile(/android|iphone|ipad|ipod/i.test(userAgent));
+  }, []);
+
+  const handleShare = async () => {
+    if (isMobile && navigator.share) {
+      // Use Web Share API on mobile devices
+      try {
+        await navigator.share({
+          title: shareTitle,
+          text: shareText,
+          url: pageUrl,
+        });
+      } catch (error) {
+        console.error("Error sharing:", error);
+      }
+    } else {
+      // Fallback for desktop: Open a new window with share links
+      window.open(
+        `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
+          pageUrl
+        )}`,
+        "_blank"
+      );
+      window.open(
+        `https://twitter.com/intent/tweet?text=${encodeURIComponent(
+          shareText
+        )}&url=${encodeURIComponent(pageUrl)}`,
+        "_blank"
+      );
+      window.open(
+        `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(
+          pageUrl
+        )}`,
+        "_blank"
+      );
+      window.open(
+        `https://api.whatsapp.com/send?text=${encodeURIComponent(shareText)}`,
+        "_blank"
+      );
+    }
   };
 
-  const fallbackLinks = {
-    facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
-      pageUrl
-    )}`,
-    linkedin: `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(
-      pageUrl
-    )}`,
-    whatsapp: `https://api.whatsapp.com/send?text=${encodeURIComponent(body)}`,
-    twitter: `https://twitter.com/intent/tweet?text=${encodeURIComponent(
-      body
-    )}&url=${encodeURIComponent(pageUrl)}`,
-  };
-
-  // Attempt to open app or fallback to web
-  const openLink = (appLink, fallbackLink) => {
-    const timeout = setTimeout(() => {
-      window.open(fallbackLink, "_blank"); // Open fallback link if app isn't installed
-    }, 500);
-
-    window.location.href = appLink; // Attempt to open app link
-
-    // Clear timeout if the app opens
-    window.addEventListener("blur", () => clearTimeout(timeout), {
-      once: true,
-    });
-  };
-
-  // Copy link to clipboard
+  // Function to copy the page URL to clipboard
   const copyToClipboard = () => {
     navigator.clipboard.writeText(pageUrl).then(() => {
       toast.success("Link Copied");
@@ -87,37 +92,12 @@ export default function ShareOnSocials({ postData }) {
           },
         }}
       />
-
-      {/* Facebook share button */}
+      {/* Share button */}
       <button
-        onClick={() => openLink(links.facebook, fallbackLinks.facebook)}
+        onClick={handleShare}
         className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
       >
-        Share on Facebook
-      </button>
-
-      {/* WhatsApp share button */}
-      <button
-        onClick={() => openLink(links.whatsapp, fallbackLinks.whatsapp)}
-        className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700"
-      >
-        Share on WhatsApp
-      </button>
-
-      {/* Twitter share button */}
-      <button
-        onClick={() => openLink(links.twitter, fallbackLinks.twitter)}
-        className="px-4 py-2 bg-blue-400 text-white rounded hover:bg-blue-500"
-      >
-        Share on Twitter
-      </button>
-
-      {/* LinkedIn share button */}
-      <button
-        onClick={() => openLink(links.linkedin, fallbackLinks.linkedin)}
-        className="px-4 py-2 bg-blue-700 text-white rounded hover:bg-blue-800"
-      >
-        Share on LinkedIn
+        Share this Property
       </button>
 
       {/* Copy link button */}
