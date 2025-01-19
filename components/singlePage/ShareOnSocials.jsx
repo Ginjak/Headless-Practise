@@ -37,25 +37,39 @@ export default function ShareOnSocials({ postData }) {
     subject
   )}&body=${encodeURIComponent(body)}`;
 
-  // Facebook share link
-  const facebookLink = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
+  // App deep links
+  const facebookAppLink = `fb://facewebmodal/f?href=${encodeURIComponent(
     pageUrl
   )}`;
+  const whatsappAppLink = `whatsapp://send?text=${encodeURIComponent(body)}`;
 
-  // WhatsApp share link
-  const whatsappLink = `https://api.whatsapp.com/send?text=${encodeURIComponent(
+  // Web links as fallbacks
+  const facebookWebLink = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
+    pageUrl
+  )}`;
+  const whatsappWebLink = `https://api.whatsapp.com/send?text=${encodeURIComponent(
     body
   )}`;
-
-  // X (Twitter) share link
   const twitterLink = `https://twitter.com/intent/tweet?text=${encodeURIComponent(
     body
   )}&url=${encodeURIComponent(pageUrl)}`;
-
-  // LinkedIn share link
   const linkedinLink = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(
     pageUrl
   )}`;
+
+  // Function to attempt app link or fallback to web
+  const openLink = (appLink, webLink) => {
+    const newWindow = window.open(appLink, "_blank");
+    setTimeout(() => {
+      if (
+        !newWindow ||
+        newWindow.closed ||
+        typeof newWindow.closed === "undefined"
+      ) {
+        window.open(webLink, "_blank");
+      }
+    }, 1000); // Adjust the timeout if needed
+  };
 
   // Function to copy the page URL to clipboard
   const copyToClipboard = () => {
@@ -85,7 +99,7 @@ export default function ShareOnSocials({ postData }) {
 
       {/* Facebook share button */}
       <button
-        onClick={() => window.open(facebookLink, "_blank")}
+        onClick={() => openLink(facebookAppLink, facebookWebLink)}
         className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 "
       >
         Share on Facebook
@@ -93,7 +107,7 @@ export default function ShareOnSocials({ postData }) {
 
       {/* WhatsApp share button */}
       <button
-        onClick={() => window.open(whatsappLink, "_blank")}
+        onClick={() => openLink(whatsappAppLink, whatsappWebLink)}
         className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 "
       >
         Share on WhatsApp
@@ -107,6 +121,7 @@ export default function ShareOnSocials({ postData }) {
         Share on X (Twitter)
       </button>
 
+      {/* LinkedIn share button */}
       <button
         onClick={() => window.open(linkedinLink, "_blank")}
         className="px-4 py-2 bg-blue-700 text-white rounded hover:bg-blue-800 "

@@ -39,6 +39,7 @@ export default function ShareButton({ data, image }) {
             alt={image?.alt_text || "Property image"}
             width={150}
             height={150}
+            className="rounded-xl"
           />
           <div>
             <p className="text-property-txt-700 font-medium">
