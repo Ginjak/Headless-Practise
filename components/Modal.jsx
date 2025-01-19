@@ -40,7 +40,7 @@ export default function Modal({ isOpen, onClose, onSubmit, children }) {
 
   return (
     <div
-      className={`fixed inset-0 bg-black bg-opacity-50 backdrop-blur-md z-50 flex justify-center items-center transition-opacity duration-300 px-3 ${
+      className={`fixed inset-0 bg-black bg-opacity-50 backdrop-blur-md z-50 flex justify-center items-center transition-opacity duration-300 sm:px-3 ${
         isVisible ? "opacity-100" : "opacity-0"
       }`}
       onClick={handleOverlayClick}
@@ -49,7 +49,7 @@ export default function Modal({ isOpen, onClose, onSubmit, children }) {
     >
       <div
         ref={modalRef}
-        className={`bg-property-bg-100 p-6 rounded-lg shadow-lg relative max-w-lg w-full transform transition-transform duration-300 ${
+        className={`bg-property-bg-100 p-6 sm:rounded-lg shadow-lg relative max-w-lg w-full transform transition-transform duration-300 h-screen sm:h-auto ${
           isVisible ? "scale-100" : "scale-95"
         }`}
         aria-modal="true"

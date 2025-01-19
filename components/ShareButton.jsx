@@ -6,10 +6,12 @@ import { IoIosBed } from "react-icons/io";
 import { PiArmchairFill } from "react-icons/pi";
 import { TbBathFilled } from "react-icons/tb";
 import ShareOnSocials from "./singlePage/ShareOnSocials";
+import SmallSpinner from "./SmallSpinner";
 
 export default function ShareButton({ data, image }) {
   const {} = data;
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isImageLoading, setIsImageLoading] = useState(true);
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
 
@@ -34,13 +36,20 @@ export default function ShareButton({ data, image }) {
           Share this property
         </h3>
         <div className="flex gap-3 pb-3">
-          <Image
-            src={image?.guid?.rendered}
-            alt={image?.alt_text || "Property image"}
-            width={150}
-            height={150}
-            className="rounded-xl"
-          />
+          <div className="relative w-[150px] h-[150px] ">
+            {isImageLoading && <SmallSpinner />}
+            <Image
+              src={image?.guid?.rendered}
+              alt={image?.alt_text || "Property image"}
+              fill
+              className={`rounded-xl object-cover ${
+                isImageLoading ? "opacity-0" : "opacity-100"
+              } transition-opacity duration-300`}
+              sizes="(max-width: 767px) 150px, (min-width: 768px) 150px"
+              onLoad={() => setIsImageLoading(false)}
+              onError={() => setIsImageLoading(false)}
+            />
+          </div>
           <div>
             <p className="text-property-txt-700 font-medium">
               {data?.address_line && (
