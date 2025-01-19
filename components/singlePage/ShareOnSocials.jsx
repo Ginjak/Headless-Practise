@@ -65,7 +65,7 @@ export default function ShareOnSocials({ postData }) {
   };
 
   return (
-    <div className="flex flex-col gap-3">
+    <div className="flex flex-col gap-3 mt-3 items-start">
       <Toaster
         toastOptions={{
           success: {
@@ -78,9 +78,9 @@ export default function ShareOnSocials({ postData }) {
       {/* Email share button */}
       <button
         onClick={() => (window.location.href = emailLink)}
-        className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 "
+        className="px-4 py-2 text-property-txt-700"
       >
-        Share via Email
+        Email
       </button>
 
       {/* Facebook share button */}

@@ -14,6 +14,8 @@ import SinglePostMap from "@/components/singlePage/SinglePostMap";
 import ShareButton from "@/components/ShareButton";
 import ShareonSocialMobile from "@/components/singlePage/ShareOnSocialMobile";
 
+import { TiArrowBack } from "react-icons/ti";
+
 // Generate static paths for all properties
 export async function generateStaticParams() {
   const posts = await fetchAllCptPosts({ slug: "properties" });
@@ -54,8 +56,27 @@ export default async function PropertyPage({ params }) {
   // Reduce unnecessary re-renders and improve LCP by rendering above-the-fold content first
   return (
     <>
+      <div className="max-w-7xl mx-auto px-3">
+        <div className="social-share-return-wraper flex justify-between items-center">
+          <p className="text-property-txt-700 hover:text-property-acc-100 text-xl flex gap-2 items-center duration-200 transition-colors">
+            <TiArrowBack />
+            Back to searach link
+          </p>
+          <div className="hidden sm:flex gap-2 items-center py-3">
+            <ShareButton
+              data={data}
+              image={featuredImage}
+              btnText={"Share"}
+              btnClass={"font-medium text-xl"}
+            />
+          </div>
+          <div className="block sm:hidden">
+            <ShareonSocialMobile data={data} />
+          </div>
+        </div>
+      </div>
       <div className="max-w-7xl mx-auto flex px-3">
-        <div className="content w-full lg:w-2/3 mt-20">
+        <div className="content w-full lg:w-2/3 mt-4">
           {/* Slider and property details */}
           <div className="slider-wraper mb-6">
             <Slider images={images} />
@@ -117,7 +138,7 @@ export default async function PropertyPage({ params }) {
         </div>
 
         {/* Agent Information (only visible on larger screens) */}
-        <div className="agent-info w-full hidden lg:block lg:w-1/3 ps-4 sticky top-0 h-screen overflow-y-auto mt-16">
+        <div className="agent-info w-full hidden lg:block lg:w-1/3 ps-4 sticky top-0 h-screen overflow-y-auto mt-0">
           <AgentSinglePage
             name={data?.team_member_name}
             surname={data?.team_member_surname}
@@ -130,12 +151,6 @@ export default async function PropertyPage({ params }) {
             loading="lazy"
           />
         </div>
-      </div>
-      <div className="hidden sm:block">
-        <ShareButton data={data} image={featuredImage} />
-      </div>
-      <div className="block sm:hidden">
-        <ShareonSocialMobile data={data} />
       </div>
     </>
   );

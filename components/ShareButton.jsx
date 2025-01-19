@@ -5,10 +5,11 @@ import Image from "next/image";
 import { IoIosBed } from "react-icons/io";
 import { PiArmchairFill } from "react-icons/pi";
 import { TbBathFilled } from "react-icons/tb";
+import { FiShare2 } from "react-icons/fi";
 import ShareOnSocials from "./singlePage/ShareOnSocials";
 import SmallSpinner from "./SmallSpinner";
 
-export default function ShareButton({ data, image }) {
+export default function ShareButton({ data, image, btnText, btnClass }) {
   const {} = data;
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isImageLoading, setIsImageLoading] = useState(true);
@@ -16,18 +17,18 @@ export default function ShareButton({ data, image }) {
   const closeModal = () => setIsModalOpen(false);
 
   const handleSubmit = () => {
-    // Handle submit logic
     alert("Form Submitted!");
-    closeModal(); // Close modal after submit
+    closeModal();
   };
 
   return (
-    <div className="p-6">
+    <div className="">
       <button
         onClick={openModal}
-        className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+        className={`text-property-txt-700 hover:text-property-acc-100 flex gap-2 items-center duration-200 transition-colors ${btnClass}`}
       >
-        Open Modal
+        <FiShare2 />
+        {btnText}
       </button>
 
       {/* Modal component */}

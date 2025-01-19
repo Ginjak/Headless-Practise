@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
-import { IoMdClose } from "react-icons/io";
+import { IoCloseSharp } from "react-icons/io5";
 
 export default function Modal({ isOpen, onClose, onSubmit, children }) {
   const modalRef = useRef();
@@ -49,7 +49,7 @@ export default function Modal({ isOpen, onClose, onSubmit, children }) {
     >
       <div
         ref={modalRef}
-        className={`bg-property-bg-100 p-6 sm:rounded-lg shadow-lg relative max-w-lg w-full transform transition-transform duration-300 h-screen sm:h-auto ${
+        className={`bg-property-bg-100 p-6 sm:rounded-lg shadow-lg relative max-w-md w-full transform transition-transform duration-300 h-screen sm:h-auto ${
           isVisible ? "scale-100" : "scale-95"
         }`}
         aria-modal="true"
@@ -61,7 +61,7 @@ export default function Modal({ isOpen, onClose, onSubmit, children }) {
           className="absolute top-3 right-3"
           aria-label="Close modal"
         >
-          <IoMdClose className="text-property-txt-700/80 text-2xl hover:text-property-txt-700 transition-colors duration-200" />
+          <IoCloseSharp className="text-property-txt-700/80 text-2xl hover:text-property-txt-700 transition-colors duration-200" />
         </button>
 
         {/* Modal content */}
