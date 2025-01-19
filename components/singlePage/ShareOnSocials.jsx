@@ -1,11 +1,9 @@
 "use client";
-import { useEffect, useState } from "react";
+import { capitalize } from "@/lib/functions";
 import { usePathname } from "next/navigation";
 import toast, { Toaster } from "react-hot-toast";
 
-export default function ShareButton({ postData }) {
-  const [isMobile, setIsMobile] = useState(false);
-
+export default function ShareOnSocials({ postData }) {
   const {
     bedrooms,
     listing_type: type,
@@ -22,57 +20,42 @@ export default function ShareButton({ postData }) {
   const currentPath = usePathname();
   const pageUrl = `${process.env.NEXT_PUBLIC_BASE_URL}${currentPath}`;
 
-  const shareTitle = `Check out this ${bedrooms} bedroom ${property} for ${type}`;
-  const shareText = `Check out this ${bedrooms} bedroom ${property} for ${type} in ${address}, ${borough}, ${city}, ${
+  const subject = `Check out this ${bedrooms} bedroom ${capitalize(
+    property
+  )} for ${type} on Properties.com`;
+
+  const body = `Check out this ${bedrooms} bedroom ${capitalize(
+    property
+  )} for ${type} in ${address}, ${borough}, ${city}, ${
     postcode.split(" ")[0]
   } for £${new Intl.NumberFormat().format(
     price
-  )}. Marketed by ${name} ${surname} on Properties.com.`;
+  )}. Marketed by ${name} ${surname} on Properties.com\n${pageUrl}`;
 
-  // Detect if user is on mobile
-  useEffect(() => {
-    const userAgent = navigator.userAgent || navigator.vendor || window.opera;
-    setIsMobile(/android|iphone|ipad|ipod/i.test(userAgent));
-  }, []);
+  // Email share link
+  const emailLink = `mailto:?subject=${encodeURIComponent(
+    subject
+  )}&body=${encodeURIComponent(body)}`;
 
-  const handleShare = async () => {
-    if (isMobile && navigator.share) {
-      // Use Web Share API on mobile devices
-      try {
-        await navigator.share({
-          title: shareTitle,
-          text: shareText,
-          url: pageUrl,
-        });
-      } catch (error) {
-        console.error("Error sharing:", error);
-      }
-    } else {
-      // Fallback for desktop: Open a new window with share links
-      window.open(
-        `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
-          pageUrl
-        )}`,
-        "_blank"
-      );
-      window.open(
-        `https://twitter.com/intent/tweet?text=${encodeURIComponent(
-          shareText
-        )}&url=${encodeURIComponent(pageUrl)}`,
-        "_blank"
-      );
-      window.open(
-        `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(
-          pageUrl
-        )}`,
-        "_blank"
-      );
-      window.open(
-        `https://api.whatsapp.com/send?text=${encodeURIComponent(shareText)}`,
-        "_blank"
-      );
-    }
-  };
+  // Facebook share link
+  const facebookLink = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
+    pageUrl
+  )}`;
+
+  // WhatsApp share link
+  const whatsappLink = `https://api.whatsapp.com/send?text=${encodeURIComponent(
+    body
+  )}`;
+
+  // X (Twitter) share link
+  const twitterLink = `https://twitter.com/intent/tweet?text=${encodeURIComponent(
+    body
+  )}&url=${encodeURIComponent(pageUrl)}`;
+
+  // LinkedIn share link
+  const linkedinLink = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(
+    pageUrl
+  )}`;
 
   // Function to copy the page URL to clipboard
   const copyToClipboard = () => {
@@ -92,12 +75,43 @@ export default function ShareButton({ postData }) {
           },
         }}
       />
-      {/* Share button */}
+      {/* Email share button */}
       <button
-        onClick={handleShare}
-        className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+        onClick={() => (window.location.href = emailLink)}
+        className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 "
       >
-        Share this Property
+        Share via Email
+      </button>
+
+      {/* Facebook share button */}
+      <button
+        onClick={() => window.open(facebookLink, "_blank")}
+        className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 "
+      >
+        Share on Facebook
+      </button>
+
+      {/* WhatsApp share button */}
+      <button
+        onClick={() => window.open(whatsappLink, "_blank")}
+        className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 "
+      >
+        Share on WhatsApp
+      </button>
+
+      {/* X (Twitter) share button */}
+      <button
+        onClick={() => window.open(twitterLink, "_blank")}
+        className="px-4 py-2 bg-blue-400 text-white rounded hover:bg-blue-500 "
+      >
+        Share on X (Twitter)
+      </button>
+
+      <button
+        onClick={() => window.open(linkedinLink, "_blank")}
+        className="px-4 py-2 bg-blue-700 text-white rounded hover:bg-blue-800 "
+      >
+        Share on LinkedIn
       </button>
 
       {/* Copy link button */}

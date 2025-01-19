@@ -12,6 +12,7 @@ import SinglePostFeatures from "@/components/singlePage/SinglePostFeatures";
 import SinglePostLocalAreaInfo from "@/components/singlePage/SinglePostLocalAreaInfo";
 import SinglePostMap from "@/components/singlePage/SinglePostMap";
 import ShareButton from "@/components/ShareButton";
+import ShareonSocialMobile from "@/components/singlePage/ShareOnSocialMobile";
 
 // Generate static paths for all properties
 export async function generateStaticParams() {
@@ -130,8 +131,12 @@ export default async function PropertyPage({ params }) {
           />
         </div>
       </div>
-
-      <ShareButton data={data} image={featuredImage} />
+      <div className="hidden sm:block">
+        <ShareButton data={data} image={featuredImage} />
+      </div>
+      <div className="block sm:hidden">
+        <ShareonSocialMobile data={data} />
+      </div>
     </>
   );
 }
