@@ -31,7 +31,6 @@ export default async function PropertyPage({ params }) {
 
   // Fetch single property data
   const data = await fetchCptSinglePost("properties", slug);
-  console.log("data", data);
 
   // If no data is found, return a fallback page
   if (!data) {

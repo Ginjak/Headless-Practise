@@ -1,4 +1,5 @@
 "use client";
+import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { Navigation, Autoplay } from "swiper/modules";
@@ -10,13 +11,12 @@ import {
 } from "react-icons/tb";
 import { IoIosBed } from "react-icons/io";
 import { PiArmchairFill } from "react-icons/pi";
+import SmallSpinner from "../SmallSpinner";
 
 // Import Swiper styles
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
-import SmallSpinner from "../SmallSpinner";
-import { useState } from "react";
 
 export default function SimilarPropertiesSlider({ data }) {
   const [imageLoaded, setImageLoaded] = useState(false);
@@ -55,7 +55,7 @@ export default function SimilarPropertiesSlider({ data }) {
             <Link href={property?.slug} className="h-full">
               <div className="rounded-xl bg-property-txt-700/5 ">
                 <div className="relative w-full h-72 sm:h-48 rounded-t-xl ">
-                  {!imageLoaded && <SmallSpinner className={"rounded-xl"} />}
+                  {!imageLoaded && <SmallSpinner className="rounded-xl" />}
                   <Image
                     src={
                       property?.image?.media_details?.sizes?.medium_large
@@ -64,6 +64,7 @@ export default function SimilarPropertiesSlider({ data }) {
                     alt={property?.image?.alt_text || "Property image"}
                     className="object-cover rounded-t-xl"
                     fill
+                    sizes="(max-width: 639px) 640px, (min-width: 640px) 320px"
                     loading="lazy"
                     onLoad={handleImageLoad}
                   />

@@ -1,8 +1,9 @@
 import Image from "next/image";
 import Link from "next/link";
 import PhoneRevealBtn from "./PhoneRevealBtn";
-import { BsEnvelopeAt } from "react-icons/bs";
+
 import { fetchCptSinglePost } from "@/lib/api";
+import SinglePostContactFormBtn from "./SinglePostContactFormBtn";
 
 export default async function AgentSinglePage({
   name,
@@ -39,13 +40,7 @@ export default async function AgentSinglePage({
       <div className="contacts flex flex-col text-center bg-property-pr-300/20 p-4 rounded-lg gap-3">
         <PhoneRevealBtn text={"Phone number"} phone={phone} />
 
-        <Link
-          href={`mailto:${email}`}
-          className="rounded-lg bg-property-acc-100 hover:bg-property-acc-300  text-property-bg-100 py-3 px-4 transition-all duration-200 uppercase font-bold tracking-wider flex items-center justify-center gap-2"
-        >
-          <BsEnvelopeAt className="text-property-bg-100 text-2xl font-bold" />
-          Email
-        </Link>
+        <SinglePostContactFormBtn />
       </div>
       <div className="company-avatar relative mt-4 flex justify-end items-end">
         <Image

@@ -2,7 +2,6 @@ import { fetchCptPostsForSimilarPropertiesSlider } from "@/lib/api";
 import { similarPropertiesFetch } from "@/lib/functions";
 import { fetchImageData } from "@/lib/api"; // Assuming this is where fetchImageData is defined
 import SimilarPropertiesSlider from "./SimilarPropertiesSlider";
-import { Suspense } from "react";
 
 // Main component
 export default async function SimilarProperties({
