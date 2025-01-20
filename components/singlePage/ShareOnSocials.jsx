@@ -2,6 +2,10 @@
 import { capitalize } from "@/lib/functions";
 import { usePathname } from "next/navigation";
 import toast, { Toaster } from "react-hot-toast";
+import { BsEnvelopeAt } from "react-icons/bs";
+import { FaFacebook, FaLinkedin, FaCopy } from "react-icons/fa";
+import { IoLogoWhatsapp } from "react-icons/io";
+import { FaSquareXTwitter } from "react-icons/fa6";
 
 export default function ShareOnSocials({ postData }) {
   const {
@@ -32,32 +36,26 @@ export default function ShareOnSocials({ postData }) {
     price
   )}. Marketed by ${name} ${surname} on Properties.com\n${pageUrl}`;
 
-  // Email share link
   const emailLink = `mailto:?subject=${encodeURIComponent(
     subject
   )}&body=${encodeURIComponent(body)}`;
 
-  // Facebook share link
   const facebookLink = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
     pageUrl
   )}`;
 
-  // WhatsApp share link
   const whatsappLink = `https://api.whatsapp.com/send?text=${encodeURIComponent(
     body
   )}`;
 
-  // X (Twitter) share link
   const twitterLink = `https://twitter.com/intent/tweet?text=${encodeURIComponent(
     body
   )}&url=${encodeURIComponent(pageUrl)}`;
 
-  // LinkedIn share link
   const linkedinLink = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(
     pageUrl
   )}`;
 
-  // Function to copy the page URL to clipboard
   const copyToClipboard = () => {
     navigator.clipboard.writeText(pageUrl).then(() => {
       toast.success("Link Copied");
@@ -75,51 +73,47 @@ export default function ShareOnSocials({ postData }) {
           },
         }}
       />
-      {/* Email share button */}
       <button
         onClick={() => (window.location.href = emailLink)}
-        className="px-4 py-2 text-property-txt-700"
+        className=" text-lg font-medium text-property-txt-700 hover:text-property-acc-100 flex gap-2 items-center duration-300 transition-colors"
       >
-        Email
+        <BsEnvelopeAt className="min-w-5" /> Email
       </button>
 
-      {/* Facebook share button */}
       <button
         onClick={() => window.open(facebookLink, "_blank")}
-        className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 "
+        className="text-lg font-medium text-property-txt-700 hover:text-property-acc-100 flex gap-2 items-center duration-300 transition-colors "
       >
-        Share on Facebook
+        <FaFacebook className="min-w-5" /> Facebook
       </button>
 
-      {/* WhatsApp share button */}
       <button
         onClick={() => window.open(whatsappLink, "_blank")}
-        className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 "
+        className="text-lg font-medium text-property-txt-700 hover:text-property-acc-100 flex gap-2 items-center duration-300 transition-colors"
       >
-        Share on WhatsApp
+        <IoLogoWhatsapp className="min-w-5" /> WhatsApp
       </button>
 
-      {/* X (Twitter) share button */}
       <button
         onClick={() => window.open(twitterLink, "_blank")}
-        className="px-4 py-2 bg-blue-400 text-white rounded hover:bg-blue-500 "
+        className="text-lg font-medium text-property-txt-700 hover:text-property-acc-100 flex gap-2 items-center duration-300 transition-colors"
       >
-        Share on X (Twitter)
+        <FaSquareXTwitter className="min-w-5" /> X (formerly Twitter)
       </button>
 
       <button
         onClick={() => window.open(linkedinLink, "_blank")}
-        className="px-4 py-2 bg-blue-700 text-white rounded hover:bg-blue-800 "
+        className="text-lg font-medium text-property-txt-700 hover:text-property-acc-100 flex gap-2 items-center duration-300 transition-colors"
       >
-        Share on LinkedIn
+        <FaLinkedin className="min-w-5" /> LinkedIn
       </button>
 
       {/* Copy link button */}
       <button
         onClick={copyToClipboard}
-        className="px-4 py-2 bg-gray-600 text-white rounded hover:bg-gray-700"
+        className="text-lg font-medium text-property-txt-700 hover:text-property-acc-100 flex gap-2 items-center duration-300 transition-colors"
       >
-        Copy Link
+        <FaCopy className="min-w-5" /> Copy Link
       </button>
     </div>
   );

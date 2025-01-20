@@ -1,9 +1,10 @@
 "use client";
 import { GoogleMap, Marker, useLoadScript } from "@react-google-maps/api";
+import SmallSpinner from "../SmallSpinner";
 
 const containerStyle = {
   width: "100%",
-  height: "400px",
+  height: "384px",
 };
 
 // Example of a custom map style (from https://mapstyle.withgoogle.com/)
@@ -228,7 +229,12 @@ export default function Map({ lat, lng }) {
     googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_API, // Ensure this is defined in your .env file
   });
 
-  if (!isLoaded) return <div></div>;
+  if (!isLoaded)
+    return (
+      <div className="h-96 w-full rounded-xl mb-6 relative">
+        {<SmallSpinner className={"rounded-xl"} />}
+      </div>
+    );
 
   const center = {
     lat: Number(lat),
@@ -238,7 +244,7 @@ export default function Map({ lat, lng }) {
   return (
     <GoogleMap
       mapContainerStyle={containerStyle}
-      mapContainerClassName="rounded-xl w-full mb-6 shadow-small"
+      mapContainerClassName="rounded-xl w-full mb-6 "
       center={center}
       zoom={15}
       options={{

@@ -2,8 +2,9 @@ import Image from "next/image";
 import Link from "next/link";
 import PhoneRevealBtn from "./PhoneRevealBtn";
 import { BsEnvelopeAt } from "react-icons/bs";
+import { fetchCptSinglePost } from "@/lib/api";
 
-export default function AgentSinglePage({
+export default async function AgentSinglePage({
   name,
   surname,
   phone,
@@ -12,7 +13,10 @@ export default function AgentSinglePage({
   agentPhotoAlt,
   companyPhoto,
   companyPhotoAlt,
+  slug,
 }) {
+  const data = await fetchCptSinglePost("properties", slug);
+
   return (
     <div className="team-member-wraper bg-property-bg-200 py-10 px-6 rounded-xl mt-4 text-property-txt-700 border-[1px] border-property-txt-700/10 shadow-md">
       <div className="flex justify-between items-center mb-6 px-4">

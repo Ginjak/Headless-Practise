@@ -32,6 +32,7 @@ export default async function PropertyPage({ params }) {
 
   // If no data is found, return a fallback page
   if (!data) {
+    // Change this to 404 component
     return <p>No data found for this property.</p>;
   }
 

@@ -15,7 +15,7 @@ export default function ShareButton({ data, image, btnText, btnClass }) {
   const [isImageLoading, setIsImageLoading] = useState(true);
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
-
+  console.log("image object", image);
   const handleSubmit = () => {
     alert("Form Submitted!");
     closeModal();
@@ -40,7 +40,7 @@ export default function ShareButton({ data, image, btnText, btnClass }) {
           <div className="relative w-[150px] h-[150px] ">
             {isImageLoading && <SmallSpinner />}
             <Image
-              src={image?.guid?.rendered}
+              src={image?.media_details?.sizes?.thumbnail?.source_url}
               alt={image?.alt_text || "Property image"}
               fill
               className={`rounded-xl object-cover ${
