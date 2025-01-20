@@ -15,6 +15,8 @@ import ShareButton from "@/components/ShareButton";
 import ShareonSocialMobile from "@/components/singlePage/ShareOnSocialMobile";
 
 import SinglePostReturnBtn from "@/components/singlePage/SinglePostReturnBtn";
+import SimilarPropertiesSlider from "@/components/singlePage/SimilarPropertiesSlider";
+import SimilarProperties from "@/components/singlePage/SimilarProperties";
 
 // Generate static paths for all properties
 export async function generateStaticParams() {
@@ -29,6 +31,7 @@ export default async function PropertyPage({ params }) {
 
   // Fetch single property data
   const data = await fetchCptSinglePost("properties", slug);
+  console.log("data", data);
 
   // If no data is found, return a fallback page
   if (!data) {
@@ -137,6 +140,7 @@ export default async function PropertyPage({ params }) {
             lng={data?.longitude}
             loading="lazy"
           />
+          <SimilarProperties />
         </div>
 
         {/* Agent Information (only visible on larger screens) */}

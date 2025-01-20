@@ -31,6 +31,7 @@ export default async function AgentSinglePage({
             src={agentPhoto || "/avatar_placeholder.webp"}
             alt={agentPhotoAlt || "Avatar placeholder"}
             fill
+            sizes="(min-width: 1024px) 125px"
             className="object-cover"
           />
         </div>
