@@ -14,7 +14,7 @@ import SinglePostMap from "@/components/singlePage/SinglePostMap";
 import ShareButton from "@/components/ShareButton";
 import ShareonSocialMobile from "@/components/singlePage/ShareOnSocialMobile";
 
-import { TiArrowBack } from "react-icons/ti";
+import SinglePostReturnBtn from "@/components/singlePage/SinglePostReturnBtn";
 
 // Generate static paths for all properties
 export async function generateStaticParams() {
@@ -59,10 +59,7 @@ export default async function PropertyPage({ params }) {
     <>
       <div className="max-w-7xl mx-auto px-3">
         <div className="social-share-return-wraper flex justify-between items-center">
-          <p className="text-property-txt-700 hover:text-property-acc-100 text-xl flex gap-2 items-center duration-200 transition-colors">
-            <TiArrowBack />
-            Back to searach link
-          </p>
+          <SinglePostReturnBtn />
           <div className="hidden sm:flex gap-2 items-center py-3">
             <ShareButton
               data={data}
@@ -72,7 +69,7 @@ export default async function PropertyPage({ params }) {
             />
           </div>
           <div className="block sm:hidden">
-            <ShareonSocialMobile data={data} />
+            <ShareonSocialMobile data={data} btnClass={"font-medium text-xl"} />
           </div>
         </div>
       </div>
@@ -135,7 +132,11 @@ export default async function PropertyPage({ params }) {
             longitude={data?.longitude}
             latitude={data?.latitude}
           />
-          <SinglePostMap lat={data?.latitude} lng={data?.longitude} />
+          <SinglePostMap
+            lat={data?.latitude}
+            lng={data?.longitude}
+            loading="lazy"
+          />
         </div>
 
         {/* Agent Information (only visible on larger screens) */}

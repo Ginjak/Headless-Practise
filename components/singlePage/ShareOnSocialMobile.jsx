@@ -1,8 +1,9 @@
 "use client";
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
+import { FiShare2 } from "react-icons/fi";
 
-export default function ShareonSocialMobile({ data }) {
+export default function ShareonSocialMobile({ data, btnClass, btnText }) {
   const [isMobile, setIsMobile] = useState(false);
 
   const {
@@ -54,9 +55,9 @@ export default function ShareonSocialMobile({ data }) {
       {/* Share button */}
       <button
         onClick={handleShare}
-        className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+        className={`text-property-txt-700 hover:text-property-acc-100 flex gap-2 items-center duration-200 transition-colors ${btnClass}`}
       >
-        Share this Property
+        <FiShare2 /> {btnText}
       </button>
     </div>
   );

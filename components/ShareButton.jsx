@@ -22,7 +22,7 @@ export default function ShareButton({ data, image, btnText, btnClass }) {
   };
 
   return (
-    <div className="">
+    <div>
       <button
         onClick={openModal}
         className={`text-property-txt-700 hover:text-property-acc-100 flex gap-2 items-center duration-200 transition-colors ${btnClass}`}
