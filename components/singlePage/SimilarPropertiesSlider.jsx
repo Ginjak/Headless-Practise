@@ -1,21 +1,29 @@
 "use client";
 import Link from "next/link";
-import Image from "next/image"; // Import the Image component from Next.js
+import Image from "next/image";
 import { Navigation, Autoplay } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import {
   TbSquareRoundedArrowLeftFilled,
   TbSquareRoundedArrowRightFilled,
+  TbBathFilled,
 } from "react-icons/tb";
+import { IoIosBed } from "react-icons/io";
+import { PiArmchairFill } from "react-icons/pi";
 
 // Import Swiper styles
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
-// import "swiper/css/scrollbar";
+import SmallSpinner from "../SmallSpinner";
+import { useState } from "react";
 
 export default function SimilarPropertiesSlider({ data }) {
-  console.log("data for slider", data);
+  const [imageLoaded, setImageLoaded] = useState(false);
+  const handleImageLoad = () => {
+    setImageLoaded(true);
+  };
+
   return (
     <div className="relative">
       <Swiper
@@ -23,23 +31,13 @@ export default function SimilarPropertiesSlider({ data }) {
         spaceBetween={50}
         slidesPerView={3}
         breakpoints={{
-          100: {
+          250: {
             slidesPerView: 1,
             spaceBetween: 0,
           },
-          150: {
-            slidesPerView: 2,
-            spaceBetween: 15,
-          },
           640: {
-            // For screens >= 640px
             slidesPerView: 3,
-            spaceBetween: 30,
-          },
-          1024: {
-            // For screens >= 1024px
-            slidesPerView: 4,
-            spaceBetween: 40,
+            spaceBetween: 20,
           },
         }}
         navigation={{
@@ -50,47 +48,75 @@ export default function SimilarPropertiesSlider({ data }) {
           delay: 3000,
         }}
         loop={true}
-        className=""
+        className="mb-10"
       >
         {data.map((property) => (
           <SwiperSlide key={property?.ID}>
-            <Link href={property?.slug}>
-              <div className=" rounderd-xl">
-                <div className="relative w-full h-44 sm:h-48 rounded-t-xl">
+            <Link href={property?.slug} className="h-full">
+              <div className="rounded-xl bg-property-txt-700/5 ">
+                <div className="relative w-full h-72 sm:h-48 rounded-t-xl ">
+                  {!imageLoaded && <SmallSpinner className={"rounded-xl"} />}
                   <Image
                     src={
-                      property?.image?.media_details?.sizes?.medium?.source_url
+                      property?.image?.media_details?.sizes?.medium_large
+                        ?.source_url
                     }
                     alt={property?.image?.alt_text || "Property image"}
                     className="object-cover rounded-t-xl"
                     fill
+                    loading="lazy"
+                    onLoad={handleImageLoad}
                   />
                 </div>
-                <h5>£{property?.original_price}</h5>
-                <div>
-                  <p>Flat</p>
-                  <div>
-                    <p>Bedrooms</p>
-                    <p>Bathrooms</p>
+                <div className="flex flex-col gap-2 px-2 py-4">
+                  <div className="flex justify-between text-property-txt-700 font-medium">
+                    <h5>£{property?.original_price}</h5>
+                    <p>
+                      {property?.property_type?.charAt(0).toUpperCase() +
+                        property?.property_type?.slice(1)}
+                    </p>
                   </div>
+
+                  <div className="flex gap-2">
+                    <p className="flex items-center gap-1 text-property-txt-700  pe-2 border-r-[1px] border-property-txt-700/20 last:border-0">
+                      <IoIosBed className="text-property-acc-100" />{" "}
+                      {property?.bedrooms}
+                    </p>
+                    <p className="flex items-center gap-1 text-property-txt-700  pe-2 border-r-[1px] border-property-txt-700/20 last:border-0">
+                      <TbBathFilled className="text-property-acc-100" />
+                      {property?.bathrooms}
+                    </p>
+                    {property?.receptions && (
+                      <p className="flex items-center gap-1 text-property-txt-700  pe-2 border-r-[1px] border-property-txt-700/20 last:border-0">
+                        <PiArmchairFill className="text-property-acc-100" />
+                        {property?.receptions}
+                      </p>
+                    )}
+                  </div>
+
+                  <p className="font-normal text-property-txt-700 text-sm">
+                    {property?.address_line},{" "}
+                    {property?.borough ? property?.borough : property?.city}{" "}
+                    {property?.postcode?.split(" ")[0]}
+                  </p>
                 </div>
-                <p>Address</p>
               </div>
             </Link>
           </SwiperSlide>
         ))}
-
-        <div
-          className="custom-prev absolute right-16 bottom-0 transform -translate-y-1/2 text-white text-3xl cursor-pointer z-10"
-          style={{ pointerEvents: "auto" }}
-        >
-          <TbSquareRoundedArrowLeftFilled />
-        </div>
-        <div
-          className="custom-next absolute right-5 bottom-0 transform -translate-y-1/2 text-white text-3xl cursor-pointer z-10"
-          style={{ pointerEvents: "auto" }}
-        >
-          <TbSquareRoundedArrowRightFilled />
+        <div className="hidden sm:flex justify-end my-4">
+          <div
+            className="custom-prev text-property-txt-700 text-3xl cursor-pointer z-10"
+            style={{ pointerEvents: "auto" }}
+          >
+            <TbSquareRoundedArrowLeftFilled />
+          </div>
+          <div
+            className="custom-next text-property-txt-700 text-3xl cursor-pointer z-10"
+            style={{ pointerEvents: "auto" }}
+          >
+            <TbSquareRoundedArrowRightFilled />
+          </div>
         </div>
       </Swiper>
     </div>

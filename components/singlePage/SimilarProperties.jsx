@@ -2,6 +2,7 @@ import { fetchCptPostsForSimilarPropertiesSlider } from "@/lib/api";
 import { similarPropertiesFetch } from "@/lib/functions";
 import { fetchImageData } from "@/lib/api"; // Assuming this is where fetchImageData is defined
 import SimilarPropertiesSlider from "./SimilarPropertiesSlider";
+import { Suspense } from "react";
 
 // Main component
 export default async function SimilarProperties({
@@ -46,9 +47,10 @@ export default async function SimilarProperties({
 
     return (
       <div>
-        <h5 className="font-medium pb-5 text-2xl tracking-wide text-property-txt-700 px-10">
+        <h5 className="font-medium pb-5  text-xl md:text-2xl tracking-wide text-property-txt-700 px-6 md:px-10">
           Similar properties
         </h5>
+
         <SimilarPropertiesSlider
           data={filteredPropertiesByDistanceWithImages}
         />
@@ -56,6 +58,7 @@ export default async function SimilarProperties({
     );
   } catch (error) {
     console.error("Error fetching properties:", error);
+    // Add 404 page with refresh
     return <p>Failed to load properties. Please try again later.</p>;
   }
 }
