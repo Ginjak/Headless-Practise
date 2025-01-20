@@ -40,7 +40,7 @@ export default function Slider({ images }) {
             delay: 3000,
           }}
           loop={true}
-          className="h-96 md:h-[500px] rounded-xl shadow-small w-full"
+          className="h-72 sm:h-96 md:h-[500px] rounded-xl shadow-small w-full"
         >
           {images.map((image, index) => (
             <SwiperSlide key={image?.id}>

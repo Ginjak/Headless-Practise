@@ -2,11 +2,6 @@
 import { GoogleMap, Marker, useLoadScript } from "@react-google-maps/api";
 import SmallSpinner from "../SmallSpinner";
 
-const containerStyle = {
-  width: "100%",
-  height: "384px",
-};
-
 // Example of a custom map style (from https://mapstyle.withgoogle.com/)
 const mapStyles = [
   {
@@ -231,7 +226,7 @@ export default function Map({ lat, lng }) {
 
   if (!isLoaded)
     return (
-      <div className="h-96 w-full rounded-xl mb-6 relative">
+      <div className=" h-72 md:h-96 w-full rounded-xl mb-6 relative">
         {<SmallSpinner className={"rounded-xl"} />}
       </div>
     );
@@ -243,8 +238,7 @@ export default function Map({ lat, lng }) {
 
   return (
     <GoogleMap
-      mapContainerStyle={containerStyle}
-      mapContainerClassName="rounded-xl w-full mb-6 "
+      mapContainerClassName="h-72 sm:h-96 rounded-xl w-full mb-6 "
       center={center}
       zoom={15}
       options={{

@@ -18,7 +18,7 @@ import { TbParkingCircleFilled } from "react-icons/tb";
 export default function SinglePostFeatures({ title, features, pet_friendly }) {
   return (
     <>
-      <h5 className="font-medium pb-5 text-2xl tracking-wide text-property-txt-700">
+      <h5 className="font-medium pb-3 md:pb-5 text-xl md:text-2xl tracking-wide text-property-txt-700">
         {title}
       </h5>
       <ul className="flex flex-row gap-5 flex-wrap">

@@ -6,7 +6,7 @@ export default function SinglePostAmenities({ data, title }) {
     <>
       {data.length > 0 && (
         <>
-          <h5 className="font-medium pb-5 text-2xl tracking-wide text-property-txt-700">
+          <h5 className="font-medium pb-3 md:pb-5  text-xl md:text-2xl tracking-wide text-property-txt-700">
             {title}
           </h5>
           <ul className="flex flex-wrap mb-6">

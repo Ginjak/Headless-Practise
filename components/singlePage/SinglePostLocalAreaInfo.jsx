@@ -95,7 +95,7 @@ export default async function SinglePostLocalAreaInfo({ longitude, latitude }) {
   }
 
   return (
-    <div className="p-10 rounded-xl  bg-property-txt-700/5 w-full mb-6 ">
+    <div className="p-6 md:p-10 rounded-xl  bg-property-txt-700/5 w-full mb-6 ">
       <SinglePostAmenities data={closestUnderground} title={"Underground"} />
       <SinglePostAmenities data={closestTrainStation} title={"Trains"} />
       <SinglePostAmenities data={closestShops} title={"Shops"} />

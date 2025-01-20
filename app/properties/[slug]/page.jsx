@@ -80,8 +80,8 @@ export default async function PropertyPage({ params }) {
             <Slider images={images} />
           </div>
 
-          <div className="main-details-wraper my-16 mx-10">
-            <h2 className="text-property-txt-700 text-lg font-medium tracking-wide mb-3">
+          <div className="main-details-wraper my-8 md:my-16 mx-6 md:mx-10">
+            <h2 className="text-property-txt-700  text-base md:text-lg font-medium tracking-wide mb-3">
               {data?.bedrooms} bed {data?.property_type} for sale{" "}
               <span className="font-normal text-property-txt-700/60">
                 {data?.address_line},{" "}
@@ -91,12 +91,12 @@ export default async function PropertyPage({ params }) {
             </h2>
 
             <div className="price-date-wraper flex justify-between items-center">
-              <p className="text-property-txt-700 text-4xl font-bold tracking-wide">
+              <p className="text-property-txt-700 text-2xl md:text-4xl font-bold tracking-wide">
                 £
                 {data?.original_price &&
                   new Intl.NumberFormat().format(data.original_price)}
               </p>
-              <p className="text-property-txt-700/60 font-heading">
+              <p className="text-property-txt-700/60 font-heading text-sm md:text-base">
                 Added on{" "}
                 {new Date(data?.post_date)
                   .toLocaleDateString("en-GB")
@@ -106,7 +106,7 @@ export default async function PropertyPage({ params }) {
           </div>
 
           {/* Description and Features */}
-          <div className="description-wraper p-10 rounded-xl bg-property-pr-300/20 text-white w-full mb-6">
+          <div className="description-wraper p-6 md:p-10 rounded-xl bg-property-pr-300/20 text-white w-full mb-6">
             <KeyFeatures
               bedrooms={data?.bedrooms}
               bathrooms={data?.bathrooms}
