@@ -4,7 +4,6 @@ import { PiArmchairFill } from "react-icons/pi";
 import { TbBathFilled } from "react-icons/tb";
 
 export default function PropertyInfo({ image, data }) {
-  console.log("data", data);
   console.log("image", image);
   return (
     <div className="rounded-xl bg-property-txt-700/5">

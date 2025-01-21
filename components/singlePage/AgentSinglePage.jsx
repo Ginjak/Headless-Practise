@@ -9,7 +9,6 @@ export default async function AgentSinglePage({
   name,
   surname,
   phone,
-  email,
   agentPhoto,
   agentPhotoAlt,
   companyPhoto,
