@@ -46,7 +46,7 @@ module.exports = {
           400: "#06884E",
           500: "#067543",
           600: "#056138",
-          700: "#033F24", //Main
+          700: "#033F24", //Main text
           800: "#033A21",
           900: "#022716",
           950: "#01130B",
@@ -54,7 +54,7 @@ module.exports = {
         },
         "property-bg": {
           50: "#fffff",
-          100: "#EEF8F2", // Main background
+          100: "#EEF8F2", // Main background light
           200: "#E2F3E9",
           300: "#D4EDDE",
           400: "#C5E7D3",
