@@ -11,7 +11,7 @@ import SinglePostDescription from "@/components/singlePage/SinglePostDescription
 import SinglePostFeatures from "@/components/singlePage/SinglePostFeatures";
 import SinglePostLocalAreaInfo from "@/components/singlePage/SinglePostLocalAreaInfo";
 // import SinglePostMap from "@/components/singlePage/SinglePostMap";
-import Testing from "@/components/singlePage/Testing";
+import LazyLoadMap from "@/components/singlePage/LazyLoadMap";
 import ShareButton from "@/components/ShareButton";
 import ShareonSocialMobile from "@/components/singlePage/ShareOnSocialMobile";
 
@@ -135,7 +135,7 @@ export default async function PropertyPage({ params }) {
             longitude={data?.longitude}
             latitude={data?.latitude}
           />
-          <Testing lat={data?.latitude} lng={data?.longitude} />
+          <LazyLoadMap lat={data?.latitude} lng={data?.longitude} />
           {/* <SinglePostMap lat={data?.latitude} lng={data?.longitude} /> */}
           <SimilarProperties />
         </div>

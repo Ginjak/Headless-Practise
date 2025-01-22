@@ -1,3 +1,4 @@
+import ImageWithSpinner from "@/components/ImageWithSpinner";
 import Image from "next/image";
 import { IoIosBed } from "react-icons/io";
 import { PiArmchairFill } from "react-icons/pi";
@@ -57,13 +58,14 @@ export default function PropertyInfo({
               {data?.team_member?.team_member_surname}
             </p>
           </div>
-          <Image
+          <ImageWithSpinner
             src={companyLogo}
             alt={companyLogoAlt}
-            width={100}
-            height={400}
-            className="rounded-t-xl"
-            loading="lazy"
+            width={"100"}
+            height={"400"}
+            className={"rounded-t-xl"}
+            loading={"lazy"}
+            spinnerClassName={"z-10 rounded-xl"}
           />
         </div>
       </div>
