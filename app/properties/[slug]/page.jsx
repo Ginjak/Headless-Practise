@@ -10,7 +10,6 @@ import SinglePostDivider from "@/components/singlePage/SinglePostDivider";
 import SinglePostDescription from "@/components/singlePage/SinglePostDescription";
 import SinglePostFeatures from "@/components/singlePage/SinglePostFeatures";
 import SinglePostLocalAreaInfo from "@/components/singlePage/SinglePostLocalAreaInfo";
-// import SinglePostMap from "@/components/singlePage/SinglePostMap";
 import LazyLoadMap from "@/components/singlePage/LazyLoadMap";
 import ShareButton from "@/components/ShareButton";
 import ShareonSocialMobile from "@/components/singlePage/ShareOnSocialMobile";
@@ -56,9 +55,6 @@ export default async function PropertyPage({ params }) {
   const companyLogo = companyLogoData?.[0];
   const memberPhoto = memberPhotoData?.[0];
   const featuredImage = featuredImageData?.[0];
-
-  const test = await fetchImageDataAll(data.slider_images.split(","));
-  console.log("objects with images", test);
 
   // Reduce unnecessary re-renders and improve LCP by rendering above-the-fold content first
   return (

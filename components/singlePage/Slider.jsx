@@ -15,7 +15,6 @@ import SmallSpinner from "../SmallSpinner";
 
 export default function Slider({ imgIds, images }) {
   const [isFirstImageLoaded, setIsFirstImageLoaded] = useState(false);
-  console.log(imgIds);
   const handleImageLoad = () => {
     setIsFirstImageLoaded(true);
   };
@@ -24,7 +23,7 @@ export default function Slider({ imgIds, images }) {
     <>
       <Head>
         {/* Preload the first image to improve LCP */}
-        {/* <link rel="preload" href={images[0]?.source_url} as="image" /> */}
+        <link rel="preload" href={images[0]?.source_url} as="image" />
       </Head>
 
       <div className="relative">
