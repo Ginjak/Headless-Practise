@@ -281,7 +281,7 @@ export default function AgentForm({ data, postLink }) {
         <p className="text-property-txt-700 mb-6 text-sm font-medium">
           I would like:
         </p>
-        <div className="flex gap-3 mb-6 lg:mb-16">
+        <div className="flex flex-col sm:flex-row gap-3 sm:gap-5 mb-6 lg:mb-16">
           <div className="flex items-start">
             <div className="flex items-center h-5">
               <input
