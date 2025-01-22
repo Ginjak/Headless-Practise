@@ -86,7 +86,7 @@ export default function AgentForm({ data, postLink }) {
     <>
       <form onSubmit={handleSubmit(onSubmit)} className="">
         <div className="flex flex-col sm:flex-row sm:gap-4">
-          <div className="relative z-0 w-full mb-3 group">
+          <div className="flex flex-col-reverse relative z-0 w-full mb-3 group">
             <input
               type="text"
               name="name"
@@ -103,7 +103,7 @@ export default function AgentForm({ data, postLink }) {
             />
             <label
               htmlFor="name"
-              className="peer-focus:font-medium absolute text-sm text-property-txt-700  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-property-txt-700 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+              className="sm:peer-focus:font-medium sm:absolute text-sm text-property-txt-700  sm:duration-300 sm:transform sm:-translate-y-6 sm:scale-75 sm:top-3 sm:-z-10 origin-[0] sm:peer-focus:start-0 sm:rtl:peer-focus:translate-x-1/4 sm:rtl:peer-focus:left-auto sm:peer-focus:text-property-txt-700 sm:peer-placeholder-shown:scale-100 sm:peer-placeholder-shown:translate-y-0 sm:peer-focus:scale-75 sm:peer-focus:-translate-y-6"
             >
               First name
             </label>
@@ -111,7 +111,7 @@ export default function AgentForm({ data, postLink }) {
               <p className="text-sm text-red-500">{errors.name.message}</p>
             )}
           </div>
-          <div className="relative z-0 w-full mb-3 group">
+          <div className="flex flex-col-reverse relative z-0 w-full mb-3 group">
             <input
               type="text"
               name="surname"
@@ -128,7 +128,7 @@ export default function AgentForm({ data, postLink }) {
             />
             <label
               htmlFor="surname"
-              className="peer-focus:font-medium absolute text-sm text-property-txt-700  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-property-txt-700 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+              className="sm:peer-focus:font-medium sm:absolute text-sm text-property-txt-700  sm:duration-300 sm:transform sm:-translate-y-6 sm:scale-75 sm:top-3 sm:-z-10 origin-[0] sm:peer-focus:start-0 sm:rtl:peer-focus:translate-x-1/4 sm:rtl:peer-focus:left-auto sm:peer-focus:text-property-txt-700 sm:peer-placeholder-shown:scale-100 sm:peer-placeholder-shown:translate-y-0 sm:peer-focus:scale-75 sm:peer-focus:-translate-y-6"
             >
               Last name
             </label>
@@ -139,7 +139,7 @@ export default function AgentForm({ data, postLink }) {
         </div>
 
         <div className="flex flex-col sm:flex-row sm:gap-4">
-          <div className="relative z-0 w-full mb-3 group">
+          <div className="flex flex-col-reverse relative z-0 w-full mb-3 group">
             <input
               type="tel"
               name="phone"
@@ -156,7 +156,7 @@ export default function AgentForm({ data, postLink }) {
             />
             <label
               htmlFor="phone"
-              className="peer-focus:font-medium absolute text-sm text-property-txt-700  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-property-txt-700 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+              className="sm:peer-focus:font-medium sm:absolute text-sm text-property-txt-700  sm:duration-300 sm:transform sm:-translate-y-6 sm:scale-75 sm:top-3 sm:-z-10 origin-[0] sm:peer-focus:start-0 sm:rtl:peer-focus:translate-x-1/4 sm:rtl:peer-focus:left-auto sm:peer-focus:text-property-txt-700 sm:peer-placeholder-shown:scale-100 sm:peer-placeholder-shown:translate-y-0 sm:peer-focus:scale-75 sm:peer-focus:-translate-y-6"
             >
               Phone number
             </label>
@@ -164,7 +164,7 @@ export default function AgentForm({ data, postLink }) {
               <p className="text-sm text-red-500">{errors.phone.message}</p>
             )}
           </div>
-          <div className="relative z-0 w-full mb-3 group">
+          <div className="flex flex-col-reverse relative z-0 w-full mb-3 group">
             <input
               type="email"
               name="floating_email"
@@ -181,7 +181,7 @@ export default function AgentForm({ data, postLink }) {
             />
             <label
               htmlFor="floating_email"
-              className="peer-focus:font-medium absolute text-sm text-property-txt-700  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-property-txt-700 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+              className="sm:peer-focus:font-medium sm:absolute text-sm text-property-txt-700  sm:duration-300 sm:transform sm:-translate-y-6 sm:scale-75 sm:top-3 sm:-z-10 origin-[0] sm:peer-focus:start-0 sm:rtl:peer-focus:translate-x-1/4 sm:rtl:peer-focus:left-auto sm:peer-focus:text-property-txt-700 sm:peer-placeholder-shown:scale-100 sm:peer-placeholder-shown:translate-y-0 sm:peer-focus:scale-75 sm:peer-focus:-translate-y-6"
             >
               Email address
             </label>
@@ -190,7 +190,7 @@ export default function AgentForm({ data, postLink }) {
             )}
           </div>
         </div>
-        <div className="relative z-0 w-full mb-3 group">
+        <div className="flex flex-col-reverse relative z-0 w-full mb-3 group">
           <input
             type="text"
             name="postcode"
@@ -207,7 +207,7 @@ export default function AgentForm({ data, postLink }) {
           />
           <label
             htmlFor="postcode"
-            className="peer-focus:font-medium absolute text-sm text-property-txt-700  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-property-txt-700 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+            className="sm:peer-focus:font-medium sm:absolute text-sm text-property-txt-700  sm:duration-300 sm:transform sm:-translate-y-6 sm:scale-75 sm:top-3 sm:-z-10 origin-[0] sm:peer-focus:start-0 sm:rtl:peer-focus:translate-x-1/4 sm:rtl:peer-focus:left-auto sm:peer-focus:text-property-txt-700 sm:peer-placeholder-shown:scale-100 sm:peer-placeholder-shown:translate-y-0 sm:peer-focus:scale-75 sm:peer-focus:-translate-y-6"
           >
             Postcode
           </label>
@@ -215,7 +215,7 @@ export default function AgentForm({ data, postLink }) {
             <p className="text-sm text-red-500">{errors.postcode.message}</p>
           )}
         </div>
-        <div className="relative z-0 w-full mb-3 group">
+        <div className="flex flex-col relative z-0 w-full mb-3 group">
           <textarea
             name="message"
             id="message"
@@ -231,16 +231,16 @@ export default function AgentForm({ data, postLink }) {
               handleMessageChange(e);
             }}
             placeholder=""
-            className="peer block py-2.5 px-0 w-full text-sm text-property-txt-700 bg-transparent border-0 border-b-2 border-property-txt-700/50 appearance-none focus:outline-none focus:ring-0 focus:property-pr-300 "
+            className="order-2 mb-2 peer block py-2.5 px-0 w-full text-sm text-property-txt-700 bg-transparent border-0 border-b-2 border-property-txt-700/50 focus:border-property-pr-300"
           />
 
           <label
             htmlFor="message"
-            className="peer-focus:font-medium absolute text-sm text-property-txt-700  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-property-txt-700 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+            className="order-1 sm:peer-focus:font-medium sm:absolute text-sm text-property-txt-700  sm:duration-300 sm:transform sm:-translate-y-6 sm:scale-75 sm:top-3 sm:-z-10 origin-[0] sm:peer-focus:start-0 sm:rtl:peer-focus:translate-x-1/4 sm:rtl:peer-focus:left-auto sm:peer-focus:text-property-txt-700 sm:peer-placeholder-shown:scale-100 sm:peer-placeholder-shown:translate-y-0 sm:peer-focus:scale-75 sm:peer-focus:-translate-y-6"
           >
             Your message (optional)
           </label>
-          <div className="text-sm text-property-txt-700/60 py-2">
+          <div className="order-3 text-sm text-property-txt-700/60 py-2">
             {charCount}/{charLimit} characters
           </div>
           {limitReached && (
@@ -249,11 +249,11 @@ export default function AgentForm({ data, postLink }) {
             </p>
           )}
         </div>
-        <p className="text-property-txt-700 mb-3 text-sm font-medium">
+        <p className="text-property-txt-700 mb-6 text-sm font-medium">
           I would like:
         </p>
-        <div className="flex gap-3">
-          <div className="flex items-start mb-5">
+        <div className="flex gap-3 mb-6 lg:mb-16">
+          <div className="flex items-start">
             <div className="flex items-center h-5">
               <input
                 type="checkbox"
@@ -269,7 +269,7 @@ export default function AgentForm({ data, postLink }) {
               More details about property
             </label>
           </div>
-          <div className="flex items-start mb-5">
+          <div className="flex items-start">
             <div className="flex items-center h-5">
               <input
                 type="checkbox"
@@ -289,7 +289,7 @@ export default function AgentForm({ data, postLink }) {
 
         <button
           type="submit"
-          className="mt-12 w-full rounded-lg bg-property-acc-100 hover:bg-property-acc-300 text-property-bg-100 py-3 px-4 transition-all duration-200 uppercase font-bold tracking-wider flex items-center justify-center gap-2"
+          className="w-full rounded-lg bg-property-acc-100 hover:bg-property-acc-300 text-property-bg-100 py-3 px-4 transition-all duration-200 uppercase font-bold tracking-wider flex items-center justify-center gap-2"
         >
           <BsEnvelopeAt className="text-property-bg-100 text-2xl font-bold" />
           Send email

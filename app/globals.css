@@ -1,6 +1,13 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@layer components {
+  .input-safari-reset {
+    -webkit-appearance: none;
+    appearance: none;
+    border-radius: 0;
+  }
+}
 
 :root {
   --background: #ffffff;
@@ -41,15 +48,15 @@ body {
   font-family: var(--font-poppins);
 }
 
-input,
+/* input,
 textarea,
 select,
 button {
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
+  -webkit-appearance: none !important;
+  -moz-appearance: none !important;
+  appearance: none !important;
   outline: none;
-}
+} */
 
 /* Navigation styles */
 /* Ensure the root list items are positioned relatively */
