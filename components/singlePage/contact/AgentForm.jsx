@@ -260,7 +260,7 @@ export default function AgentForm({ data, postLink }) {
               handleMessageChange(e);
             }}
             placeholder=""
-            className="focus:outline-none order-2 mb-2 peer block py-2.5 px-0 w-full text-sm text-property-txt-700 bg-transparent border-0 border-b-2 border-property-txt-700/50 focus:border-property-pr-300"
+            className="focus:outline-none order-2 mb-2 peer block py-2.5 px-0 w-full text-property-txt-700 bg-transparent border-0 border-b-2 border-property-txt-700/50 focus:border-property-pr-300"
           />
 
           <label
