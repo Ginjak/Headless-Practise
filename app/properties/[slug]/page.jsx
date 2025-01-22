@@ -141,7 +141,7 @@ export default async function PropertyPage({ params }) {
         </div>
 
         {/* Agent Information (only visible on larger screens) */}
-        <div className="z-50 w-full fixed bottom-0 left-0 right-0 lg:block lg:w-1/3 lg:ps-4 lg:sticky lg:top-0 lg:h-screen lg:overflow-y-auto mt-0">
+        <div className="z-50 lg:z-0 w-full fixed bottom-0 left-0 right-0 lg:block lg:w-1/3 lg:ps-4 lg:sticky lg:top-0 lg:h-screen lg:overflow-y-auto mt-0">
           <AgentSinglePage
             name={data?.team_member_name}
             surname={data?.team_member_surname}
