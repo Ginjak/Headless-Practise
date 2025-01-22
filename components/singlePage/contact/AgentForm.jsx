@@ -61,7 +61,7 @@ export default function AgentForm({ data, postLink }) {
       if (response.ok) {
         console.log("Form data", formData);
         setSubmitStatus("Message sent successfully!");
-        reset(); // Reset the form fields
+        reset();
         setCharCount(0); // Reset character count
       } else {
         setSubmitStatus(`Error: ${result.message}`);
@@ -76,9 +76,9 @@ export default function AgentForm({ data, postLink }) {
     if (value.length <= charLimit) {
       setMessage(value);
       setCharCount(value.length);
-      setLimitReached(false); // Reset limitReached when within limit
+      setLimitReached(false);
     } else {
-      setLimitReached(true); // Trigger warning when exceeding limit
+      setLimitReached(true);
     }
   };
 
@@ -93,7 +93,7 @@ export default function AgentForm({ data, postLink }) {
               id="name"
               {...register("name", { required: "Name is required" })}
               placeholder=""
-              className={`mb-2 peer block py-2.5 px-0 w-full text-sm text-property-txt-700 bg-transparent border-0 border-b-2 ${
+              className={`appearance-none mb-2 peer block py-2.5 px-0 w-full text-sm text-property-txt-700 bg-transparent border-0 border-b-2 ${
                 errors.name ? "border-red-500" : "border-property-txt-700/50"
               } appearance-none focus:outline-none focus:ring-0 ${
                 errors.name

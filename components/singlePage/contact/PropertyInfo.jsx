@@ -6,7 +6,7 @@ import { TbBathFilled } from "react-icons/tb";
 export default function PropertyInfo({ image, data }) {
   console.log("image", image);
   return (
-    <div className="rounded-xl bg-property-txt-700/5">
+    <div className="rounded-xl bg-property-txt-700/5 border-[1px] border-property-txt-700/10 shadow-md">
       <Image
         src={image?.guid?.rendered}
         alt={image?.alt_text}
