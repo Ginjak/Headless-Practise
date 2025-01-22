@@ -117,7 +117,7 @@ export default function AgentForm({ data, postLink }) {
               disabled={sending}
               {...register("name", { required: "Name is required" })}
               placeholder=""
-              className={`appearance-none mb-2 peer block py-2.5 px-0 w-full text-sm text-property-txt-700 bg-transparent border-0 border-b-2 ${
+              className={`appearance-none mb-2 peer block py-2.5 px-0 w-full text-property-txt-700 bg-transparent border-0 border-b-2 ${
                 errors.name ? "border-red-500" : "border-property-txt-700/50"
               } appearance-none focus:outline-none focus:ring-0 ${
                 errors.name
@@ -143,7 +143,7 @@ export default function AgentForm({ data, postLink }) {
               disabled={sending}
               {...register("surname", { required: "Last name is required" })}
               placeholder=""
-              className={`mb-2 peer block py-2.5 px-0 w-full text-sm text-property-txt-700 bg-transparent border-0 border-b-2 ${
+              className={`mb-2 peer block py-2.5 px-0 w-full  text-property-txt-700 bg-transparent border-0 border-b-2 ${
                 errors.surname ? "border-red-500" : "border-property-txt-700/50"
               } appearance-none focus:outline-none focus:ring-0 ${
                 errors.surname
@@ -172,7 +172,7 @@ export default function AgentForm({ data, postLink }) {
               disabled={sending}
               {...register("phone", { required: "Phone number is required" })}
               placeholder=""
-              className={`mb-2 peer block py-2.5 px-0 w-full text-sm text-property-txt-700 bg-transparent border-0 border-b-2 ${
+              className={`mb-2 peer block py-2.5 px-0 w-full  text-property-txt-700 bg-transparent border-0 border-b-2 ${
                 errors.phone ? "border-red-500" : "border-property-txt-700/50"
               } appearance-none focus:outline-none focus:ring-0 ${
                 errors.phone
@@ -198,7 +198,7 @@ export default function AgentForm({ data, postLink }) {
               disabled={sending}
               {...register("email", { required: "Email is required" })}
               placeholder=""
-              className={`mb-2 peer block py-2.5 px-0 w-full text-sm text-property-txt-700 bg-transparent border-0 border-b-2 ${
+              className={`mb-2 peer block py-2.5 px-0 w-full text-property-txt-700 bg-transparent border-0 border-b-2 ${
                 errors.email ? "border-red-500" : "border-property-txt-700/50"
               } appearance-none focus:outline-none focus:ring-0 ${
                 errors.email
@@ -225,7 +225,7 @@ export default function AgentForm({ data, postLink }) {
             disabled={sending}
             {...register("postcode", { required: "Postcode is required" })}
             placeholder=""
-            className={`mb-2 peer block py-2.5 px-0 w-full text-sm text-property-txt-700 bg-transparent border-0 border-b-2 ${
+            className={`mb-2 peer block py-2.5 px-0 w-full  text-property-txt-700 bg-transparent border-0 border-b-2 ${
               errors.postcode ? "border-red-500" : "border-property-txt-700/50"
             } appearance-none focus:outline-none focus:ring-0 ${
               errors.postcode
