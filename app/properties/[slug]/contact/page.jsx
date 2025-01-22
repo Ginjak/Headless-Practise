@@ -40,7 +40,7 @@ export default async function ContactPage({ params }) {
         Email agent
       </h2>
       <div className="flex flex-col-reverse lg:flex-row">
-        <div className="w-full lg:w-2/3 lg:pe-20">
+        <div className="relative w-full lg:w-2/3 lg:pe-20">
           <AgentForm data={data} postLink={url} />
         </div>
         <div className="w-full lg:block lg:w-1/3 lg:ps-4 overflow-y-auto mt-0 mb-6 lg:mb-0">

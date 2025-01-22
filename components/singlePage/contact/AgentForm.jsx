@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
 import { BsEnvelopeAt } from "react-icons/bs";
 import toast, { Toaster } from "react-hot-toast";
+import SmallSpinner from "@/components/SmallSpinner";
 
 export default function AgentForm({ data, postLink }) {
   const [isMounted, setIsMounted] = useState(false);
@@ -38,14 +39,10 @@ export default function AgentForm({ data, postLink }) {
     },
   });
 
-  // useEffect(() => {
-  //   setIsMounted(true);
-  //   console.log("data", data);
-  // }, []);
-
-  // if (!isMounted) {
-  //   return null;
-  // }
+  useEffect(() => {
+    setIsMounted(true);
+    console.log("data", data);
+  }, []);
 
   const onSubmit = async (formData) => {
     setSending(true);
@@ -91,6 +88,7 @@ export default function AgentForm({ data, postLink }) {
 
   return (
     <>
+      {!isMounted && <SmallSpinner className={"rounded-xl"} />}
       <Toaster
         toastOptions={{
           success: {
