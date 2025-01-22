@@ -85,7 +85,7 @@ export default function AgentForm({ data, postLink }) {
   return (
     <>
       <form onSubmit={handleSubmit(onSubmit)} className="">
-        <div className="flex gap-4">
+        <div className="flex flex-col sm:flex-row sm:gap-4">
           <div className="relative z-0 w-full mb-3 group">
             <input
               type="text"
@@ -138,7 +138,7 @@ export default function AgentForm({ data, postLink }) {
           </div>
         </div>
 
-        <div className="flex gap-4">
+        <div className="flex flex-col sm:flex-row sm:gap-4">
           <div className="relative z-0 w-full mb-3 group">
             <input
               type="tel"

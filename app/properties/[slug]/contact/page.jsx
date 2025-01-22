@@ -29,11 +29,11 @@ export default async function page({ params }) {
       <h2 className="font-medium  pb-3 md:pb-5 text-xl md:text-3xl tracking-wide text-property-txt-700 py-4">
         Email agent
       </h2>
-      <div className="flex">
+      <div className="flex flex-col-reverse lg:flex-row">
         <div className="w-full lg:w-2/3 lg:pe-20">
           <AgentForm data={data} postLink={url} />
         </div>
-        <div className="w-full hidden lg:block lg:w-1/3 ps-4 sticky top-0  overflow-y-auto mt-0">
+        <div className="w-full lg:block lg:w-1/3 lg:ps-4 overflow-y-auto mt-0 mb-6 lg:mb-0">
           <PropertyInfo
             image={featuredImage[0].guid?.rendered}
             alt={featuredImage[0].alt_text}
