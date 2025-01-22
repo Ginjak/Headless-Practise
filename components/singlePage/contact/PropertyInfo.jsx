@@ -3,17 +3,22 @@ import { IoIosBed } from "react-icons/io";
 import { PiArmchairFill } from "react-icons/pi";
 import { TbBathFilled } from "react-icons/tb";
 
-export default function PropertyInfo({ image, data }) {
-  console.log("image", image);
+export default function PropertyInfo({
+  image,
+  alt,
+  data,
+  companyLogo,
+  companyLogoAlt,
+}) {
   return (
     <div className="rounded-xl bg-property-txt-700/5 border-[1px] border-property-txt-700/10 shadow-md">
       <Image
-        src={image?.guid?.rendered}
-        alt={image?.alt_text}
+        src={image}
+        alt={alt}
         width={400} // Set display size here
         height={400} // Set display size here
         className="rounded-t-xl"
-        priority
+        loading="lazy"
       />
       <div className="p-4 flex flex-col gap-2">
         <p className="text-property-txt-700 text-xl font-bold tracking-wide">
@@ -42,6 +47,23 @@ export default function PropertyInfo({ image, data }) {
               {data?.receptions}
             </p>
           )}
+        </div>
+        <div className="mt-4 flex justify-between items-center">
+          <div className="flex flex-col">
+            <p className="text-property-txt-700/60 text-xs">Agent</p>
+            <p className="text-property-txt-700 font-medium">
+              {data?.team_member?.team_member_name}{" "}
+              {data?.team_member?.team_member_surname}
+            </p>
+          </div>
+          <Image
+            src={companyLogo}
+            alt={companyLogoAlt}
+            width={100}
+            height={400}
+            className="rounded-t-xl"
+            loading="lazy"
+          />
         </div>
       </div>
     </div>

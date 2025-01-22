@@ -11,7 +11,13 @@ export default async function page({ params }) {
   const url = `${process.env.NEXT_MAIN_DOMAIN_NAME}/${data.post_type}/${slug}`;
   console.log("base url", url);
 
-  const featuredImage = await fetchImageData([data.featured_image]);
+  const [featuredImage, companyLogo] = await Promise.all([
+    fetchImageData([data?.featured_image]),
+    fetchImageData([data?.team_member?.team_member_company_logo]),
+  ]);
+
+  console.log("featured", featuredImage);
+  console.log("compnay", companyLogo);
 
   // If no data is found, return a fallback page
   if (!data) {
@@ -28,7 +34,13 @@ export default async function page({ params }) {
           <AgentForm data={data} postLink={url} />
         </div>
         <div className="w-full hidden lg:block lg:w-1/3 ps-4 sticky top-0  overflow-y-auto mt-0">
-          <PropertyInfo image={featuredImage[0]} data={data} />
+          <PropertyInfo
+            image={featuredImage[0].guid?.rendered}
+            alt={featuredImage[0].alt_text}
+            companyLogo={companyLogo[0].guid?.rendered}
+            companyLogoAlt={companyLogo[0].alt_text}
+            data={data}
+          />
         </div>
       </div>
       <p className="">teasdasd</p>

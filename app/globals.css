@@ -41,6 +41,16 @@ body {
   font-family: var(--font-poppins);
 }
 
+input,
+textarea,
+select,
+button {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  outline: none;
+}
+
 /* Navigation styles */
 /* Ensure the root list items are positioned relatively */
 ul {
