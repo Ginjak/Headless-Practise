@@ -1,6 +1,9 @@
-import { fetchCptPostsForSimilarPropertiesSlider } from "@/lib/api";
+import {
+  fetchCptPostsForSimilarPropertiesSlider,
+  fetchImageDataAll,
+} from "@/lib/api";
 import { similarPropertiesFetch } from "@/lib/functions";
-import { fetchImageData } from "@/lib/api"; // Assuming this is where fetchImageData is defined
+
 import SimilarPropertiesSlider from "./SimilarPropertiesSlider";
 
 // Main component
@@ -36,7 +39,7 @@ export default async function SimilarProperties({
     const imageIds = filteredPropertiesByDistance.map(
       (property) => property.featured_image
     );
-    const images = await fetchImageData(imageIds);
+    const images = await fetchImageDataAll(imageIds);
     // Enrich filtered properties with image data
     const filteredPropertiesByDistanceWithImages =
       filteredPropertiesByDistance.map((property, index) => ({

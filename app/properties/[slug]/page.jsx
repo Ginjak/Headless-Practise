@@ -1,7 +1,7 @@
 import {
   fetchCptSinglePost,
   fetchAllCptPosts,
-  fetchImageData,
+  fetchImageDataAll,
 } from "@/lib/api";
 import Slider from "@/components/singlePage/Slider";
 import AgentSinglePage from "@/components/singlePage/AgentSinglePage";
@@ -41,11 +41,11 @@ export default async function PropertyPage({ params }) {
 
   // Fetch images concurrently using Promise.all for better performance
   const imagePromises = [
-    data?.slider_images && fetchImageData(data.slider_images.split(",")),
+    data?.slider_images && fetchImageDataAll(data.slider_images.split(",")),
     data?.team_member_company_logo &&
-      fetchImageData([data.team_member_company_logo]),
-    data?.team_member_picture && fetchImageData([data.team_member_picture]),
-    data?.featured_image && fetchImageData([data.featured_image]),
+      fetchImageDataAll([data.team_member_company_logo]),
+    data?.team_member_picture && fetchImageDataAll([data.team_member_picture]),
+    data?.featured_image && fetchImageDataAll([data.featured_image]),
   ].filter(Boolean);
 
   // Resolve all image data
@@ -56,6 +56,9 @@ export default async function PropertyPage({ params }) {
   const companyLogo = companyLogoData?.[0];
   const memberPhoto = memberPhotoData?.[0];
   const featuredImage = featuredImageData?.[0];
+
+  const test = await fetchImageDataAll(data.slider_images.split(","));
+  console.log("objects with images", test);
 
   // Reduce unnecessary re-renders and improve LCP by rendering above-the-fold content first
   return (
@@ -80,7 +83,7 @@ export default async function PropertyPage({ params }) {
         <div className="content w-full lg:w-2/3 mt-4">
           {/* Slider and property details */}
           <div className="slider-wraper mb-6">
-            <Slider images={images} />
+            <Slider images={images} imgIds={data.slider_images.split(",")} />
           </div>
 
           <div className="main-details-wraper my-8 md:my-16 mx-6 md:mx-10">

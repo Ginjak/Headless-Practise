@@ -32,13 +32,13 @@ export default function ImageWithSpinner({
       <Image
         src={src || "/image_placeholder.webp"}
         alt={alt || "Image placeholder"}
-        width={!fill ? width : undefined} // Only pass width if not using fill
-        height={!fill ? height : undefined} // Only pass height if not using fill
-        className={className || "rounded-t-xl"} // Apply passed or default className
+        width={!fill ? width : undefined}
+        height={!fill ? height : undefined}
+        className={className}
         priority={priority}
         loading={loading}
         onLoad={handleImageLoad}
-        {...fillProps} // Spread the conditional fill prop
+        {...fillProps}
       />
     </div>
   );

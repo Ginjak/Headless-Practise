@@ -2,8 +2,8 @@ import AgentForm from "@/components/singlePage/contact/AgentForm";
 import PropertyInfo from "@/components/singlePage/contact/PropertyInfo";
 import {
   fetchCptShortSinglePost,
-  fetchImageData,
   fetchAllCptPosts,
+  fetchImageDataAll,
 } from "@/lib/api";
 
 // Generate static params for all slugs
@@ -34,8 +34,8 @@ export default async function ContactPage({ params }) {
   //   fetchImageData([data?.team_member?.team_member_company_logo]),
   // ]);
 
-  const featuredImage = await fetchImageData([data?.featured_image]);
-  const companyLogo = await fetchImageData([
+  const featuredImage = await fetchImageDataAll([data?.featured_image]);
+  const companyLogo = await fetchImageDataAll([
     data?.team_member?.team_member_company_logo,
   ]);
   return (

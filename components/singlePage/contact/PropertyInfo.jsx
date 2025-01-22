@@ -57,18 +57,21 @@ export default function PropertyInfo({
         </div>
         <div className="mt-4 flex justify-between items-center">
           <div className="flex flex-col">
-            <p className="text-property-txt-700/60 text-xs">Agent</p>
-            <p className="text-property-txt-700 font-medium">
-              {data?.team_member?.team_member_name}{" "}
-              {data?.team_member?.team_member_surname}
-            </p>
+            {data?.team_member?.team_member_name && (
+              <>
+                <p className="text-property-txt-700/60 text-xs">Agent</p>
+                <p className="text-property-txt-700 font-medium">
+                  {data?.team_member?.team_member_name}{" "}
+                  {data?.team_member?.team_member_surname}
+                </p>
+              </>
+            )}
           </div>
           <ImageWithSpinner
             src={companyLogo}
             alt={companyLogoAlt}
             width={"100"}
             height={"400"}
-            className={"rounded-t-xl"}
             loading={"lazy"}
             spinnerClassName={"z-10 rounded-xl"}
           />

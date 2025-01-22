@@ -13,9 +13,9 @@ import Head from "next/head";
 import { useState } from "react";
 import SmallSpinner from "../SmallSpinner";
 
-export default function Slider({ images }) {
+export default function Slider({ imgIds, images }) {
   const [isFirstImageLoaded, setIsFirstImageLoaded] = useState(false);
-
+  console.log(imgIds);
   const handleImageLoad = () => {
     setIsFirstImageLoaded(true);
   };

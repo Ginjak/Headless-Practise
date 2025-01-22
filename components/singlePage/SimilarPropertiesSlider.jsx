@@ -59,9 +59,11 @@ export default function SimilarPropertiesSlider({ data }) {
                   <Image
                     src={
                       property?.image?.media_details?.sizes?.medium_large
-                        ?.source_url
+                        ?.source_url || "/image_placeholder.webp"
                     }
-                    alt={property?.image?.alt_text || "Property image"}
+                    alt={
+                      property?.image?.alt_text || "Property image placeholder"
+                    }
                     className="object-cover rounded-t-xl"
                     fill
                     sizes="(max-width: 639px) 640px, (min-width: 640px) 320px"
