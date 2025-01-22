@@ -47,8 +47,7 @@ export default async function ContactPage({ params }) {
         <div className="relative w-full lg:w-2/3 lg:pe-20">
           <AgentForm data={data} postLink={url} />
         </div>
-        {/* <div className="w-full lg:w-1/3 lg:ps-4 overflow-y-auto mt-0 mb-6 lg:mb-0 lg:sticky lg:top-0"> */}
-        <div className="z-50 lg:z-0 w-full fixed bottom-0 left-0 right-0 lg:block lg:w-1/3 lg:ps-4 lg:sticky lg:top-0 lg:h-screen lg:overflow-y-auto mt-0">
+        <div className="w-full lg:w-1/3 lg:ps-4 overflow-y-auto mt-0 mb-6 lg:mb-0">
           <PropertyInfo
             image={featuredImage?.[0]?.guid?.rendered || ""}
             alt={featuredImage?.[0]?.alt_text || ""}
