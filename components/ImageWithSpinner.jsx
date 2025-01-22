@@ -30,8 +30,8 @@ export default function ImageWithSpinner({
         </div>
       )}
       <Image
-        src={src}
-        alt={alt}
+        src={src || "/image_placeholder.webp"}
+        alt={alt || "Image placeholder"}
         width={!fill ? width : undefined} // Only pass width if not using fill
         height={!fill ? height : undefined} // Only pass height if not using fill
         className={className || "rounded-t-xl"} // Apply passed or default className

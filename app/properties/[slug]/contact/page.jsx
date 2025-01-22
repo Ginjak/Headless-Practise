@@ -29,11 +29,15 @@ export default async function ContactPage({ params }) {
   const url = `${process.env.NEXT_MAIN_DOMAIN_NAME}/${data.post_type}/${slug}`;
 
   // Fetch related images in parallel
-  const [featuredImage, companyLogo] = await Promise.all([
-    fetchImageData([data?.featured_image]),
-    fetchImageData([data?.team_member?.team_member_company_logo]),
-  ]);
+  // const [featuredImage, companyLogo] = await Promise.allSettled([
+  //   fetchImageData([data?.featured_image]),
+  //   fetchImageData([data?.team_member?.team_member_company_logo]),
+  // ]);
 
+  const featuredImage = await fetchImageData([data?.featured_image]);
+  const companyLogo = await fetchImageData([
+    data?.team_member?.team_member_company_logo,
+  ]);
   return (
     <div className="max-w-5xl mx-auto px-3">
       <h2 className="font-medium pb-3 md:pb-5 text-xl md:text-3xl tracking-wide text-property-txt-700 py-4">
