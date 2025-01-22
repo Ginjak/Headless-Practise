@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
-    // domains: ["headless-practise.local"],
+    // domains: ["headlness-practise.local"],
     domains: ["bonodesign.co.uk"],
   },
 };

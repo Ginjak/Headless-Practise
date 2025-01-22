@@ -19,7 +19,7 @@ export default function PropertyInfo({
       </Head>
 
       <div className="rounded-xl flex flex-col sm:flex-row lg:flex-col bg-property-txt-700/5 border-[1px] border-property-txt-700/10 sm:shadow-md">
-        <ImageWithSpinner
+        {/* <ImageWithSpinner
           src={image}
           alt={alt}
           width={"640"}
@@ -31,7 +31,7 @@ export default function PropertyInfo({
           spinnerClassName={
             "rounded-t-xl sm:rounded-none sm:rounded-l-xl lg:rounded-none lg:rounded-t-xl"
           }
-        />
+        /> */}
 
         <div className="p-4 flex flex-col gap-2 w-full">
           <p className="text-property-txt-700 text-xl font-bold tracking-wide">
@@ -73,14 +73,14 @@ export default function PropertyInfo({
                 </>
               )}
             </div>
-            <ImageWithSpinner
+            {/* <ImageWithSpinner
               src={companyLogo}
               alt={companyLogoAlt}
               width={"100"}
               height={"400"}
               loading={"lazy"}
               spinnerClassName={"z-10 rounded-xl max-h-14"}
-            />
+            /> */}
           </div>
         </div>
       </div>

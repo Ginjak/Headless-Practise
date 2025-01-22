@@ -88,7 +88,7 @@ export default function AgentForm({ data, postLink }) {
 
   return (
     <>
-      {!isMounted && <SmallSpinner className={"rounded-xl"} />}
+      {/* {!isMounted && <SmallSpinner className={"rounded-xl"} />} */}
       <Toaster
         toastOptions={{
           success: {
