@@ -77,7 +77,7 @@ export default function PropertyInfo({
               src={companyLogo}
               alt={companyLogoAlt}
               width={"100"}
-              height={"400"}
+              height={"70"}
               loading={"lazy"}
               spinnerClassName={"z-10 rounded-xl max-h-14"}
               fillContainerClassName={"max-h-14"}
