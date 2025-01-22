@@ -13,13 +13,18 @@ export default function PropertyInfo({
 }) {
   return (
     <div className="rounded-xl flex flex-col sm:flex-row lg:flex-col bg-property-txt-700/5 border-[1px] border-property-txt-700/10 sm:shadow-md">
-      <Image
+      <ImageWithSpinner
         src={image}
         alt={alt}
-        width={640}
-        height={400}
-        className="rounded-t-xl sm:rounded-none sm:rounded-l-xl lg:rounded-none lg:rounded-t-xl  sm:max-w-80 lg:max-w-full object-cover lg:object-contain"
-        priority
+        width={"640"}
+        height={"400"}
+        className={
+          "rounded-t-xl sm:rounded-none sm:rounded-l-xl lg:rounded-none lg:rounded-t-xl  sm:max-w-80 lg:max-w-full object-cover lg:object-contain"
+        }
+        priority={"priority"}
+        spinnerClassName={
+          "rounded-t-xl sm:rounded-none sm:rounded-l-xl lg:rounded-none lg:rounded-t-xl"
+        }
       />
 
       <div className="p-4 flex flex-col gap-2 w-full">
