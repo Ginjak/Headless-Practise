@@ -18,7 +18,7 @@ export default function PropertyInfo({
         width={640}
         height={400}
         className="rounded-t-xl sm:rounded-none sm:rounded-l-xl lg:rounded-none lg:rounded-t-xl  sm:max-w-80 lg:max-w-full object-cover lg:object-contain"
-        loading="lazy"
+        priority
       />
 
       <div className="p-4 flex flex-col gap-2 w-full">
