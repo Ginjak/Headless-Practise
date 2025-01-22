@@ -2,6 +2,7 @@
 import { useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
 import { BsEnvelopeAt } from "react-icons/bs";
+import toast, { Toaster } from "react-hot-toast";
 
 export default function AgentForm({ data, postLink }) {
   const [isMounted, setIsMounted] = useState(false);
@@ -11,6 +12,7 @@ export default function AgentForm({ data, postLink }) {
   const [charCount, setCharCount] = useState(0);
   const [limitReached, setLimitReached] = useState(false);
   const [submitStatus, setSubmitStatus] = useState("");
+  const [sending, setSending] = useState(false);
   const charLimit = 700;
 
   console.log("testing data", data);
@@ -46,6 +48,7 @@ export default function AgentForm({ data, postLink }) {
   // }
 
   const onSubmit = async (formData) => {
+    setSending(true);
     try {
       // Send data to the Next.js API route
       const response = await fetch("/api/propertyForm", {
@@ -63,11 +66,15 @@ export default function AgentForm({ data, postLink }) {
         setSubmitStatus("Message sent successfully!");
         reset();
         setCharCount(0); // Reset character count
+        setSending(false);
+        toast.success("Thank you! We will get back to you shortly.");
       } else {
         setSubmitStatus(`Error: ${result.message}`);
       }
     } catch (error) {
       setSubmitStatus("There was an error submitting the form.");
+      setSending(false);
+      toast.error("Oops! Something went wrong. Please try again later.");
     }
   };
 
@@ -84,6 +91,22 @@ export default function AgentForm({ data, postLink }) {
 
   return (
     <>
+      <Toaster
+        toastOptions={{
+          success: {
+            iconTheme: {
+              primary: "#09BC8A",
+            },
+            style: {
+              maxWidth: "500px",
+              width: "auto",
+              whiteSpace: "normal",
+              padding: "8px 16px",
+            },
+          },
+        }}
+      />
+
       <form onSubmit={handleSubmit(onSubmit)} className="">
         <div className="flex flex-col sm:flex-row sm:gap-4">
           <div className="flex flex-col-reverse relative z-0 w-full mb-3 group">
@@ -91,6 +114,7 @@ export default function AgentForm({ data, postLink }) {
               type="text"
               name="name"
               id="name"
+              disabled={sending}
               {...register("name", { required: "Name is required" })}
               placeholder=""
               className={`appearance-none mb-2 peer block py-2.5 px-0 w-full text-sm text-property-txt-700 bg-transparent border-0 border-b-2 ${
@@ -116,6 +140,7 @@ export default function AgentForm({ data, postLink }) {
               type="text"
               name="surname"
               id="surname"
+              disabled={sending}
               {...register("surname", { required: "Last name is required" })}
               placeholder=""
               className={`mb-2 peer block py-2.5 px-0 w-full text-sm text-property-txt-700 bg-transparent border-0 border-b-2 ${
@@ -144,6 +169,7 @@ export default function AgentForm({ data, postLink }) {
               type="tel"
               name="phone"
               id="phone"
+              disabled={sending}
               {...register("phone", { required: "Phone number is required" })}
               placeholder=""
               className={`mb-2 peer block py-2.5 px-0 w-full text-sm text-property-txt-700 bg-transparent border-0 border-b-2 ${
@@ -169,6 +195,7 @@ export default function AgentForm({ data, postLink }) {
               type="email"
               name="floating_email"
               id="floating_email"
+              disabled={sending}
               {...register("email", { required: "Email is required" })}
               placeholder=""
               className={`mb-2 peer block py-2.5 px-0 w-full text-sm text-property-txt-700 bg-transparent border-0 border-b-2 ${
@@ -195,6 +222,7 @@ export default function AgentForm({ data, postLink }) {
             type="text"
             name="postcode"
             id="postcode"
+            disabled={sending}
             {...register("postcode", { required: "Postcode is required" })}
             placeholder=""
             className={`mb-2 peer block py-2.5 px-0 w-full text-sm text-property-txt-700 bg-transparent border-0 border-b-2 ${
@@ -217,6 +245,7 @@ export default function AgentForm({ data, postLink }) {
         </div>
         <div className="flex flex-col relative z-0 w-full mb-3 group">
           <textarea
+            disabled={sending}
             name="message"
             id="message"
             rows="4"
@@ -231,7 +260,7 @@ export default function AgentForm({ data, postLink }) {
               handleMessageChange(e);
             }}
             placeholder=""
-            className="order-2 mb-2 peer block py-2.5 px-0 w-full text-sm text-property-txt-700 bg-transparent border-0 border-b-2 border-property-txt-700/50 focus:border-property-pr-300"
+            className="focus:outline-none order-2 mb-2 peer block py-2.5 px-0 w-full text-sm text-property-txt-700 bg-transparent border-0 border-b-2 border-property-txt-700/50 focus:border-property-pr-300"
           />
 
           <label
@@ -256,6 +285,7 @@ export default function AgentForm({ data, postLink }) {
           <div className="flex items-start">
             <div className="flex items-center h-5">
               <input
+                disabled={sending}
                 type="checkbox"
                 id="moreDetails"
                 {...register("moreDetails")}
@@ -272,6 +302,7 @@ export default function AgentForm({ data, postLink }) {
           <div className="flex items-start">
             <div className="flex items-center h-5">
               <input
+                disabled={sending}
                 type="checkbox"
                 id="viewProperty"
                 {...register("viewProperty")}
@@ -289,10 +320,11 @@ export default function AgentForm({ data, postLink }) {
 
         <button
           type="submit"
-          className="w-full rounded-lg bg-property-acc-100 hover:bg-property-acc-300 text-property-bg-100 py-3 px-4 transition-all duration-200 uppercase font-bold tracking-wider flex items-center justify-center gap-2"
+          disabled={sending}
+          className="w-full rounded-lg bg-property-acc-100 hover:bg-property-acc-300 text-property-bg-100 py-3 px-4 transition-all duration-200 uppercase font-bold tracking-wider flex items-center justify-center gap-2 disabled:bg-property-txt-700/50 disabled:cursor-not-allowed"
         >
           <BsEnvelopeAt className="text-property-bg-100 text-2xl font-bold" />
-          Send email
+          {sending ? "Sending..." : "Send email"}
         </button>
       </form>
     </>

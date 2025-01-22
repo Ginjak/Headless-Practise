@@ -43,7 +43,6 @@ export default async function page({ params }) {
           />
         </div>
       </div>
-      <p className="">teasdasd</p>
     </div>
   );
 }
