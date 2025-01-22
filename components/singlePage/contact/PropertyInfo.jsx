@@ -15,7 +15,6 @@ export default function PropertyInfo({
   return (
     <>
       <Head>
-        /* Preload the first image to improve LCP */
         <link rel="preload" href={image} as="image" />
       </Head>
 
