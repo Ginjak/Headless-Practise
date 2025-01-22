@@ -73,8 +73,7 @@ export default function PropertyInfo({
             width={"100"}
             height={"400"}
             loading={"lazy"}
-            spinnerClassName={"z-10 rounded-xl"}
-            fillContainerClassName={"max-h-14"}
+            spinnerClassName={"z-10 rounded-xl max-h-14"}
           />
         </div>
       </div>

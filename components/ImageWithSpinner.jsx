@@ -34,9 +34,6 @@ export default function ImageWithSpinner({
       <Image
         src={src || "/image_placeholder.webp"}
         alt={alt || "Image placeholder"}
-        // width={!fill ? width : undefined}
-        // height={!fill ? height : undefined}
-        // sizes={!sizes ? sizes : undefined}
         className={className}
         priority={priority}
         loading={loading}
