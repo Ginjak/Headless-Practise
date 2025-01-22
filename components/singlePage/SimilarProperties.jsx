@@ -48,7 +48,7 @@ export default async function SimilarProperties({
       }));
 
     return (
-      <div>
+      <div className="mb-10 lg:mb-0">
         <h5 className="font-medium pb-5  text-xl md:text-2xl tracking-wide text-property-txt-700 px-6 md:px-10">
           Similar properties
         </h5>

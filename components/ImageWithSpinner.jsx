@@ -9,12 +9,14 @@ export default function ImageWithSpinner({
   alt,
   width,
   height,
+  sizes,
   fill,
   className,
   priority,
   loading,
   spinnerClassName,
   spinnerWraperClassName,
+  fillContainerClassName,
 }) {
   const [isLoading, setIsLoading] = useState(true);
   const handleImageLoad = () => {
@@ -23,7 +25,7 @@ export default function ImageWithSpinner({
   const fillProps = fill ? { fill: true } : {}; // Include fill prop only if it's provided
 
   return (
-    <div className="relative">
+    <div className={`relative ${fillContainerClassName}`}>
       {isLoading && (
         <div className={spinnerWraperClassName}>
           <SmallSpinner className={spinnerClassName} />
@@ -32,12 +34,15 @@ export default function ImageWithSpinner({
       <Image
         src={src || "/image_placeholder.webp"}
         alt={alt || "Image placeholder"}
-        width={!fill ? width : undefined}
-        height={!fill ? height : undefined}
+        // width={!fill ? width : undefined}
+        // height={!fill ? height : undefined}
+        // sizes={!sizes ? sizes : undefined}
         className={className}
         priority={priority}
         loading={loading}
         onLoad={handleImageLoad}
+        sizes={sizes || undefined}
+        {...(fill ? { fill: true } : { width, height })}
         {...fillProps}
       />
     </div>
