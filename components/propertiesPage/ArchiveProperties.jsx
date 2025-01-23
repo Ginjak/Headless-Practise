@@ -24,6 +24,7 @@ export default function ArchiveProperties() {
     keepPreviousData: true,
   });
 
+  console.log("First single post in Archive for data", properties?.posts[0]);
   // Log the fetched data, error, and loading states
   useEffect(() => {
     if (isLoading) {

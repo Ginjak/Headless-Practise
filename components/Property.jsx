@@ -23,11 +23,9 @@ export default function Property({ property }) {
   }, []);
 
   return (
-    <>
-      <p>Test</p>
+    <Link href={`/${property?.post_type}/${property?.slug}`}>
       {imageData ? (
         <div>
-          <h2>Image Details</h2>
           <p>{imageData?.title?.rendered}</p>{" "}
           {/* Assuming title is part of the response */}
           <Image
@@ -40,6 +38,6 @@ export default function Property({ property }) {
       ) : (
         <p>Loading image...</p>
       )}
-    </>
+    </Link>
   );
 }
