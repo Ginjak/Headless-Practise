@@ -1,17 +1,28 @@
-"use client";
+import FilterTest from "@/components/FilterTest";
+import ArchivePropertiesWraper from "@/components/propertiesPage/ArchivePropertiesWraper";
+import { FilterProvider } from "@/context/FilterContext";
+import { fetchProperties } from "@/lib/api";
 
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import ArchivePage from "@/components/ArchivePage";
-import { FilterProvider } from "../../context/FilterContext";
+export default async function page() {
+  // const filters = {
+  //   bedrooms_from: "1",
+  //   bedrooms_to: "10",
+  //   type: "",
+  //   features: ["garage", "basement"] || [],
+  // };
 
-const queryClient = new QueryClient();
+  // const data = await fetchProperties(filters);
+  // console.log("data with filters", data);
 
-export default function Properties() {
   return (
-    <FilterProvider>
-      <QueryClientProvider client={queryClient}>
-        <ArchivePage />
-      </QueryClientProvider>
-    </FilterProvider>
+    <div>
+      <FilterProvider>
+        {/* <ReactQueryWraper> */}
+        <p>Title for arhive page</p>
+        <FilterTest />
+        <ArchivePropertiesWraper />
+        {/* </ReactQueryWraper> */}
+      </FilterProvider>
+    </div>
   );
 }

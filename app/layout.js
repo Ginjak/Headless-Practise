@@ -1,6 +1,7 @@
 import "./globals.css";
 import localFont from "next/font/local";
 import Header from "@/components/Header";
+import { FilterProvider } from "@/context/FilterContext";
 
 const bebas = localFont({
   src: "./fonts/bebasneue.woff2",
@@ -22,8 +23,10 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={`bg-mainBg-ligther ${poppins.variable}`}>
-        <Header />
-        {children}
+        <FilterProvider>
+          <Header />
+          {children}
+        </FilterProvider>
       </body>
     </html>
   );

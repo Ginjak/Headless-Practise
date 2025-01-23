@@ -1,4 +1,4 @@
-// context/FilterContext.js
+"use client";
 import { createContext, useContext, useState } from "react";
 
 // Create context
@@ -15,7 +15,7 @@ export const FilterProvider = ({ children }) => {
     page: 1,
     per_page: 2,
     city: undefined,
-    features: [],
+    features: [""],
     bedrooms_from: 1,
     bedrooms_to: 10,
     pet_friendly: true,
