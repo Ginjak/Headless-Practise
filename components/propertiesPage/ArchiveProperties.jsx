@@ -46,20 +46,26 @@ export default function ArchiveProperties() {
   }
 
   return (
-    <div>
-      <div>----------------------------</div>
-      <h2>Archive Properties</h2>
-      {properties.posts && properties.posts.length > 0 ? (
-        properties.posts.map((property) => (
-          <Property property={property} key={property.ID} />
-        ))
-      ) : (
-        // Add Component to show if no data available
-        <p>No properties available.</p>
-      )}
-      {/* <Property properties={properties} /> */}
-      <Pagination count={properties?.total_posts} cpt={"properties"} />
-      {/* Display properties in a formatted way */}
+    <div className="max-w-7xl mx-auto px-3 flex">
+      <div className="w-full lg:w-2/3 mt-4">
+        <h2>Archive Properties</h2>
+        <div className="grid xs:grid-cols-2 tab:grid-cols-3 gap-4">
+          {properties.posts && properties.posts.length > 0 ? (
+            properties.posts.map((property) => (
+              <Property property={property} key={property.ID} />
+            ))
+          ) : (
+            // Add Component to show if no data available
+            <p>No properties available.</p>
+          )}
+        </div>
+        {/* <Property properties={properties} /> */}
+        <Pagination count={properties?.total_posts} cpt={"properties"} />
+        {/* Display properties in a formatted way */}
+      </div>
+      <div className=" hidden md:block w-1/3 ps-4 sticky top-0 h-screen overflow-y-auto mt-0">
+        <p>Filter column</p>
+      </div>
     </div>
   );
 }

@@ -1,7 +1,6 @@
 "use client";
 import Link from "next/link";
 import { useState } from "react";
-import SmallSpinner from "../SmallSpinner";
 
 export default function PhoneRevealBtn({ text, phone }) {
   const [buttonText, setButtonText] = useState(text);

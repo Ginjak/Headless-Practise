@@ -13,7 +13,7 @@ export const useFilterContext = () => {
 export const FilterProvider = ({ children }) => {
   const [filters, setFilters] = useState({
     page: 1,
-    per_page: 2,
+    per_page: 4,
     city: undefined,
     features: [""],
     bedrooms_from: 1,

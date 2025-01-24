@@ -1,3 +1,9 @@
-export default function SinglePostDivider() {
-  return <div className="w-full bg-property-txt-700/30 h-[1px] my-5"></div>;
+export default function SinglePostDivider({ className }) {
+  return (
+    <div
+      className={`w-full bg-property-txt-700/30 h-[1px] ${
+        className ? className : ""
+      }`}
+    ></div>
+  );
 }

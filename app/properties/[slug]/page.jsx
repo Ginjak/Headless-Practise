@@ -115,18 +115,18 @@ export default async function PropertyPage({ params }) {
               receptions={data?.receptions}
               size={data?.size_in_sq_ft}
             />
-            <SinglePostDivider />
+            <SinglePostDivider className={"my-5"} />
             <SinglePostDescription
               title="Description"
               description={data?.property_description}
             />
-            <SinglePostDivider />
+            <SinglePostDivider className={"my-5"} />
             <SinglePostFeatures
               title="Features"
               features={data?.features}
               pet_friendly={data?.pet_friendly}
             />
-            <SinglePostDivider />
+            <SinglePostDivider className={"my-5"} />
           </div>
 
           {/* Local Area and Map */}

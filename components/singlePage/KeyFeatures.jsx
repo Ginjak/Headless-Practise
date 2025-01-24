@@ -54,7 +54,10 @@ export default function KeyFeatures({ bedrooms, bathrooms, receptions, size }) {
                 <RiCustomSize className="text-property-acc-100 h-6 w-6" />
               </span>
               <span className="font-bold  text-property-txt-700 text-lg">
-                {size?.toString().padStart(2, "0")}
+                {size && new Intl.NumberFormat().format(size)}{" "}
+                <span className="text-xs text-property-txt-700/80 font-medium">
+                  sq ft
+                </span>
               </span>
             </p>
           </div>
