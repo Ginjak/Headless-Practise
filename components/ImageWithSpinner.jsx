@@ -25,10 +25,18 @@ export default function ImageWithSpinner({
   const fillProps = fill ? { fill: true } : {}; // Include fill prop only if it's provided
 
   return (
-    <div className={`relative ${fillContainerClassName}`}>
+    <div
+      className={`relative ${
+        fillContainerClassName ? fillContainerClassName : ""
+      }`}
+    >
       {isLoading && (
-        <div className={spinnerWraperClassName}>
-          <SmallSpinner className={spinnerClassName} />
+        <div
+          className={`${spinnerWraperClassName ? spinnerWraperClassName : ""}`}
+        >
+          <SmallSpinner
+            className={`${spinnerClassName ? spinnerClassName : ""}`}
+          />
         </div>
       )}
       <Image

@@ -28,12 +28,14 @@ export default function Property({ property }) {
       if (results[0].status === "fulfilled") {
         setPropertyImg(results[0].value);
       } else {
+        return;
         console.error("Error fetching the first image:", results[0].reason);
       }
 
       if (results[1].status === "fulfilled") {
         setAgentImg(results[1].value);
       } else {
+        return;
         console.error("Error fetching the second image:", results[1].reason);
       }
     };
@@ -58,7 +60,8 @@ export default function Property({ property }) {
             width={365}
             height={230}
             spinnerWraperClassName={"max-h-56"}
-            className={"rounded-t-lg"}
+            className={"rounded-t-lg w-full xs:w-auto"}
+            priority={"true"}
           />
         )}
         <div className="p-4 xs:p-2 sm:p-4 flex flex-col justify-between grow">

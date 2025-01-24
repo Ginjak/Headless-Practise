@@ -116,7 +116,7 @@ module.exports = {
         medium: "0 0px 25px rgba(0, 0, 0, 0.5)",
       },
       screens: {
-        xs: "400px",
+        xs: "450px",
         xsm: "500px",
         tab: "900px",
       },

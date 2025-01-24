@@ -48,7 +48,9 @@ export default function ArchiveProperties() {
   return (
     <div className="max-w-7xl mx-auto px-3 flex">
       <div className="w-full lg:w-2/3 mt-4">
-        <h2>Archive Properties</h2>
+        <h1 className="font-medium pb-3 md:pb-5 text-xl md:text-3xl tracking-wide text-property-txt-700 py-4">
+          Archive Properties
+        </h1>
         <div className="grid xs:grid-cols-2 tab:grid-cols-3 gap-4">
           {properties.posts && properties.posts.length > 0 ? (
             properties.posts.map((property) => (
