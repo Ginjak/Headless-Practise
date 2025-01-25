@@ -49,20 +49,22 @@ export default function Property({ property }) {
       className="rounded-xl border-[1px] border-property-txt-700/10 shadow-md"
     >
       <div className="flex flex-col h-full">
-        <ImageWithSpinner
-          src={
-            property?.imageUrl?.media_details?.sizes?.medium_large
-              ?.source_url ||
-            property?.guid?.rendered ||
-            "/image_placeholder.webp"
-          }
-          alt={property?.imageUrl?.alt_text || "Image placeholder"}
-          width={365}
-          height={230}
-          spinnerWraperClassName={"max-h-56 h-full"}
-          className={"rounded-t-lg w-full xs:w-auto"}
-          priority={"true"}
-        />
+        <div className="min-h-44 xs:-min-h-28 sm:min-h-48 tab:min-h-32 2xl:min-h-40">
+          <ImageWithSpinner
+            src={
+              property?.imageUrl?.media_details?.sizes?.medium_large
+                ?.source_url ||
+              property?.guid?.rendered ||
+              "/image_placeholder.webp"
+            }
+            alt={property?.imageUrl?.alt_text || "Image placeholder"}
+            width={365}
+            height={230}
+            spinnerWraperClassName={"min-h-52 h-full"}
+            className={"rounded-t-lg w-full xs:w-auto"}
+            priority={"true"}
+          />
+        </div>
 
         <div className="p-4 xs:p-2 sm:p-4 flex flex-col justify-between grow">
           <div>
