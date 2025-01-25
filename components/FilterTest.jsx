@@ -2,7 +2,6 @@
 import { useFilterContext } from "@/context/FilterContext";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
-import { fetchProperties } from "@/lib/api";
 
 export default function FilterTest() {
   const router = useRouter();
@@ -10,23 +9,29 @@ export default function FilterTest() {
   const { register, handleSubmit, reset } = useForm({
     defaultValues: filters,
   });
-  const queryParams = Object.entries(filters)
-    .filter(([key, value]) => value !== undefined && key !== "per_page") // Exclude undefined values and 'per_page' filter
-    .map(([key, value]) => {
-      if (Array.isArray(value)) {
-        // Handle array filters like features[]=
-        return value
-          .map((val) => `${key}[]=${encodeURIComponent(val)}`)
-          .join("&");
-      }
-      return `${key}=${encodeURIComponent(value)}`;
-    })
-    .join("&");
-  console.log("filter data", filters);
-  console.log("Query Params", queryParams);
+
   const onSubmit = (data) => {
+    // Update the filter context with the new data
     setFilters(data);
-    console.log(data);
+    console.log("Updated filters:", data);
+
+    // Generate the query parameters after updating the filters
+    const queryParams = Object.entries(data)
+      .filter(([key, value]) => value !== undefined && key !== "per_page") // Exclude undefined values and 'per_page' filter
+      .map(([key, value]) => {
+        if (Array.isArray(value)) {
+          // Handle array filters like features[]=
+          return value
+            .map((val) => `${key}[]=${encodeURIComponent(val)}`)
+            .join("&");
+        }
+        return `${key}=${encodeURIComponent(value)}`;
+      })
+      .join("&");
+
+    console.log("Query Params", queryParams);
+
+    // Push the new query parameters to the URL
     router.push(`/properties?${queryParams}`);
   };
 
@@ -51,9 +56,6 @@ export default function FilterTest() {
       page: 1,
       per_page: 4,
     });
-
-    // const resetUrl = `/${cpt}`;
-    // window.history.pushState({}, "", resetUrl);
   };
 
   return (
@@ -132,5 +134,3 @@ export default function FilterTest() {
     </form>
   );
 }
-
-// Handle form submission

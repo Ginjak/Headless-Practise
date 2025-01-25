@@ -59,7 +59,7 @@ export default function Property({ property }) {
           alt={property?.imageUrl?.alt_text || "Image placeholder"}
           width={365}
           height={230}
-          spinnerWraperClassName={"abosulte w-full max-h-56 h-full"}
+          spinnerWraperClassName={"max-h-56 h-full"}
           className={"rounded-t-lg w-full xs:w-auto"}
           priority={"true"}
         />
