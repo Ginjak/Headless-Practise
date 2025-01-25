@@ -45,7 +45,7 @@ export default function ImageWithSpinner({
         className={`${className} transition-all duration-1000 ${
           (isLoading && src === "/image_placeholder.webp") ||
           src === "/agent_placeholder.webp"
-            ? "blur-md"
+            ? "opacity-0"
             : ""
         }`}
         priority={priority}
