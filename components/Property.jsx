@@ -15,7 +15,7 @@ export default function Property({ property }) {
   // State to store the fetched image data
   const [propertyImg, setPropertyImg] = useState(null);
   const [agentImg, setAgentImg] = useState(null);
-  console.log("This is a single property", property);
+
   useEffect(() => {
     // Fetch image data when the component mounts
     const fetchData = async () => {
@@ -59,7 +59,7 @@ export default function Property({ property }) {
           alt={property?.imageUrl?.alt_text || "Image placeholder"}
           width={365}
           height={230}
-          spinnerWraperClassName={"max-h-56 h-full"}
+          spinnerWraperClassName={"abosulte w-full max-h-56 h-full"}
           className={"rounded-t-lg w-full xs:w-auto"}
           priority={"true"}
         />
