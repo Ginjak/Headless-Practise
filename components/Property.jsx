@@ -49,21 +49,21 @@ export default function Property({ property }) {
       className="rounded-xl border-[1px] border-property-txt-700/10 shadow-md"
     >
       <div className="flex flex-col h-full">
-        {propertyImg && (
-          <ImageWithSpinner
-            src={
-              propertyImg?.media_details?.sizes?.medium_large?.source_url ||
-              propertyImg?.guid?.rendered ||
-              "/image_placeholder.webp"
-            }
-            alt={propertyImg?.alt_text || "Image placeholder"}
-            width={365}
-            height={230}
-            spinnerWraperClassName={"max-h-56"}
-            className={"rounded-t-lg w-full xs:w-auto"}
-            priority={"true"}
-          />
-        )}
+        <ImageWithSpinner
+          src={
+            propertyImg?.media_details?.sizes?.medium_large?.source_url ||
+            propertyImg?.guid?.rendered ||
+            "/image_placeholder.webp"
+          }
+          alt={propertyImg?.alt_text || "Image placeholder"}
+          width={365}
+          height={230}
+          spinnerWraperClassName={"max-h-56"}
+          className={"rounded-t-lg w-full xs:w-auto"}
+          fillContainerClassName={"max-h-56 h-full"}
+          priority={"true"}
+        />
+
         <div className="p-4 xs:p-2 sm:p-4 flex flex-col justify-between grow">
           <div>
             <div className="flex xs:flex-col sm:flex-row justify-between mb-2">
