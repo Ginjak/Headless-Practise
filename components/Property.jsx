@@ -49,7 +49,7 @@ export default function Property({ property }) {
       className="rounded-xl border-[1px] border-property-txt-700/10 shadow-md"
     >
       <div className="flex flex-col h-full">
-        <div className="min-h-44 xs:-min-h-28 sm:min-h-48 tab:min-h-32 2xl:min-h-40">
+        <div className="min-h-44 xs:min-h-28 sm:min-h-48 tab:min-h-32 2xl:min-h-40">
           <ImageWithSpinner
             src={
               property?.imageUrl?.media_details?.sizes?.medium_large
