@@ -15,7 +15,7 @@ export default function Property({ property }) {
   // State to store the fetched image data
   const [propertyImg, setPropertyImg] = useState(null);
   const [agentImg, setAgentImg] = useState(null);
-
+  console.log("This is a single property", property);
   useEffect(() => {
     // Fetch image data when the component mounts
     const fetchData = async () => {
@@ -51,11 +51,12 @@ export default function Property({ property }) {
       <div className="flex flex-col h-full">
         <ImageWithSpinner
           src={
-            propertyImg?.media_details?.sizes?.medium_large?.source_url ||
-            propertyImg?.guid?.rendered ||
+            property?.imageUrl?.media_details?.sizes?.medium_large
+              ?.source_url ||
+            property?.guid?.rendered ||
             "/image_placeholder.webp"
           }
-          alt={propertyImg?.alt_text || "Image placeholder"}
+          alt={property?.imageUrl?.alt_text || "Image placeholder"}
           width={365}
           height={230}
           spinnerWraperClassName={"max-h-56"}

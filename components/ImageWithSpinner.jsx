@@ -42,7 +42,7 @@ export default function ImageWithSpinner({
       <Image
         src={src || "/image_placeholder.webp"}
         alt={alt || "Image placeholder"}
-        className={`${className} transition-all duration-1000 ${
+        className={`${className} ${
           (isLoading && src === "/image_placeholder.webp") ||
           src === "/agent_placeholder.webp"
             ? "opacity-0"

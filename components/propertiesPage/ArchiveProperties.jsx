@@ -1,6 +1,10 @@
 "use client";
 import { useFilterContext } from "@/context/FilterContext";
-import { fetchCptPostsWithFilters, fetchPropertiesApi } from "@/lib/api";
+import {
+  fetchCptPostsWithFilters,
+  fetchImageById,
+  fetchPropertiesApi,
+} from "@/lib/api";
 import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect } from "react";
@@ -19,9 +23,43 @@ export default function ArchiveProperties() {
     isLoading,
   } = useQuery({
     queryKey: ["properties", filters],
-    queryFn: () => fetchCptPostsWithFilters(filters),
-    // Refetch on filter change
-    keepPreviousData: true,
+    queryFn: async () => {
+      const response = await fetchCptPostsWithFilters(filters);
+
+      // Fetch images for each property and ensure it won't fail the entire process
+      const propertiesWithImages = await Promise.allSettled(
+        response.posts.map(async (property) => {
+          try {
+            const imageUrl = await fetchImageById(property?.featured_image);
+            return { ...property, imageUrl };
+          } catch (error) {
+            console.error(
+              `Error fetching image for property ID ${property?.ID}:`,
+              error
+            );
+            return { ...property, imageUrl: "" }; // Default fallback
+          }
+        })
+      );
+
+      // Map the results to extract values from fulfilled promises
+      const processedProperties = propertiesWithImages.map((result, index) => {
+        if (result.status === "fulfilled") {
+          return result.value;
+        } else {
+          console.error(
+            `Image fetch failed for property ID ${response.posts[index]?.ID}`
+          );
+          return {
+            ...response.posts[index],
+            imageUrl: "", // Default fallback for rejected promises
+          };
+        }
+      });
+
+      return { ...response, posts: processedProperties };
+    },
+    keepPreviousData: true, // Ensure smooth transitions
   });
 
   console.log("First single post in Archive for data", properties?.posts[0]);
