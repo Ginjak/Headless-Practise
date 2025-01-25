@@ -118,6 +118,7 @@ export default function Property({ property }) {
                     width={40}
                     height={40}
                     className={"rounded-full"}
+                    spinnerClassName={"bg-transparent"}
                   />
 
                   <p className="flex flex-col leading-none text-sm text-property-txt-700">

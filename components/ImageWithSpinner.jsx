@@ -42,7 +42,12 @@ export default function ImageWithSpinner({
       <Image
         src={src || "/image_placeholder.webp"}
         alt={alt || "Image placeholder"}
-        className={className}
+        className={`${className} transition-all duration-1000 ${
+          (isLoading && src === "/image_placeholder.webp") ||
+          src === "/agent_placeholder.webp"
+            ? "blur-md"
+            : ""
+        }`}
         priority={priority}
         loading={loading}
         onLoad={handleImageLoad}
