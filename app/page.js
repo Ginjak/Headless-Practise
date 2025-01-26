@@ -1,3 +1,4 @@
+import { FilterProvider } from "@/context/FilterContext";
 import Sections from "../components/Sections";
 import { fetchFrontPageID, pageContentById } from "@/lib/api";
 
@@ -28,9 +29,11 @@ export default async function HomePage() {
     }
 
     return (
-      <main>
-        <Sections data={homePageData} />
-      </main>
+      <FilterProvider>
+        <main>
+          <Sections data={homePageData} />
+        </main>
+      </FilterProvider>
     );
   } catch (error) {
     console.error("Error fetching page data:", error);

@@ -1,26 +1,56 @@
 "use client";
 import { useFilterContext } from "@/context/FilterContext";
 import { useForm } from "react-hook-form";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useEffect } from "react";
 
 export default function FilterTest() {
   const router = useRouter();
+  const searchParams = useSearchParams(); // Access query parameters
   const { filters, setFilters } = useFilterContext();
+
   const { register, handleSubmit, reset } = useForm({
     defaultValues: filters,
   });
 
-  const onSubmit = (data) => {
-    // Update the filter context with the new data
-    setFilters(data);
-    console.log("Updated filters:", data);
+  // Function to parse query parameters into an object
+  const parseQueryParams = () => {
+    const params = new URLSearchParams(searchParams.toString());
+    const queryFilters = {};
 
-    // Generate the query parameters after updating the filters
+    params.forEach((value, key) => {
+      if (key.endsWith("[]")) {
+        const arrayKey = key.slice(0, -2);
+        queryFilters[arrayKey] = queryFilters[arrayKey] || [];
+        queryFilters[arrayKey].push(value);
+      } else {
+        queryFilters[key] = value;
+      }
+    });
+
+    return queryFilters;
+  };
+
+  // Sync URL filters with context and form
+  useEffect(() => {
+    const urlFilters = parseQueryParams();
+    setFilters(urlFilters); // Update context
+    reset(urlFilters); // Reset form to match URL filters
+  }, [searchParams, setFilters, reset]);
+
+  const onSubmit = (data) => {
+    setFilters(data); // Update context with form data
+
+    // Generate query parameters for the URL
     const queryParams = Object.entries(data)
-      .filter(([key, value]) => value !== undefined && key !== "per_page") // Exclude undefined values and 'per_page' filter
+      .filter(([key, value]) => {
+        // Filter out keys with empty or default values
+        if (Array.isArray(value)) return value.length > 0; // Keep arrays only if they are not empty
+        if (typeof value === "boolean") return true; // Include booleans as is
+        return value !== "" && value !== undefined && value !== null; // Exclude empty or undefined values
+      })
       .map(([key, value]) => {
         if (Array.isArray(value)) {
-          // Handle array filters like features[]=
           return value
             .map((val) => `${key}[]=${encodeURIComponent(val)}`)
             .join("&");
@@ -29,46 +59,64 @@ export default function FilterTest() {
       })
       .join("&");
 
-    console.log("Query Params", queryParams);
-
-    // Push the new query parameters to the URL
+    // Update the URL with filtered query parameters
     router.push(`/properties?${queryParams}`);
   };
 
-  // Handle reset functionality
   const handleReset = () => {
-    // Reset form with initial filters (can pass empty object to reset to default)
-    reset({
+    const defaultFilters = {
       city: "",
-      features: [],
-      bedrooms_from: 1,
-      bedrooms_to: 10,
-      pet_friendly: false,
-    });
-
-    // Reset context filters
-    setFilters({
-      city: "",
+      radius: 5,
       features: [],
       bedrooms_from: 1,
       bedrooms_to: 10,
       pet_friendly: false,
       page: 1,
       per_page: 4,
-    });
+    };
+
+    reset(defaultFilters); // Reset form
+    setFilters(defaultFilters); // Reset context
+    router.push("/properties"); // Clear query parameters from URL
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="filter-form">
+    <form onSubmit={handleSubmit(onSubmit)} className="filter-form d-flex w-72">
       {/* City */}
       <div>
-        <label htmlFor="city">City</label>
+        <label
+          htmlFor="city"
+          className="block text-sm font-medium text-property-txt-700"
+        >
+          Enter a location
+        </label>
         <input
           id="city"
           type="text"
           {...register("city")}
           placeholder="Enter city"
+          className="bg-property-bg-200 border px-2 py-1 border-property-txt-700/10 text-property-txt-700 rounded focus:property-acc-100 focus:border-property-acc-100 block w-full"
         />
+      </div>
+
+      {/* Radius */}
+      <div>
+        <label
+          htmlFor="radius"
+          className="block text-sm font-medium text-property-txt-700"
+        >
+          Radius
+        </label>
+        <select
+          id="radius"
+          {...register("radius")}
+          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+        >
+          <option value="1">+1 mile</option>
+          <option value="5">+5 miles</option>
+          <option value="10">+10 miles</option>
+          <option value="20">+20 miles</option>
+        </select>
       </div>
 
       {/* Features */}
@@ -79,7 +127,7 @@ export default function FilterTest() {
             <input
               type="checkbox"
               value="bungalow"
-              {...register("features")} // Register 'features' as an array
+              {...register("features")}
               className="appearance-none w-5 h-5 border-2 border-property-acc-100 rounded-sm bg-white text-property-txt-700 focus:ring-2 focus:ring-property-acc-100 focus:ring-offset-2 focus:ring-offset-gray-100 checked:bg-property-acc-100 checked:ring-property-acc-100 checked:border-property-acc-100 focus:outline-none"
             />
             Bungalow

@@ -13,6 +13,7 @@ export const useFilterContext = () => {
 export const FilterProvider = ({ children }) => {
   const [filters, setFilters] = useState({
     page: 1,
+    radius: 5,
     per_page: 4,
     city: undefined,
     features: [""],
