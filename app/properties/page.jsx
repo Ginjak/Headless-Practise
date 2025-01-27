@@ -1,21 +1,10 @@
 import FilterTest from "@/components/FilterTest";
-import ImageWithSpinner from "@/components/ImageWithSpinner";
-import AgentDetails from "@/components/propertiesPage/AgentDetails";
+import { lazy } from "react";
 import PropertyCard from "@/components/propertiesPage/PropertyCard";
-import SinglePostDivider from "@/components/singlePage/SinglePostDivider";
-import {
-  fetchCptPostsWithFilters,
-  fetchImageById,
-  fetchImageDataById,
-  fetchProperties,
-} from "@/lib/api";
-import Link from "next/link";
+
+import { fetchImageDataById, fetchProperties } from "@/lib/api";
+
 import React, { Suspense } from "react";
-import { BsEnvelopeAt } from "react-icons/bs";
-import { FaPhone } from "react-icons/fa6";
-import { IoIosBed } from "react-icons/io";
-import { RiCustomSize } from "react-icons/ri";
-import { TbBathFilled } from "react-icons/tb";
 
 // This will be a page that waits for `searchParams` to resolve correctly
 export default async function page({ searchParams }) {
@@ -100,15 +89,17 @@ export default async function page({ searchParams }) {
       Test page
       <div className="max-w-7xl mx-auto px-3 flex">
         <div className="w-full lg:w-2/3 mt-4">
-          <div className="grid xs:grid-cols-2 tab:grid-cols-3 gap-4">
-            {successfulProperties.map((property) => {
-              return (
-                <div key={property.ID}>
-                  <PropertyCard property={property} />
-                </div>
-              );
-            })}
-          </div>
+          <Suspense fallback={<p>Loading feed...</p>}>
+            <div className="grid xs:grid-cols-2 tab:grid-cols-3 gap-4">
+              {successfulProperties.map((property) => {
+                return (
+                  <div key={property.ID}>
+                    <PropertyCard property={property} />
+                  </div>
+                );
+              })}
+            </div>
+          </Suspense>
         </div>
         <div className=" hidden md:block w-1/3 ps-4 sticky top-0 h-screen overflow-y-auto mt-0">
           <FilterTest />
