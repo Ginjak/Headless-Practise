@@ -9,6 +9,7 @@ export default function FilterTest() {
   const searchParams = useSearchParams();
   const { filters, setFilters } = useFilterContext();
   const [isMounted, setIsMounted] = useState(false);
+  const [rerenderKey, setRerenderKey] = useState(Date.now());
 
   const { register, handleSubmit, reset } = useForm({
     defaultValues: filters,
@@ -62,6 +63,7 @@ export default function FilterTest() {
 
     // Update the URL with filtered query parameters
     router.push(`/properties?${queryParams}`);
+    setRerenderKey(Date.now());
   };
 
   const handleReset = () => {
@@ -78,7 +80,7 @@ export default function FilterTest() {
 
     reset(defaultFilters); // Reset form
     setFilters(defaultFilters); // Reset context
-    router.push("/properties"); // Clear query parameters from URL
+    // router.push("/properties");
   };
 
   if (!isMounted) return null; // Avoid rendering until the component is mounted
