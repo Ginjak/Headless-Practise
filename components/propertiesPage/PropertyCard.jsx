@@ -2,9 +2,6 @@ import Link from "next/link";
 import { IoIosBed } from "react-icons/io";
 import { TbBathFilled } from "react-icons/tb";
 import { RiCustomSize } from "react-icons/ri";
-
-import ImageWithSpinner from "../ImageWithSpinner";
-import SinglePostDivider from "../singlePage/SinglePostDivider";
 import AgentDetails from "./AgentDetails";
 import Image from "next/image";
 

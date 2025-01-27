@@ -1,5 +1,5 @@
 import FilterTest from "@/components/FilterTest";
-import { lazy } from "react";
+
 import PropertyCard from "@/components/propertiesPage/PropertyCard";
 
 import { fetchImageDataById, fetchProperties } from "@/lib/api";
@@ -13,14 +13,17 @@ export default async function page({ searchParams }) {
 
   // Destructure the awaited searchParams object
   const {
+    city,
+    radius,
     bedrooms_from,
     bedrooms_to,
-    city,
-    features,
+    bathrooms_from,
+    bathrooms_to,
+    receptions_from,
+    receptions_to,
     page,
     per_page,
     pet_friendly,
-    radius,
   } = resolvedSearchParams;
 
   // Manually handle 'features[]' and 'features' parameters
@@ -41,14 +44,18 @@ export default async function page({ searchParams }) {
 
   // Construct the filters object with all parameters, including features as an array
   const filters = {
+    city,
+    radius,
     bedrooms_from,
     bedrooms_to,
-    city,
-    features: featureArray, // Features as an array
+    bathrooms_from,
+    bathrooms_to,
+    receptions_from,
+    receptions_to,
+    features: featureArray,
     page,
     per_page,
     pet_friendly,
-    radius,
   };
 
   const propertieData = await fetchProperties(filters);

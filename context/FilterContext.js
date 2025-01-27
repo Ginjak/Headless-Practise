@@ -12,14 +12,18 @@ export const useFilterContext = () => {
 // Provider component to wrap your app and provide the filter state
 export const FilterProvider = ({ children }) => {
   const [filters, setFilters] = useState({
-    page: 1,
+    city: "",
     radius: 5,
+    bedrooms_from: "none",
+    bedrooms_to: "none",
+    bathrooms_from: "none",
+    bathrooms_to: "none",
+    receptions_from: "none",
+    receptions_to: "none",
+    features: [],
+    pet_friendly: false,
+    page: 1,
     per_page: 4,
-    city: undefined,
-    features: [""],
-    bedrooms_from: 1,
-    bedrooms_to: 10,
-    pet_friendly: true,
   });
 
   return (
