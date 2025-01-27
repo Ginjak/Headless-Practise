@@ -2,20 +2,21 @@
 import { useFilterContext } from "@/context/FilterContext";
 import { useForm } from "react-hook-form";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 export default function FilterTest() {
   const router = useRouter();
-  const searchParams = useSearchParams(); // Access query parameters
+  const searchParams = useSearchParams();
   const { filters, setFilters } = useFilterContext();
+  const [isMounted, setIsMounted] = useState(false);
 
   const { register, handleSubmit, reset } = useForm({
     defaultValues: filters,
   });
 
-  // Function to parse query parameters into an object
+  // Parse query parameters into an object
   const parseQueryParams = () => {
-    const params = new URLSearchParams(searchParams.toString());
+    const params = new URLSearchParams(searchParams?.toString() || "");
     const queryFilters = {};
 
     params.forEach((value, key) => {
@@ -33,6 +34,7 @@ export default function FilterTest() {
 
   // Sync URL filters with context and form
   useEffect(() => {
+    setIsMounted(true); // Ensure the component is mounted
     const urlFilters = parseQueryParams();
     setFilters(urlFilters); // Update context
     reset(urlFilters); // Reset form to match URL filters
@@ -44,10 +46,9 @@ export default function FilterTest() {
     // Generate query parameters for the URL
     const queryParams = Object.entries(data)
       .filter(([key, value]) => {
-        // Filter out keys with empty or default values
-        if (Array.isArray(value)) return value.length > 0; // Keep arrays only if they are not empty
-        if (typeof value === "boolean") return true; // Include booleans as is
-        return value !== "" && value !== undefined && value !== null; // Exclude empty or undefined values
+        if (Array.isArray(value)) return value.length > 0; // Keep non-empty arrays
+        if (typeof value === "boolean") return true; // Include booleans
+        return value !== "" && value !== undefined && value !== null; // Exclude empty values
       })
       .map(([key, value]) => {
         if (Array.isArray(value)) {
@@ -79,6 +80,8 @@ export default function FilterTest() {
     setFilters(defaultFilters); // Reset context
     router.push("/properties"); // Clear query parameters from URL
   };
+
+  if (!isMounted) return null; // Avoid rendering until the component is mounted
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="filter-form d-flex w-72">
