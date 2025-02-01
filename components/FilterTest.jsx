@@ -3,17 +3,27 @@ import { useFilterContext } from "@/context/FilterContext";
 import { useForm } from "react-hook-form";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
+import { encodeBrackets } from "@/lib/functions";
+import { useFetchLoading } from "@/context/FetchLoadingContext";
 
 export default function FilterTest() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { filters, setFilters } = useFilterContext();
+  const { fetchLoading, setFetchLoading } = useFetchLoading();
   const [isMounted, setIsMounted] = useState(false);
   const [bedroomsFrom, setBedroomsFrom] = useState();
+  const [urlFetchFilter, setUrlFetchFilter] = useState("");
+  const [isModified, setIsModified] = useState(false);
+  const [initialValues, setInitialValues] = useState({});
 
-  const { register, handleSubmit, reset } = useForm({
+  const [changedFormInput, setChangedFormIput] = useState({});
+
+  const { register, handleSubmit, reset, watch } = useForm({
     defaultValues: filters,
   });
+
+  // const formValues = watch();
 
   // Parse query parameters into an object
   const parseQueryParams = () => {
@@ -54,18 +64,12 @@ export default function FilterTest() {
     return options;
   };
 
-  // Sync URL filters with context and form
-  useEffect(() => {
-    setIsMounted(true); // Ensure the component is mounted
-    const urlFilters = parseQueryParams();
-    setFilters(urlFilters); // Update context
-    reset(urlFilters); // Reset form to match URL filters
-    setBedroomsFrom(urlFilters.bedrooms_from);
-  }, [searchParams, setFilters, reset]);
-
   const onSubmit = (data) => {
+    if (data.bedrooms_from === "none") {
+      data.bedrooms_to = "none"; // Explicitly set bedrooms_to to "none"
+    }
     setFilters(data); // Update context with form data
-
+    setFetchLoading(true);
     // Generate query parameters for the URL
     const queryParams = Object.entries(data)
       .filter(([key, value]) => {
@@ -90,6 +94,8 @@ export default function FilterTest() {
 
     // Update the URL with filtered query parameters
     router.push(`/properties?${queryParams}`);
+    const convertedQueryParams = encodeBrackets(queryParams);
+    setUrlFetchFilter(convertedQueryParams);
   };
 
   const handleReset = () => {
@@ -110,8 +116,54 @@ export default function FilterTest() {
 
     reset(defaultFilters); // Reset form
     setFilters(defaultFilters); // Reset context
-    // router.push("/properties");
+    setIsModified(true);
   };
+
+  const onChangeHandler = (e) => {
+    const { name, value } = e.target;
+
+    setChangedFormIput((prevState) => {
+      let updatedState = { ...prevState, [name]: value };
+
+      // If bedrooms_from is set to 'none', automatically set bedrooms_to to 'none'
+      if (name === "bedrooms_from" && value === "none") {
+        updatedState.bedrooms_to = "none";
+      }
+
+      return updatedState;
+    });
+  };
+
+  useEffect(() => {
+    setIsMounted(true);
+    const urlFilters = parseQueryParams();
+    setFilters(urlFilters);
+    reset(urlFilters);
+    setBedroomsFrom(urlFilters.bedrooms_from);
+
+    // Store the initial form values for later comparison
+    setInitialValues(urlFilters);
+    setChangedFormIput(urlFilters);
+  }, [searchParams, setFilters, reset]);
+
+  // Detect changes between the initial values and current form values
+  useEffect(() => {
+    if (JSON.stringify(initialValues) === JSON.stringify(changedFormInput)) {
+      setIsModified(false);
+      console.log("Modified inputs", changedFormInput);
+      console.log("Initial values", initialValues);
+    } else {
+      setIsModified(true);
+      console.log("Modified inputs", changedFormInput);
+      console.log("Initial values", initialValues);
+    }
+  }, [changedFormInput]);
+
+  useEffect(() => {
+    if (searchParams?.toString() === urlFetchFilter) {
+      setFetchLoading(false);
+    }
+  }, [urlFetchFilter, searchParams]);
 
   if (!isMounted) return null; // Avoid rendering until the component is mounted
 
@@ -148,6 +200,7 @@ export default function FilterTest() {
         <select
           id="radius"
           {...register("radius")}
+          onChange={onChangeHandler}
           className="bg-property-bg-200 border px-2 py-1 border-property-txt-700  text-property-txt-700/70 rounded focus:property-acc-100 focus:border-property-acc-100 block w-full"
         >
           <option value="1">+1 mile</option>
@@ -169,7 +222,10 @@ export default function FilterTest() {
             id="bedrooms_from"
             {...register("bedrooms_from")}
             className="bg-property-bg-200 border px-2 py-1 border-property-txt-700  text-property-txt-700/70 rounded focus:property-acc-100 focus:border-property-acc-100 block w-full"
-            onChange={handleBedroomsFromChange}
+            onChange={(e) => {
+              handleBedroomsFromChange(e);
+              onChangeHandler(e);
+            }}
           >
             <option value="none">No min</option>
             <option value="1">1</option>
@@ -194,6 +250,9 @@ export default function FilterTest() {
           <select
             id="bedrooms_to"
             {...register("bedrooms_to")}
+            onChange={(e) => {
+              onChangeHandler(e);
+            }}
             className="bg-property-bg-200 border px-2 py-1 border-property-txt-700  text-property-txt-700/70 rounded focus:property-acc-100 focus:border-property-acc-100 block w-full"
           >
             <option value="none">No max</option>
@@ -355,7 +414,13 @@ export default function FilterTest() {
       </div>
 
       <div>
-        <button type="submit">Apply Filters</button>
+        <button
+          type="submit"
+          disabled={!isModified}
+          className={fetchLoading ? "p-4 bg-red-500" : "p-4 bg-slate-500"}
+        >
+          {fetchLoading ? "Loading" : "Apply filters"}
+        </button>
         <button type="button" onClick={handleReset}>
           Reset Filters
         </button>

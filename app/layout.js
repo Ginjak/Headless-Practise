@@ -2,6 +2,7 @@ import "./globals.css";
 import localFont from "next/font/local";
 import Header from "@/components/Header";
 import { FilterProvider } from "@/context/FilterContext";
+import { FetchLoadingProvider } from "@/context/FetchLoadingContext";
 
 const bebas = localFont({
   src: "./fonts/bebasneue.woff2",
@@ -24,8 +25,10 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body className={`bg-mainBg-ligther ${poppins.variable}`}>
         <FilterProvider>
-          <Header />
-          {children}
+          <FetchLoadingProvider>
+            <Header />
+            {children}
+          </FetchLoadingProvider>
         </FilterProvider>
       </body>
     </html>
