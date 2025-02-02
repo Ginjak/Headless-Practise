@@ -22,6 +22,7 @@ export const FilterProvider = ({ children }) => {
     receptions_from: "none",
     receptions_to: "none",
     features: [],
+    property_type: [],
     pet_friendly: false,
     page: 1,
     per_page: 4,

@@ -18,9 +18,13 @@ export default function FilterTest() {
   const [isMounted, setIsMounted] = useState(false);
   const [bedroomsFrom, setBedroomsFrom] = useState();
   const [bathroomsFrom, setBathroomsFrom] = useState();
+  const [receptionsFrom, setReceptionsFrom] = useState();
   const [urlFetchFilter, setUrlFetchFilter] = useState("");
   const [isModified, setIsModified] = useState(false);
   const [initialValues, setInitialValues] = useState({});
+  const [selectedProperties, setSelectedProperties] = useState([
+    "all_properties",
+  ]);
 
   const [changedFormInput, setChangedFormIput] = useState({});
 
@@ -55,11 +59,22 @@ export default function FilterTest() {
     if (data.bathrooms_from === "none") {
       data.bathrooms_to = "none";
     }
+    if (data.receptions_from === "none") {
+      data.receptions_to = "none";
+    }
+
     setFilters(data); // Update context with form data
     setFetchLoading(true);
     // Generate query parameters for the URL
     const queryParams = Object.entries(data)
       .filter(([key, value]) => {
+        if (
+          key === "property_type" &&
+          Array.isArray(value) &&
+          value.includes("all_properties")
+        ) {
+          return false; // Exclude property_type if it contains "all_properties"
+        }
         if (Array.isArray(value)) return value.length > 0; // Keep non-empty arrays
         if (typeof value === "boolean") return true; // Include booleans
         return (
@@ -97,6 +112,7 @@ export default function FilterTest() {
       receptions_from: "none",
       receptions_to: "none",
       features: [],
+      property_type: ["all_properties"],
       pet_friendly: false,
       page: 1,
       per_page: 4,
@@ -104,6 +120,7 @@ export default function FilterTest() {
 
     reset(defaultFilters); // Reset form
     setFilters(defaultFilters); // Reset context
+    setSelectedProperties(["all_properties"]);
     setIsModified(true);
   };
 
@@ -120,8 +137,30 @@ export default function FilterTest() {
       if (name === "bathrooms_from" && value === "none") {
         updatedState.bathrooms_to = "none";
       }
+      if (name === "receptions_from" && value === "none") {
+        updatedState.receptions_to = "none";
+      }
 
       return updatedState;
+    });
+  };
+
+  const handleCheckboxChange = (event) => {
+    const { value, checked } = event.target;
+
+    setSelectedProperties((prev) => {
+      if (value === "all_properties") {
+        // Prevent unselecting "all_properties" directly
+        return prev.includes("all_properties") ? prev : ["all_properties"];
+      }
+
+      let updatedSelection = checked
+        ? prev.filter((v) => v !== "all_properties").concat(value)
+        : prev.filter((v) => v !== value);
+
+      return updatedSelection.length === 0
+        ? ["all_properties"]
+        : updatedSelection;
     });
   };
 
@@ -132,6 +171,7 @@ export default function FilterTest() {
     reset(urlFilters);
     setBedroomsFrom(urlFilters.bedrooms_from);
     setBathroomsFrom(urlFilters.bathrooms_from);
+    setReceptionsFrom(urlFilters.receptions_from);
 
     // Store the initial form values for later comparison
     setInitialValues(urlFilters);
@@ -231,11 +271,11 @@ export default function FilterTest() {
           <select
             id="bedrooms_from"
             {...register("bedrooms_from")}
-            className="bg-property-bg-200 border px-2 py-1 border-property-txt-700  text-property-txt-700/70 rounded focus:property-acc-100 focus:border-property-acc-100 block w-full"
             onChange={(e) => {
               handleMinMaxChange(e, setBedroomsFrom);
               onChangeHandler(e);
             }}
+            className="bg-property-bg-200 border px-2 py-1 border-property-txt-700  text-property-txt-700/70 rounded focus:property-acc-100 focus:border-property-acc-100 block w-full"
           >
             <option value="none">No min</option>
             <option value="1">1</option>
@@ -333,6 +373,10 @@ export default function FilterTest() {
           <select
             id="receptions_from"
             {...register("receptions_from")}
+            onChange={(e) => {
+              handleMinMaxChange(e, setReceptionsFrom);
+              onChangeHandler(e);
+            }}
             className="bg-property-bg-200 border px-2 py-1 border-property-txt-700  text-property-txt-700/70 rounded focus:property-acc-100 focus:border-property-acc-100 block w-full"
           >
             <option value="none">No min</option>
@@ -358,20 +402,62 @@ export default function FilterTest() {
           <select
             id="receptions_to"
             {...register("receptions_to")}
+            onChange={(e) => {
+              onChangeHandler(e);
+            }}
             className="bg-property-bg-200 border px-2 py-1 border-property-txt-700  text-property-txt-700/70 rounded focus:property-acc-100 focus:border-property-acc-100 block w-full"
           >
             <option value="none">No max</option>
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4">4</option>
-            <option value="5">5</option>
-            <option value="6">6</option>
-            <option value="7">7</option>
-            <option value="8">8</option>
-            <option value="9">9</option>
-            <option value="10">10</option>
+            {receptionsFrom !== "none" && generateOptions(receptionsFrom, 10)}
           </select>
+        </div>
+      </div>
+
+      {/* Property types */}
+      <div>
+        <p className="text-sm font-medium text-property-txt-700 mb-2">
+          Property type
+        </p>
+        <div className="grid grid-cols-2 gap-3">
+          <label className="flex items-center gap-2">
+            <input
+              type="checkbox"
+              value="all_properties"
+              {...register("property_type")}
+              checked={selectedProperties.includes("all_properties")}
+              disabled={selectedProperties.some((v) => v !== "all_properties")}
+              onChange={handleCheckboxChange}
+              className="appearance-none w-5 h-5 border-2 border-property-acc-100 rounded-sm bg-white text-property-txt-700 focus:ring-2 focus:ring-property-acc-100 focus:ring-offset-2 focus:ring-offset-gray-100 checked:bg-property-acc-100 checked:ring-property-acc-100 checked:border-property-acc-100 focus:outline-none"
+            />
+            Show all
+          </label>
+
+          {[
+            "bungalow",
+            "detached",
+            "terraced",
+            "flat",
+            "apartment",
+            "semiDetached",
+          ].map((type) => (
+            <label
+              key={type}
+              className={`flex items-center gap-2 ${
+                type === "semiDetached" ? "col-span-2" : ""
+              }`}
+            >
+              <input
+                type="checkbox"
+                {...register("property_type")}
+                value={type}
+                checked={selectedProperties.includes(type)}
+                onChange={handleCheckboxChange}
+                className="appearance-none w-5 h-5 border-2 border-property-acc-100 rounded-sm bg-white text-property-txt-700 focus:ring-2 focus:ring-property-acc-100 focus:ring-offset-2 focus:ring-offset-gray-100 checked:bg-property-acc-100 checked:ring-property-acc-100 checked:border-property-acc-100 focus:outline-none"
+              />
+              {type.charAt(0).toUpperCase() +
+                type.slice(1).replace(/([A-Z])/g, " $1")}
+            </label>
+          ))}
         </div>
       </div>
 
@@ -379,15 +465,6 @@ export default function FilterTest() {
       <div>
         <label>Features</label>
         <div>
-          <label>
-            <input
-              type="checkbox"
-              value="bungalow"
-              {...register("features")}
-              className="appearance-none w-5 h-5 border-2 border-property-acc-100 rounded-sm bg-white text-property-txt-700 focus:ring-2 focus:ring-property-acc-100 focus:ring-offset-2 focus:ring-offset-gray-100 checked:bg-property-acc-100 checked:ring-property-acc-100 checked:border-property-acc-100 focus:outline-none"
-            />
-            Bungalow
-          </label>
           <label>
             <input
               type="checkbox"
