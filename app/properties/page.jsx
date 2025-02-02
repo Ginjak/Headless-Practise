@@ -14,6 +14,7 @@ export default async function page({ searchParams }) {
   // Destructure the awaited searchParams object
   const {
     city,
+    listing_type,
     radius,
     bedrooms_from,
     bedrooms_to,
@@ -45,6 +46,7 @@ export default async function page({ searchParams }) {
   // Construct the filters object with all parameters, including features as an array
   const filters = {
     city,
+    listing_type,
     radius,
     bedrooms_from,
     bedrooms_to,

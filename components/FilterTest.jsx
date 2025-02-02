@@ -3,7 +3,11 @@ import { useFilterContext } from "@/context/FilterContext";
 import { useForm } from "react-hook-form";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import { encodeBrackets } from "@/lib/functions";
+import {
+  encodeBrackets,
+  generateOptions,
+  handleMinMaxChange,
+} from "@/lib/functions";
 import { useFetchLoading } from "@/context/FetchLoadingContext";
 
 export default function FilterTest() {
@@ -13,6 +17,7 @@ export default function FilterTest() {
   const { fetchLoading, setFetchLoading } = useFetchLoading();
   const [isMounted, setIsMounted] = useState(false);
   const [bedroomsFrom, setBedroomsFrom] = useState();
+  const [bathroomsFrom, setBathroomsFrom] = useState();
   const [urlFetchFilter, setUrlFetchFilter] = useState("");
   const [isModified, setIsModified] = useState(false);
   const [initialValues, setInitialValues] = useState({});
@@ -43,30 +48,12 @@ export default function FilterTest() {
     return queryFilters;
   };
 
-  const handleBedroomsFromChange = (e) => {
-    const value = e.target.value;
-    setBedroomsFrom(value);
-  };
-
-  const generateOptions = (bedroomsFrom) => {
-    const fromValue = parseInt(bedroomsFrom, 10);
-    if (isNaN(fromValue) || fromValue >= 10) return []; // No options if input is invalid or too high
-
-    const options = [];
-    for (let i = fromValue + 1; i <= 10; i++) {
-      options.push(
-        <option key={i} value={i === 10 ? "10" : i}>
-          {i === 10 ? "10" : i}
-        </option>
-      );
-    }
-
-    return options;
-  };
-
   const onSubmit = (data) => {
     if (data.bedrooms_from === "none") {
-      data.bedrooms_to = "none"; // Explicitly set bedrooms_to to "none"
+      data.bedrooms_to = "none";
+    }
+    if (data.bathrooms_from === "none") {
+      data.bathrooms_to = "none";
     }
     setFilters(data); // Update context with form data
     setFetchLoading(true);
@@ -101,6 +88,7 @@ export default function FilterTest() {
   const handleReset = () => {
     const defaultFilters = {
       city: "",
+      listing_type: "sale",
       radius: 5,
       bedrooms_from: "none",
       bedrooms_to: "none",
@@ -129,6 +117,9 @@ export default function FilterTest() {
       if (name === "bedrooms_from" && value === "none") {
         updatedState.bedrooms_to = "none";
       }
+      if (name === "bathrooms_from" && value === "none") {
+        updatedState.bathrooms_to = "none";
+      }
 
       return updatedState;
     });
@@ -140,6 +131,7 @@ export default function FilterTest() {
     setFilters(urlFilters);
     reset(urlFilters);
     setBedroomsFrom(urlFilters.bedrooms_from);
+    setBathroomsFrom(urlFilters.bathrooms_from);
 
     // Store the initial form values for later comparison
     setInitialValues(urlFilters);
@@ -189,6 +181,24 @@ export default function FilterTest() {
         />
       </div>
 
+      <div>
+        <label
+          htmlFor="listing_type"
+          className="block text-sm font-medium text-property-txt-700"
+        >
+          Buy or Rent
+        </label>
+        <select
+          id="listing_type"
+          {...register("listing_type")}
+          onChange={onChangeHandler}
+          className="bg-property-bg-200 border px-2 py-1 border-property-txt-700  text-property-txt-700/70 rounded focus:property-acc-100 focus:border-property-acc-100 block w-full"
+        >
+          <option value="sale">For sale</option>
+          <option value="rent">To rent</option>
+        </select>
+      </div>
+
       {/* Radius */}
       <div>
         <label
@@ -223,7 +233,7 @@ export default function FilterTest() {
             {...register("bedrooms_from")}
             className="bg-property-bg-200 border px-2 py-1 border-property-txt-700  text-property-txt-700/70 rounded focus:property-acc-100 focus:border-property-acc-100 block w-full"
             onChange={(e) => {
-              handleBedroomsFromChange(e);
+              handleMinMaxChange(e, setBedroomsFrom);
               onChangeHandler(e);
             }}
           >
@@ -256,17 +266,7 @@ export default function FilterTest() {
             className="bg-property-bg-200 border px-2 py-1 border-property-txt-700  text-property-txt-700/70 rounded focus:property-acc-100 focus:border-property-acc-100 block w-full"
           >
             <option value="none">No max</option>
-            {bedroomsFrom !== "none" && generateOptions(bedroomsFrom)}
-            {/* <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4">4</option>
-            <option value="5">5</option>
-            <option value="6">6</option>
-            <option value="7">7</option>
-            <option value="8">8</option>
-            <option value="9">9</option>
-            <option value="10">10</option> */}
+            {bedroomsFrom !== "none" && generateOptions(bedroomsFrom, 10)}
           </select>
         </div>
       </div>
@@ -282,6 +282,10 @@ export default function FilterTest() {
           <select
             id="bathrooms_from"
             {...register("bathrooms_from")}
+            onChange={(e) => {
+              handleMinMaxChange(e, setBathroomsFrom, setBathroomsFrom);
+              onChangeHandler(e);
+            }}
             className="bg-property-bg-200 border px-2 py-1 border-property-txt-700  text-property-txt-700/70 rounded focus:property-acc-100 focus:border-property-acc-100 block w-full"
           >
             <option value="none">No min</option>
@@ -307,19 +311,13 @@ export default function FilterTest() {
           <select
             id="bathrooms_to"
             {...register("bathrooms_to")}
+            onChange={(e) => {
+              onChangeHandler(e);
+            }}
             className="bg-property-bg-200 border px-2 py-1 border-property-txt-700  text-property-txt-700/70 rounded focus:property-acc-100 focus:border-property-acc-100 block w-full"
           >
             <option value="none">No max</option>
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4">4</option>
-            <option value="5">5</option>
-            <option value="6">6</option>
-            <option value="7">7</option>
-            <option value="8">8</option>
-            <option value="9">9</option>
-            <option value="10">10</option>
+            {bathroomsFrom !== "none" && generateOptions(bathroomsFrom, 10)}
           </select>
         </div>
       </div>
