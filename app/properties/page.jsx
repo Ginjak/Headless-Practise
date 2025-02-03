@@ -59,6 +59,20 @@ export default async function page({ searchParams }) {
     (type) => type !== "all_properties"
   );
 
+  let keyFeaturesArray = [];
+  if (resolvedSearchParams["key_features[]"]) {
+    keyFeaturesArray = [].concat(resolvedSearchParams["key_features[]"]);
+  }
+  if (
+    resolvedSearchParams.key_features &&
+    !keyFeaturesArray.includes(resolvedSearchParams.key_features)
+  ) {
+    keyFeaturesArray.push(resolvedSearchParams.key_features);
+  }
+
+  // Filter out 'all_properties' from the property_type array
+  keyFeaturesArray = keyFeaturesArray.filter((type) => type !== "all_features");
+
   // Construct the filters object with all parameters, including features as an array
   const filters = {
     city,
@@ -72,6 +86,7 @@ export default async function page({ searchParams }) {
     receptions_to,
     features: featureArray,
     property_type: propertyTypeArray,
+    key_features: keyFeaturesArray,
     page,
     per_page,
     pet_friendly,

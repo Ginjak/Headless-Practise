@@ -25,6 +25,7 @@ export default function FilterTest() {
   const [selectedProperties, setSelectedProperties] = useState([
     "all_properties",
   ]);
+  const [mustHaveFeatures, setMustHaveFeatures] = useState(["all_features"]);
 
   const [changedFormInput, setChangedFormIput] = useState({});
 
@@ -75,6 +76,13 @@ export default function FilterTest() {
         ) {
           return false; // Exclude property_type if it contains "all_properties"
         }
+        if (
+          key === "key_features" &&
+          Array.isArray(value) &&
+          value.includes("all_features")
+        ) {
+          return false; // Exclude if "all_features" is included in "key_features"
+        }
         if (Array.isArray(value)) return value.length > 0; // Keep non-empty arrays
         if (typeof value === "boolean") return true; // Include booleans
         return (
@@ -113,6 +121,7 @@ export default function FilterTest() {
       receptions_to: "none",
       features: [],
       property_type: ["all_properties"],
+      key_features: ["all_features"],
       pet_friendly: false,
       page: 1,
       per_page: 4,
@@ -161,6 +170,25 @@ export default function FilterTest() {
       return updatedSelection.length === 0
         ? ["all_properties"]
         : updatedSelection;
+    });
+  };
+
+  const handleCheckboxChangeKeyFeature = (event) => {
+    const { value, checked } = event.target;
+
+    setMustHaveFeatures((prev) => {
+      if (value === "all_features") {
+        // Prevent unselecting "all_features" directly
+        return prev.includes("all_features") ? prev : ["all_features"];
+      }
+
+      let updatedSelections = checked
+        ? prev.filter((v) => v !== "all_features").concat(value)
+        : prev.filter((v) => v !== value);
+
+      return updatedSelections.length === 0
+        ? ["all_features"]
+        : updatedSelections;
     });
   };
 
@@ -412,6 +440,43 @@ export default function FilterTest() {
           </select>
         </div>
       </div>
+      <div>
+        {/* Must have features */}
+        <p className="text-sm font-medium text-property-txt-700 mb-2">
+          Must have
+        </p>
+        <div className="grid grid-cols-2 gap-3">
+          <label className="flex items-center gap-2">
+            <input
+              type="checkbox"
+              value="all_features"
+              {...register("key_features")}
+              checked={mustHaveFeatures.includes("all_features")}
+              disabled={mustHaveFeatures.some((v) => v !== "all_features")}
+              onChange={handleCheckboxChangeKeyFeature}
+              className="appearance-none w-5 h-5 border-2 border-property-acc-100 rounded-sm bg-white text-property-txt-700 focus:ring-2 focus:ring-property-acc-100 focus:ring-offset-2 focus:ring-offset-gray-100 checked:bg-property-acc-100 checked:ring-property-acc-100 checked:border-property-acc-100 focus:outline-none"
+            />
+            Show all
+          </label>
+
+          {["garage", "driveway", "off-street", "garden", "balcony"].map(
+            (type) => (
+              <label key={type} className={`flex items-center gap-2`}>
+                <input
+                  type="checkbox"
+                  {...register("key_features")}
+                  value={type}
+                  checked={mustHaveFeatures.includes(type)}
+                  onChange={handleCheckboxChangeKeyFeature}
+                  className="appearance-none w-5 h-5 border-2 border-property-acc-100 rounded-sm bg-white text-property-txt-700 focus:ring-2 focus:ring-property-acc-100 focus:ring-offset-2 focus:ring-offset-gray-100 checked:bg-property-acc-100 checked:ring-property-acc-100 checked:border-property-acc-100 focus:outline-none"
+                />
+                {type.charAt(0).toUpperCase() +
+                  type.slice(1).replace(/([A-Z])/g, " $1")}
+              </label>
+            )
+          )}
+        </div>
+      </div>
 
       {/* Property types */}
       <div>
@@ -468,11 +533,11 @@ export default function FilterTest() {
           <label>
             <input
               type="checkbox"
-              value="garage"
+              value="fireplace"
               {...register("features")}
               className="appearance-none w-5 h-5 border-2 border-property-acc-100 rounded-sm bg-white text-property-txt-700 focus:ring-2 focus:ring-property-acc-100 focus:ring-offset-2 focus:ring-offset-gray-100 checked:bg-property-acc-100 checked:ring-property-acc-100 checked:border-property-acc-100 focus:outline-none"
             />
-            Garage
+            Fireplace
           </label>
         </div>
       </div>
