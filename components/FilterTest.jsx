@@ -1,6 +1,6 @@
 "use client";
 import { useFilterContext } from "@/context/FilterContext";
-import { useForm } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import {
@@ -29,7 +29,7 @@ export default function FilterTest() {
 
   const [changedFormInput, setChangedFormIput] = useState({});
 
-  const { register, handleSubmit, reset, watch } = useForm({
+  const { register, handleSubmit, reset, watch, control } = useForm({
     defaultValues: filters,
   });
 
@@ -63,26 +63,59 @@ export default function FilterTest() {
     if (data.receptions_from === "none") {
       data.receptions_to = "none";
     }
+    if (Array.isArray(data.property_type)) {
+      // If the array contains only "all_properties", remove it
+      if (
+        data.property_type.length === 1 &&
+        data.property_type.includes("all_properties")
+      ) {
+        data.property_type = []; // Set to empty array
+      } else {
+        // If there are other values, leave it as is
+        data.property_type = data.property_type.filter(
+          (type) => type !== "all_properties"
+        );
+      }
+    } else if (data.property_type === "all_properties") {
+      // If it's a string, set it to empty string
+      data.property_type = "";
+    }
+
+    if (Array.isArray(data.key_features)) {
+      if (
+        data.key_features.length === 1 &&
+        data.key_features.includes("all_key_features")
+      ) {
+        data.key_features = [];
+      } else {
+        data.key_features = data.key_features.filter(
+          (type) => type !== "all_key_features"
+        );
+      }
+    } else if (data.key_features === "all_key_features") {
+      data.key_features = "";
+    }
+
+    if (Array.isArray(data.features)) {
+      if (
+        data.features.length === 1 &&
+        data.features.includes("all_extra_features")
+      ) {
+        data.features = [];
+      } else {
+        data.features = data.features.filter(
+          (type) => type !== "all_extra_features"
+        );
+      }
+    } else if (data.features === "all_extra_features") {
+      data.features = "";
+    }
 
     setFilters(data); // Update context with form data
     setFetchLoading(true);
     // Generate query parameters for the URL
     const queryParams = Object.entries(data)
       .filter(([key, value]) => {
-        if (
-          key === "property_type" &&
-          Array.isArray(value) &&
-          value.includes("all_properties")
-        ) {
-          return false; // Exclude property_type if it contains "all_properties"
-        }
-        if (
-          key === "key_features" &&
-          Array.isArray(value) &&
-          value.includes("all_features")
-        ) {
-          return false; // Exclude if "all_features" is included in "key_features"
-        }
         if (Array.isArray(value)) return value.length > 0; // Keep non-empty arrays
         if (typeof value === "boolean") return true; // Include booleans
         return (
@@ -104,6 +137,7 @@ export default function FilterTest() {
 
     // Update the URL with filtered query parameters
     router.push(`/properties?${queryParams}`);
+
     const convertedQueryParams = encodeBrackets(queryParams);
     setUrlFetchFilter(convertedQueryParams);
   };
@@ -119,9 +153,9 @@ export default function FilterTest() {
       bathrooms_to: "none",
       receptions_from: "none",
       receptions_to: "none",
-      features: [],
+      features: ["all_extra_features"],
       property_type: ["all_properties"],
-      key_features: ["all_features"],
+      key_features: ["all_key_features"],
       pet_friendly: false,
       page: 1,
       per_page: 4,
@@ -195,6 +229,20 @@ export default function FilterTest() {
   useEffect(() => {
     setIsMounted(true);
     const urlFilters = parseQueryParams();
+
+    // If property_type is not in the URL, set it to ["all_properties"]
+    if (!urlFilters.property_type) {
+      urlFilters.property_type = ["all_properties"];
+    }
+
+    if (!urlFilters.key_features) {
+      urlFilters.key_features = ["all_key_features"];
+    }
+
+    if (!urlFilters.features) {
+      urlFilters.features = ["all_extra_features"];
+    }
+
     setFilters(urlFilters);
     reset(urlFilters);
     setBedroomsFrom(urlFilters.bedrooms_from);
@@ -224,6 +272,42 @@ export default function FilterTest() {
       setFetchLoading(false);
     }
   }, [urlFetchFilter, searchParams]);
+
+  const propertyTypes = [
+    { value: "all_properties", label: "Show all" },
+    { value: "bungalow", label: "Bungalow" },
+    { value: "terraced", label: "Terraced" },
+    { value: "flat", label: "Flat" },
+    { value: "apartment", label: "Apartment" },
+    { value: "detached", label: "Detached" },
+    { value: "semi-detached", label: "Semi-detached" },
+  ];
+
+  const keyFeatures = [
+    { value: "all_key_features", label: "Show all" },
+    { value: "garage", label: "Garage" },
+    { value: "driveway", label: "Driveway" },
+    { value: "garden", label: "Garden" },
+    { value: "balcony", label: "Balcony" },
+    { value: "off-street", label: "Off-street parking" },
+  ];
+
+  const extraFeatures = [
+    { value: "all_extra_features", label: "Show all" },
+    { value: "patio", label: "Patio" },
+    { value: "swimming-pool", label: "Swimming pool" },
+    { value: "jacuzzi", label: "Jacuzzi" },
+    { value: "tennis-court", label: "Tennis court" },
+    { value: "cinema-room", label: "Cinema room" },
+    { value: "fireplace", label: "Fireplace" },
+    { value: "basement", label: "Basement" },
+    { value: "alarm-system", label: "Alarm system" },
+    { value: "cctv", label: "CCTV" },
+    { value: "kitchen-island", label: "Kitchen island" },
+    { value: "bathtub", label: "Bathtub" },
+    { value: "utility-room", label: "Utility room" },
+    { value: "conservatory", label: "Conservatory" },
+  ];
 
   if (!isMounted) return null; // Avoid rendering until the component is mounted
 
@@ -440,94 +524,190 @@ export default function FilterTest() {
           </select>
         </div>
       </div>
-      <div>
-        {/* Must have features */}
-        <p className="text-sm font-medium text-property-txt-700 mb-2">
-          Must have
-        </p>
-        <div className="grid grid-cols-2 gap-3">
-          <label className="flex items-center gap-2">
-            <input
-              type="checkbox"
-              value="all_features"
-              {...register("key_features")}
-              checked={mustHaveFeatures.includes("all_features")}
-              disabled={mustHaveFeatures.some((v) => v !== "all_features")}
-              onChange={handleCheckboxChangeKeyFeature}
-              className="appearance-none w-5 h-5 border-2 border-property-acc-100 rounded-sm bg-white text-property-txt-700 focus:ring-2 focus:ring-property-acc-100 focus:ring-offset-2 focus:ring-offset-gray-100 checked:bg-property-acc-100 checked:ring-property-acc-100 checked:border-property-acc-100 focus:outline-none"
-            />
-            Show all
-          </label>
-
-          {["garage", "driveway", "off-street", "garden", "balcony"].map(
-            (type) => (
-              <label key={type} className={`flex items-center gap-2`}>
-                <input
-                  type="checkbox"
-                  {...register("key_features")}
-                  value={type}
-                  checked={mustHaveFeatures.includes(type)}
-                  onChange={handleCheckboxChangeKeyFeature}
-                  className="appearance-none w-5 h-5 border-2 border-property-acc-100 rounded-sm bg-white text-property-txt-700 focus:ring-2 focus:ring-property-acc-100 focus:ring-offset-2 focus:ring-offset-gray-100 checked:bg-property-acc-100 checked:ring-property-acc-100 checked:border-property-acc-100 focus:outline-none"
-                />
-                {type.charAt(0).toUpperCase() +
-                  type.slice(1).replace(/([A-Z])/g, " $1")}
-              </label>
-            )
-          )}
-        </div>
-      </div>
 
       {/* Property types */}
       <div>
         <p className="text-sm font-medium text-property-txt-700 mb-2">
           Property type
         </p>
-        <div className="grid grid-cols-2 gap-3">
-          <label className="flex items-center gap-2">
-            <input
-              type="checkbox"
-              value="all_properties"
-              {...register("property_type")}
-              checked={selectedProperties.includes("all_properties")}
-              disabled={selectedProperties.some((v) => v !== "all_properties")}
-              onChange={handleCheckboxChange}
-              className="appearance-none w-5 h-5 border-2 border-property-acc-100 rounded-sm bg-white text-property-txt-700 focus:ring-2 focus:ring-property-acc-100 focus:ring-offset-2 focus:ring-offset-gray-100 checked:bg-property-acc-100 checked:ring-property-acc-100 checked:border-property-acc-100 focus:outline-none"
-            />
-            Show all
-          </label>
+        <Controller
+          name="property_type"
+          control={control}
+          render={({ field }) => (
+            <div className="grid grid-cols-2 gap-3">
+              {propertyTypes.map(({ value, label }) => (
+                <label key={value} className="flex items-center space-x-2">
+                  <input
+                    type="checkbox"
+                    value={value}
+                    checked={field.value?.includes(value)}
+                    onChange={(e) => {
+                      let newValue;
 
-          {[
-            "bungalow",
-            "detached",
-            "terraced",
-            "flat",
-            "apartment",
-            "semiDetached",
-          ].map((type) => (
-            <label
-              key={type}
-              className={`flex items-center gap-2 ${
-                type === "semiDetached" ? "col-span-2" : ""
-              }`}
-            >
-              <input
-                type="checkbox"
-                {...register("property_type")}
-                value={type}
-                checked={selectedProperties.includes(type)}
-                onChange={handleCheckboxChange}
-                className="appearance-none w-5 h-5 border-2 border-property-acc-100 rounded-sm bg-white text-property-txt-700 focus:ring-2 focus:ring-property-acc-100 focus:ring-offset-2 focus:ring-offset-gray-100 checked:bg-property-acc-100 checked:ring-property-acc-100 checked:border-property-acc-100 focus:outline-none"
-              />
-              {type.charAt(0).toUpperCase() +
-                type.slice(1).replace(/([A-Z])/g, " $1")}
-            </label>
-          ))}
-        </div>
+                      if (value === "all_properties") {
+                        // If "all_properties" is checked, uncheck all others
+                        newValue = e.target.checked ? ["all_properties"] : [];
+                      } else {
+                        // If any other option is checked, update the array
+                        newValue = e.target.checked
+                          ? [...field.value, value]
+                          : field.value.filter((val) => val !== value);
+
+                        // If "all_properties" is in the array and any other is selected, remove "all_properties"
+                        if (
+                          newValue.includes("all_properties") &&
+                          e.target.checked
+                        ) {
+                          newValue = newValue.filter(
+                            (val) => val !== "all_properties"
+                          );
+                        }
+                      }
+
+                      // Handle the change in form input and filters state
+                      setChangedFormIput((prevState) => {
+                        return { ...prevState, property_type: newValue };
+                      });
+
+                      setFilters((prevFilters) => ({
+                        ...prevFilters,
+                        property_type: newValue, // Update the property_type in the filters
+                      }));
+
+                      field.onChange(newValue); // Also update React Hook Form state
+                    }}
+                    className="appearance-none w-5 h-5 border-2 border-property-acc-100 rounded-sm bg-white text-property-txt-700 focus:ring-2 focus:ring-property-acc-100 focus:ring-offset-2 focus:ring-offset-gray-100 checked:bg-property-acc-100 checked:ring-property-acc-100 checked:border-property-acc-100 focus:outline-none"
+                  />
+                  <span>{label}</span>
+                </label>
+              ))}
+            </div>
+          )}
+        />
+      </div>
+
+      {/* Key features must have */}
+      <div>
+        <p className="text-sm font-medium text-property-txt-700 mb-2">
+          Must have
+        </p>
+        <Controller
+          name="key_features"
+          control={control}
+          render={({ field }) => (
+            <div className="grid grid-cols-2 gap-3">
+              {keyFeatures.map(({ value, label }) => (
+                <label key={value} className="flex items-center space-x-2">
+                  <input
+                    type="checkbox"
+                    value={value}
+                    checked={field.value?.includes(value)}
+                    onChange={(e) => {
+                      let newValue;
+
+                      if (value === "all_key_features") {
+                        // If "all_properties" is checked, uncheck all others
+                        newValue = e.target.checked ? ["all_key_features"] : [];
+                      } else {
+                        newValue = e.target.checked
+                          ? [...field.value, value]
+                          : field.value.filter((val) => val !== value);
+
+                        if (
+                          newValue.includes("all_key_features") &&
+                          e.target.checked
+                        ) {
+                          newValue = newValue.filter(
+                            (val) => val !== "all_key_features"
+                          );
+                        }
+                      }
+
+                      // Handle the change in form input and filters state
+                      setChangedFormIput((prevState) => {
+                        return { ...prevState, key_features: newValue };
+                      });
+
+                      setFilters((prevFilters) => ({
+                        ...prevFilters,
+                        key_features: newValue,
+                      }));
+
+                      field.onChange(newValue);
+                    }}
+                    className="appearance-none w-5 h-5 border-2 border-property-acc-100 rounded-sm bg-white text-property-txt-700 focus:ring-2 focus:ring-property-acc-100 focus:ring-offset-2 focus:ring-offset-gray-100 checked:bg-property-acc-100 checked:ring-property-acc-100 checked:border-property-acc-100 focus:outline-none"
+                  />
+                  <span>{label}</span>
+                </label>
+              ))}
+            </div>
+          )}
+        />
+      </div>
+
+      {/* Extra features  */}
+      <div>
+        <p className="text-sm font-medium text-property-txt-700 mb-2">
+          Features
+        </p>
+        <Controller
+          name="features"
+          control={control}
+          render={({ field }) => (
+            <div className="grid grid-cols-2 gap-3">
+              {extraFeatures.map(({ value, label }) => (
+                <label key={value} className="flex items-center space-x-2">
+                  <input
+                    type="checkbox"
+                    value={value}
+                    checked={field.value?.includes(value)}
+                    onChange={(e) => {
+                      let newValue;
+
+                      if (value === "all_extra_features") {
+                        // If "all_properties" is checked, uncheck all others
+                        newValue = e.target.checked
+                          ? ["all_extra_features"]
+                          : [];
+                      } else {
+                        newValue = e.target.checked
+                          ? [...field.value, value]
+                          : field.value.filter((val) => val !== value);
+
+                        if (
+                          newValue.includes("all_extra_features") &&
+                          e.target.checked
+                        ) {
+                          newValue = newValue.filter(
+                            (val) => val !== "all_extra_features"
+                          );
+                        }
+                      }
+
+                      // Handle the change in form input and filters state
+                      setChangedFormIput((prevState) => {
+                        return { ...prevState, features: newValue };
+                      });
+
+                      setFilters((prevFilters) => ({
+                        ...prevFilters,
+                        features: newValue,
+                      }));
+
+                      field.onChange(newValue);
+                    }}
+                    className="appearance-none w-5 h-5 border-2 border-property-acc-100 rounded-sm bg-white text-property-txt-700 focus:ring-2 focus:ring-property-acc-100 focus:ring-offset-2 focus:ring-offset-gray-100 checked:bg-property-acc-100 checked:ring-property-acc-100 checked:border-property-acc-100 focus:outline-none"
+                  />
+                  <span>{label}</span>
+                </label>
+              ))}
+            </div>
+          )}
+        />
       </div>
 
       {/* Features */}
-      <div>
+      {/* <div>
         <label>Features</label>
         <div>
           <label>
@@ -540,7 +720,7 @@ export default function FilterTest() {
             Fireplace
           </label>
         </div>
-      </div>
+      </div> */}
 
       {/* Pet Friendly */}
       <div>
