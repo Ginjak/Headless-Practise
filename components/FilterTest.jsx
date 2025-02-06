@@ -25,15 +25,12 @@ export default function FilterTest() {
   const [selectedProperties, setSelectedProperties] = useState([
     "all_properties",
   ]);
-  const [mustHaveFeatures, setMustHaveFeatures] = useState(["all_features"]);
 
   const [changedFormInput, setChangedFormIput] = useState({});
 
-  const { register, handleSubmit, reset, watch, control } = useForm({
+  const { register, handleSubmit, reset, control } = useForm({
     defaultValues: filters,
   });
-
-  // const formValues = watch();
 
   // Parse query parameters into an object
   const parseQueryParams = () => {
@@ -63,24 +60,22 @@ export default function FilterTest() {
     if (data.receptions_from === "none") {
       data.receptions_to = "none";
     }
+    // If all properties selected it wont get pushed to url
     if (Array.isArray(data.property_type)) {
-      // If the array contains only "all_properties", remove it
       if (
         data.property_type.length === 1 &&
         data.property_type.includes("all_properties")
       ) {
-        data.property_type = []; // Set to empty array
+        data.property_type = [];
       } else {
-        // If there are other values, leave it as is
         data.property_type = data.property_type.filter(
           (type) => type !== "all_properties"
         );
       }
     } else if (data.property_type === "all_properties") {
-      // If it's a string, set it to empty string
       data.property_type = "";
     }
-
+    // If all key features selected it wont get pushed to url
     if (Array.isArray(data.key_features)) {
       if (
         data.key_features.length === 1 &&
@@ -95,7 +90,7 @@ export default function FilterTest() {
     } else if (data.key_features === "all_key_features") {
       data.key_features = "";
     }
-
+    // If all extra features selected it wont get pushed to url
     if (Array.isArray(data.features)) {
       if (
         data.features.length === 1 &&
@@ -188,49 +183,10 @@ export default function FilterTest() {
     });
   };
 
-  const handleCheckboxChange = (event) => {
-    const { value, checked } = event.target;
-
-    setSelectedProperties((prev) => {
-      if (value === "all_properties") {
-        // Prevent unselecting "all_properties" directly
-        return prev.includes("all_properties") ? prev : ["all_properties"];
-      }
-
-      let updatedSelection = checked
-        ? prev.filter((v) => v !== "all_properties").concat(value)
-        : prev.filter((v) => v !== value);
-
-      return updatedSelection.length === 0
-        ? ["all_properties"]
-        : updatedSelection;
-    });
-  };
-
-  const handleCheckboxChangeKeyFeature = (event) => {
-    const { value, checked } = event.target;
-
-    setMustHaveFeatures((prev) => {
-      if (value === "all_features") {
-        // Prevent unselecting "all_features" directly
-        return prev.includes("all_features") ? prev : ["all_features"];
-      }
-
-      let updatedSelections = checked
-        ? prev.filter((v) => v !== "all_features").concat(value)
-        : prev.filter((v) => v !== value);
-
-      return updatedSelections.length === 0
-        ? ["all_features"]
-        : updatedSelections;
-    });
-  };
-
   useEffect(() => {
     setIsMounted(true);
     const urlFilters = parseQueryParams();
 
-    // If property_type is not in the URL, set it to ["all_properties"]
     if (!urlFilters.property_type) {
       urlFilters.property_type = ["all_properties"];
     }
@@ -267,12 +223,14 @@ export default function FilterTest() {
     }
   }, [changedFormInput]);
 
+  // useEffect checks if compared url are matching and if so set loading to false
   useEffect(() => {
     if (searchParams?.toString() === urlFetchFilter) {
       setFetchLoading(false);
     }
   }, [urlFetchFilter, searchParams]);
 
+  // Property types
   const propertyTypes = [
     { value: "all_properties", label: "Show all" },
     { value: "bungalow", label: "Bungalow" },
@@ -283,6 +241,7 @@ export default function FilterTest() {
     { value: "semi-detached", label: "Semi-detached" },
   ];
 
+  // Key feature types
   const keyFeatures = [
     { value: "all_key_features", label: "Show all" },
     { value: "garage", label: "Garage" },
@@ -292,6 +251,7 @@ export default function FilterTest() {
     { value: "off-street", label: "Off-street parking" },
   ];
 
+  // Extra feature types
   const extraFeatures = [
     { value: "all_extra_features", label: "Show all" },
     { value: "patio", label: "Patio" },
@@ -371,7 +331,7 @@ export default function FilterTest() {
           <option value="20">+20 miles</option>
         </select>
       </div>
-
+      {/* Bedrooms */}
       <div className="flex gap-4">
         <div className="grow">
           <label
@@ -422,7 +382,7 @@ export default function FilterTest() {
           </select>
         </div>
       </div>
-
+      {/* Bathrooms */}
       <div className="flex gap-4">
         <div className="grow">
           <label
@@ -473,7 +433,7 @@ export default function FilterTest() {
           </select>
         </div>
       </div>
-
+      {/* Receptions */}
       <div className="flex gap-4">
         <div className="grow">
           <label
@@ -706,32 +666,18 @@ export default function FilterTest() {
         />
       </div>
 
-      {/* Features */}
-      {/* <div>
-        <label>Features</label>
-        <div>
-          <label>
-            <input
-              type="checkbox"
-              value="fireplace"
-              {...register("features")}
-              className="appearance-none w-5 h-5 border-2 border-property-acc-100 rounded-sm bg-white text-property-txt-700 focus:ring-2 focus:ring-property-acc-100 focus:ring-offset-2 focus:ring-offset-gray-100 checked:bg-property-acc-100 checked:ring-property-acc-100 checked:border-property-acc-100 focus:outline-none"
-            />
-            Fireplace
-          </label>
-        </div>
-      </div> */}
-
       {/* Pet Friendly */}
-      <div>
-        <label>Pet Friendly</label>
-        <input
-          type="checkbox"
-          {...register("pet_friendly")}
-          defaultChecked={filters.pet_friendly}
-          className="appearance-none w-5 h-5 border-2 border-property-acc-100 rounded-sm bg-white text-property-txt-700 focus:ring-2 focus:ring-property-acc-100 focus:ring-offset-2 focus:ring-offset-gray-100 checked:bg-property-acc-100 checked:ring-property-acc-100 checked:border-property-acc-100 focus:outline-none"
-        />
-      </div>
+      {changedFormInput?.listing_type === "rent" && (
+        <div>
+          <label>Pet Friendly</label>
+          <input
+            type="checkbox"
+            {...register("pet_friendly")}
+            defaultChecked={filters.pet_friendly}
+            className="appearance-none w-5 h-5 border-2 border-property-acc-100 rounded-sm bg-white text-property-txt-700 focus:ring-2 focus:ring-property-acc-100 focus:ring-offset-2 focus:ring-offset-gray-100 checked:bg-property-acc-100 checked:ring-property-acc-100 checked:border-property-acc-100 focus:outline-none"
+          />
+        </div>
+      )}
 
       <div>
         <button
