@@ -9,6 +9,7 @@ import {
   handleMinMaxChange,
 } from "@/lib/functions";
 import { useFetchLoading } from "@/context/FetchLoadingContext";
+import { Range } from "react-range";
 
 export default function FilterTest() {
   const router = useRouter();
@@ -148,6 +149,8 @@ export default function FilterTest() {
       bathrooms_to: "none",
       receptions_from: "none",
       receptions_to: "none",
+      price_from: "",
+      price_to: "",
       features: ["all_extra_features"],
       property_type: ["all_properties"],
       key_features: ["all_key_features"],
@@ -269,6 +272,7 @@ export default function FilterTest() {
     { value: "conservatory", label: "Conservatory" },
   ];
 
+  const [values, setValues] = useState([0, 1000000]);
   if (!isMounted) return null; // Avoid rendering until the component is mounted
 
   return (
@@ -276,6 +280,29 @@ export default function FilterTest() {
       onSubmit={handleSubmit(onSubmit)}
       className="filter-form d-flex w-72 flex flex-col gap-3"
     >
+      <div className="w-full p-4">
+        <label className="text-lg font-semibold">
+          Price Range: £{values[0]} - £{values[1]}
+        </label>
+        <Range
+          step={1000}
+          min={0}
+          max={1000000}
+          values={values}
+          onChange={setValues}
+          renderTrack={({ props, children }) => (
+            <div {...props} className="h-2 bg-gray-300 rounded-lg mt-2">
+              {children}
+            </div>
+          )}
+          renderThumb={({ props }) => (
+            <div
+              {...props}
+              className="w-5 h-5 bg-blue-500 rounded-full border-2 border-white"
+            />
+          )}
+        />
+      </div>
       {/* City */}
       <div>
         <label

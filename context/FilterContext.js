@@ -21,6 +21,8 @@ export const FilterProvider = ({ children }) => {
     bathrooms_to: "none",
     receptions_from: "none",
     receptions_to: "none",
+    price_from: "",
+    price_to: "",
     features: ["all_extra_features"],
     property_type: ["all_properties"],
     key_features: ["all_key_features"],
