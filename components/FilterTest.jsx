@@ -5,11 +5,12 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import {
   encodeBrackets,
+  generateIntervalOptionsRent,
+  generateIntervalOptionsSale,
   generateOptions,
   handleMinMaxChange,
 } from "@/lib/functions";
 import { useFetchLoading } from "@/context/FetchLoadingContext";
-import { Range } from "react-range";
 
 export default function FilterTest() {
   const router = useRouter();
@@ -20,6 +21,7 @@ export default function FilterTest() {
   const [bedroomsFrom, setBedroomsFrom] = useState();
   const [bathroomsFrom, setBathroomsFrom] = useState();
   const [receptionsFrom, setReceptionsFrom] = useState();
+  const [priceFrom, setPriceFrom] = useState();
   const [urlFetchFilter, setUrlFetchFilter] = useState("");
   const [isModified, setIsModified] = useState(false);
   const [initialValues, setInitialValues] = useState({});
@@ -60,6 +62,9 @@ export default function FilterTest() {
     }
     if (data.receptions_from === "none") {
       data.receptions_to = "none";
+    }
+    if (data.price_from === "none") {
+      data.price_to = "none";
     }
     // If all properties selected it wont get pushed to url
     if (Array.isArray(data.property_type)) {
@@ -149,8 +154,8 @@ export default function FilterTest() {
       bathrooms_to: "none",
       receptions_from: "none",
       receptions_to: "none",
-      price_from: "",
-      price_to: "",
+      price_from: "none",
+      price_to: "none",
       features: ["all_extra_features"],
       property_type: ["all_properties"],
       key_features: ["all_key_features"],
@@ -181,6 +186,9 @@ export default function FilterTest() {
       if (name === "receptions_from" && value === "none") {
         updatedState.receptions_to = "none";
       }
+      if (name === "price_from" && value === "none") {
+        updatedState.price_to = "none";
+      }
 
       return updatedState;
     });
@@ -207,6 +215,7 @@ export default function FilterTest() {
     setBedroomsFrom(urlFilters.bedrooms_from);
     setBathroomsFrom(urlFilters.bathrooms_from);
     setReceptionsFrom(urlFilters.receptions_from);
+    setPriceFrom(urlFilters.price_from);
 
     // Store the initial form values for later comparison
     setInitialValues(urlFilters);
@@ -272,7 +281,6 @@ export default function FilterTest() {
     { value: "conservatory", label: "Conservatory" },
   ];
 
-  const [values, setValues] = useState([0, 1000000]);
   if (!isMounted) return null; // Avoid rendering until the component is mounted
 
   return (
@@ -280,29 +288,6 @@ export default function FilterTest() {
       onSubmit={handleSubmit(onSubmit)}
       className="filter-form d-flex w-72 flex flex-col gap-3"
     >
-      <div className="w-full p-4">
-        <label className="text-lg font-semibold">
-          Price Range: £{values[0]} - £{values[1]}
-        </label>
-        <Range
-          step={1000}
-          min={0}
-          max={1000000}
-          values={values}
-          onChange={setValues}
-          renderTrack={({ props, children }) => (
-            <div {...props} className="h-2 bg-gray-300 rounded-lg mt-2">
-              {children}
-            </div>
-          )}
-          renderThumb={({ props }) => (
-            <div
-              {...props}
-              className="w-5 h-5 bg-blue-500 rounded-full border-2 border-white"
-            />
-          )}
-        />
-      </div>
       {/* City */}
       <div>
         <label
@@ -422,7 +407,7 @@ export default function FilterTest() {
             id="bathrooms_from"
             {...register("bathrooms_from")}
             onChange={(e) => {
-              handleMinMaxChange(e, setBathroomsFrom, setBathroomsFrom);
+              handleMinMaxChange(e, setBathroomsFrom);
               onChangeHandler(e);
             }}
             className="bg-property-bg-200 border px-2 py-1 border-property-txt-700  text-property-txt-700/70 rounded focus:property-acc-100 focus:border-property-acc-100 block w-full"
@@ -460,6 +445,57 @@ export default function FilterTest() {
           </select>
         </div>
       </div>
+
+      {/* Price */}
+      <div className="flex gap-4">
+        <div className="grow  max-w-[134px]">
+          <label
+            htmlFor="price_from"
+            className="block text-sm font-medium text-property-txt-700"
+          >
+            Min price
+          </label>
+          <select
+            id="price_from"
+            {...register("price_from")}
+            onChange={(e) => {
+              handleMinMaxChange(e, setPriceFrom);
+              onChangeHandler(e);
+            }}
+            className="bg-property-bg-200 border px-2 py-1 border-property-txt-700  text-property-txt-700/70 rounded focus:property-acc-100 focus:border-property-acc-100 block w-full"
+          >
+            <option value="none">No min</option>
+            {changedFormInput?.listing_type === "rent"
+              ? generateIntervalOptionsRent(25, 12000)
+              : generateIntervalOptionsSale(25000, 10000000)}
+            {/* {generateIntervalOptionsRent(25, 12000)} */}
+          </select>
+        </div>
+        <div className="grow">
+          <label
+            htmlFor="price_to"
+            className="block text-sm font-medium text-property-txt-700"
+          >
+            Max price
+          </label>
+          <select
+            id="price_to"
+            {...register("price_to")}
+            onChange={(e) => {
+              onChangeHandler(e);
+            }}
+            className="bg-property-bg-200 border px-2 py-1 border-property-txt-700  text-property-txt-700/70 rounded focus:property-acc-100 focus:border-property-acc-100 block w-full"
+          >
+            <option value="none">No max</option>
+            {priceFrom !== "none" &&
+              generateIntervalOptionsSale(Number(priceFrom), 10000000)}
+            {/* {priceFrom !== "none" && changedFormInput?.listing_type === "rent"
+              ? generateIntervalOptionsRent(Number(priceFrom), 12000)
+              : generateIntervalOptionsSale(priceFrom, 10000000)} */}
+          </select>
+        </div>
+      </div>
+
       {/* Receptions */}
       <div className="flex gap-4">
         <div className="grow">
