@@ -18,19 +18,24 @@ export default function FilterTest() {
   const { filters, setFilters } = useFilterContext();
   const { fetchLoading, setFetchLoading } = useFetchLoading();
   const [isMounted, setIsMounted] = useState(false);
-  const [bedroomsFrom, setBedroomsFrom] = useState();
-  const [bathroomsFrom, setBathroomsFrom] = useState();
-  const [receptionsFrom, setReceptionsFrom] = useState();
-  const [priceFrom, setPriceFrom] = useState();
+  // Temporary state to generate max values
+  const [tempFilterFromState, setTempFilterFromState] = useState({
+    bedroomsFrom: "",
+    bathroomsFrom: "",
+    receptionsFrom: "",
+    priceFrom: "",
+  });
+
+  // Url data for comparing fetch url and browser url to stop loading indicator
   const [urlFetchFilter, setUrlFetchFilter] = useState("");
+  // State to track if filters has been modified and if so submit button is clickleble othewise it is disabled to avoid unnecessary fetches
   const [isModified, setIsModified] = useState(false);
-  const [initialValues, setInitialValues] = useState({});
-  const [selectedProperties, setSelectedProperties] = useState([
-    "all_properties",
-  ]);
-
-  const [changedFormInput, setChangedFormIput] = useState({});
-
+  // State to track initial filter state and if it was modified to avoid fetches (sets isModified state)
+  const [filterUrlCompare, setFilterUrlCompare] = useState({
+    initialFilterValues: "",
+    modifiedFilterValues: "",
+  });
+  // React hook form states with default values from filter context
   const { register, handleSubmit, reset, control } = useForm({
     defaultValues: filters,
   });
@@ -65,6 +70,10 @@ export default function FilterTest() {
     }
     if (data.price_from === "none") {
       data.price_to = "none";
+    }
+
+    if (data.listing_type === "sale") {
+      data.pet_friendly = "false";
     }
     // If all properties selected it wont get pushed to url
     if (Array.isArray(data.property_type)) {
@@ -166,31 +175,34 @@ export default function FilterTest() {
 
     reset(defaultFilters); // Reset form
     setFilters(defaultFilters); // Reset context
-    setSelectedProperties(["all_properties"]);
     setIsModified(true);
   };
 
   const onChangeHandler = (e) => {
     const { name, value } = e.target;
 
-    setChangedFormIput((prevState) => {
-      let updatedState = { ...prevState, [name]: value };
+    setFilterUrlCompare((prevState) => {
+      let updatedModifiedFilters = {
+        ...prevState.modifiedFilterValues,
+        [name]: value,
+      };
 
-      // If bedrooms_from is set to 'none', automatically set bedrooms_to to 'none'
-      if (name === "bedrooms_from" && value === "none") {
-        updatedState.bedrooms_to = "none";
-      }
-      if (name === "bathrooms_from" && value === "none") {
-        updatedState.bathrooms_to = "none";
-      }
-      if (name === "receptions_from" && value === "none") {
-        updatedState.receptions_to = "none";
-      }
-      if (name === "price_from" && value === "none") {
-        updatedState.price_to = "none";
+      // If the value is 'none'
+      if (value === "none") {
+        if (name.endsWith("_from")) {
+          // Remove both '_from' and corresponding '_to' if the field ends with '_from'
+          delete updatedModifiedFilters[name];
+          delete updatedModifiedFilters[`${name.split("_")[0]}_to`]; // Remove corresponding '_to' field
+        } else if (name.endsWith("_to")) {
+          // Remove only '_to' if the field ends with '_to'
+          delete updatedModifiedFilters[name];
+        }
       }
 
-      return updatedState;
+      return {
+        ...prevState,
+        modifiedFilterValues: updatedModifiedFilters, // Update modifiedFilterValues
+      };
     });
   };
 
@@ -212,28 +224,37 @@ export default function FilterTest() {
 
     setFilters(urlFilters);
     reset(urlFilters);
-    setBedroomsFrom(urlFilters.bedrooms_from);
-    setBathroomsFrom(urlFilters.bathrooms_from);
-    setReceptionsFrom(urlFilters.receptions_from);
-    setPriceFrom(urlFilters.price_from);
+    setTempFilterFromState((prevState) => ({
+      ...prevState,
+      bedroomsFrom: urlFilters.bedrooms_from,
+      bathroomsFrom: urlFilters.bathrooms_from,
+      receptionsFrom: urlFilters.receptions_from,
+      priceFrom: urlFilters.price_from,
+    }));
 
     // Store the initial form values for later comparison
-    setInitialValues(urlFilters);
-    setChangedFormIput(urlFilters);
+    setFilterUrlCompare((prevState) => ({
+      ...prevState,
+      initialFilterValues: urlFilters,
+      modifiedFilterValues: urlFilters,
+    }));
   }, [searchParams, setFilters, reset]);
 
   // Detect changes between the initial values and current form values
   useEffect(() => {
-    if (JSON.stringify(initialValues) === JSON.stringify(changedFormInput)) {
+    if (
+      JSON.stringify(filterUrlCompare.initialFilterValues) ===
+      JSON.stringify(filterUrlCompare.modifiedFilterValues)
+    ) {
       setIsModified(false);
-      console.log("Modified inputs", changedFormInput);
-      console.log("Initial values", initialValues);
+      console.log("Modified inputs", filterUrlCompare.modifiedFilterValues);
+      console.log("Initial values", filterUrlCompare.initialFilterValues);
     } else {
       setIsModified(true);
-      console.log("Modified inputs", changedFormInput);
-      console.log("Initial values", initialValues);
+      console.log("Modified inputs", filterUrlCompare.modifiedFilterValues);
+      console.log("Initial values", filterUrlCompare.initialFilterValues);
     }
-  }, [changedFormInput]);
+  }, [filterUrlCompare.modifiedFilterValues]);
 
   // useEffect checks if compared url are matching and if so set loading to false
   useEffect(() => {
@@ -356,22 +377,13 @@ export default function FilterTest() {
             id="bedrooms_from"
             {...register("bedrooms_from")}
             onChange={(e) => {
-              handleMinMaxChange(e, setBedroomsFrom);
+              handleMinMaxChange(e, setTempFilterFromState, "bedroomsFrom");
               onChangeHandler(e);
             }}
             className="bg-property-bg-200 border px-2 py-1 border-property-txt-700  text-property-txt-700/70 rounded focus:property-acc-100 focus:border-property-acc-100 block w-full"
           >
             <option value="none">No min</option>
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4">4</option>
-            <option value="5">5</option>
-            <option value="6">6</option>
-            <option value="7">7</option>
-            <option value="8">8</option>
-            <option value="9">9</option>
-            <option value="10+">10</option>
+            {generateOptions(0, 10)}
           </select>
         </div>
         <div className="grow">
@@ -390,7 +402,8 @@ export default function FilterTest() {
             className="bg-property-bg-200 border px-2 py-1 border-property-txt-700  text-property-txt-700/70 rounded focus:property-acc-100 focus:border-property-acc-100 block w-full"
           >
             <option value="none">No max</option>
-            {bedroomsFrom !== "none" && generateOptions(bedroomsFrom, 10)}
+            {tempFilterFromState?.bedroomsFrom !== "none" &&
+              generateOptions(tempFilterFromState?.bedroomsFrom, 10)}
           </select>
         </div>
       </div>
@@ -407,22 +420,13 @@ export default function FilterTest() {
             id="bathrooms_from"
             {...register("bathrooms_from")}
             onChange={(e) => {
-              handleMinMaxChange(e, setBathroomsFrom);
+              handleMinMaxChange(e, setTempFilterFromState, "bathroomsFrom");
               onChangeHandler(e);
             }}
             className="bg-property-bg-200 border px-2 py-1 border-property-txt-700  text-property-txt-700/70 rounded focus:property-acc-100 focus:border-property-acc-100 block w-full"
           >
             <option value="none">No min</option>
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4">4</option>
-            <option value="5">5</option>
-            <option value="6">6</option>
-            <option value="7">7</option>
-            <option value="8">8</option>
-            <option value="9">9</option>
-            <option value="10+">10</option>
+            {generateOptions(0, 10)}
           </select>
         </div>
         <div className="grow">
@@ -441,7 +445,8 @@ export default function FilterTest() {
             className="bg-property-bg-200 border px-2 py-1 border-property-txt-700  text-property-txt-700/70 rounded focus:property-acc-100 focus:border-property-acc-100 block w-full"
           >
             <option value="none">No max</option>
-            {bathroomsFrom !== "none" && generateOptions(bathroomsFrom, 10)}
+            {tempFilterFromState?.bathroomsFrom !== "none" &&
+              generateOptions(tempFilterFromState?.bathroomsFrom, 10)}
           </select>
         </div>
       </div>
@@ -459,16 +464,15 @@ export default function FilterTest() {
             id="price_from"
             {...register("price_from")}
             onChange={(e) => {
-              handleMinMaxChange(e, setPriceFrom);
+              handleMinMaxChange(e, setTempFilterFromState, "priceFrom");
               onChangeHandler(e);
             }}
             className="bg-property-bg-200 border px-2 py-1 border-property-txt-700  text-property-txt-700/70 rounded focus:property-acc-100 focus:border-property-acc-100 block w-full"
           >
             <option value="none">No min</option>
-            {changedFormInput?.listing_type === "rent"
+            {filterUrlCompare?.modifiedFilterValues?.listing_type === "rent"
               ? generateIntervalOptionsRent(25, 12000)
               : generateIntervalOptionsSale(25000, 10000000)}
-            {/* {generateIntervalOptionsRent(25, 12000)} */}
           </select>
         </div>
         <div className="grow">
@@ -487,11 +491,11 @@ export default function FilterTest() {
             className="bg-property-bg-200 border px-2 py-1 border-property-txt-700  text-property-txt-700/70 rounded focus:property-acc-100 focus:border-property-acc-100 block w-full"
           >
             <option value="none">No max</option>
-            {priceFrom !== "none" &&
-              generateIntervalOptionsSale(Number(priceFrom), 10000000)}
-            {/* {priceFrom !== "none" && changedFormInput?.listing_type === "rent"
-              ? generateIntervalOptionsRent(Number(priceFrom), 12000)
-              : generateIntervalOptionsSale(priceFrom, 10000000)} */}
+            {tempFilterFromState?.priceFrom !== "none" &&
+              generateIntervalOptionsSale(
+                Number(tempFilterFromState?.priceFrom),
+                10000000
+              )}
           </select>
         </div>
       </div>
@@ -509,22 +513,13 @@ export default function FilterTest() {
             id="receptions_from"
             {...register("receptions_from")}
             onChange={(e) => {
-              handleMinMaxChange(e, setReceptionsFrom);
+              handleMinMaxChange(e, setTempFilterFromState, "receptionsFrom");
               onChangeHandler(e);
             }}
             className="bg-property-bg-200 border px-2 py-1 border-property-txt-700  text-property-txt-700/70 rounded focus:property-acc-100 focus:border-property-acc-100 block w-full"
           >
             <option value="none">No min</option>
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4">4</option>
-            <option value="5">5</option>
-            <option value="6">6</option>
-            <option value="7">7</option>
-            <option value="8">8</option>
-            <option value="9">9</option>
-            <option value="10+">10</option>
+            {generateOptions(0, 10)}
           </select>
         </div>
         <div className="grow">
@@ -543,7 +538,8 @@ export default function FilterTest() {
             className="bg-property-bg-200 border px-2 py-1 border-property-txt-700  text-property-txt-700/70 rounded focus:property-acc-100 focus:border-property-acc-100 block w-full"
           >
             <option value="none">No max</option>
-            {receptionsFrom !== "none" && generateOptions(receptionsFrom, 10)}
+            {tempFilterFromState?.receptionsFrom !== "none" &&
+              generateOptions(tempFilterFromState?.receptionsFrom, 10)}
           </select>
         </div>
       </div>
@@ -568,8 +564,19 @@ export default function FilterTest() {
                       let newValue;
 
                       if (value === "all_properties") {
-                        // If "all_properties" is checked, uncheck all others
-                        newValue = e.target.checked ? ["all_properties"] : [];
+                        // Prevent unchecking "all_properties" unless another checkbox is checked
+                        if (e.target.checked) {
+                          newValue = ["all_properties"];
+                        } else {
+                          // Only allow unchecking if another checkbox is checked
+                          if (
+                            field.value?.some((val) => val !== "all_properties")
+                          ) {
+                            newValue = [];
+                          } else {
+                            newValue = ["all_properties"];
+                          }
+                        }
                       } else {
                         // If any other option is checked, update the array
                         newValue = e.target.checked
@@ -587,10 +594,19 @@ export default function FilterTest() {
                         }
                       }
 
+                      // If no checkboxes are selected, automatically check "all_properties"
+                      if (newValue.length === 0) {
+                        newValue = ["all_properties"];
+                      }
+
                       // Handle the change in form input and filters state
-                      setChangedFormIput((prevState) => {
-                        return { ...prevState, property_type: newValue };
-                      });
+                      setFilterUrlCompare((prevState) => ({
+                        ...prevState,
+                        modifiedFilterValues: {
+                          ...prevState.modifiedFilterValues,
+                          property_type: newValue,
+                        },
+                      }));
 
                       setFilters((prevFilters) => ({
                         ...prevFilters,
@@ -599,7 +615,7 @@ export default function FilterTest() {
 
                       field.onChange(newValue); // Also update React Hook Form state
                     }}
-                    className="appearance-none w-5 h-5 border-2 border-property-acc-100 rounded-sm bg-white text-property-txt-700 focus:ring-2 focus:ring-property-acc-100 focus:ring-offset-2 focus:ring-offset-gray-100 checked:bg-property-acc-100 checked:ring-property-acc-100 checked:border-property-acc-100 focus:outline-none"
+                    className="custom-checkbox"
                   />
                   <span>{label}</span>
                 </label>
@@ -647,9 +663,13 @@ export default function FilterTest() {
                       }
 
                       // Handle the change in form input and filters state
-                      setChangedFormIput((prevState) => {
-                        return { ...prevState, key_features: newValue };
-                      });
+                      setFilterUrlCompare((prevState) => ({
+                        ...prevState,
+                        modifiedFilterValues: {
+                          ...prevState.modifiedFilterValues,
+                          key_features: newValue,
+                        },
+                      }));
 
                       setFilters((prevFilters) => ({
                         ...prevFilters,
@@ -658,7 +678,7 @@ export default function FilterTest() {
 
                       field.onChange(newValue);
                     }}
-                    className="appearance-none w-5 h-5 border-2 border-property-acc-100 rounded-sm bg-white text-property-txt-700 focus:ring-2 focus:ring-property-acc-100 focus:ring-offset-2 focus:ring-offset-gray-100 checked:bg-property-acc-100 checked:ring-property-acc-100 checked:border-property-acc-100 focus:outline-none"
+                    className="custom-checkbox"
                   />
                   <span>{label}</span>
                 </label>
@@ -708,10 +728,13 @@ export default function FilterTest() {
                       }
 
                       // Handle the change in form input and filters state
-                      setChangedFormIput((prevState) => {
-                        return { ...prevState, features: newValue };
-                      });
-
+                      setFilterUrlCompare((prevState) => ({
+                        ...prevState,
+                        modifiedFilterValues: {
+                          ...prevState.modifiedFilterValues,
+                          features: newValue,
+                        },
+                      }));
                       setFilters((prevFilters) => ({
                         ...prevFilters,
                         features: newValue,
@@ -719,7 +742,7 @@ export default function FilterTest() {
 
                       field.onChange(newValue);
                     }}
-                    className="appearance-none w-5 h-5 border-2 border-property-acc-100 rounded-sm bg-white text-property-txt-700 focus:ring-2 focus:ring-property-acc-100 focus:ring-offset-2 focus:ring-offset-gray-100 checked:bg-property-acc-100 checked:ring-property-acc-100 checked:border-property-acc-100 focus:outline-none"
+                    className="custom-checkbox"
                   />
                   <span>{label}</span>
                 </label>
@@ -730,7 +753,7 @@ export default function FilterTest() {
       </div>
 
       {/* Pet Friendly */}
-      {changedFormInput?.listing_type === "rent" && (
+      {filterUrlCompare?.modifiedFilterValues?.listing_type === "rent" && (
         <div>
           <label>Pet Friendly</label>
           <input

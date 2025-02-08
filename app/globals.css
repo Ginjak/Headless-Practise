@@ -40,6 +40,9 @@
   .btn-ligth {
     @apply hover:bg-secondary-ligth;
   }
+  .custom-checkbox {
+    @apply appearance-none w-5 h-5 border-2 border-property-acc-100 rounded-sm bg-white text-property-txt-700 focus:ring-2 focus:ring-property-acc-100 focus:ring-offset-2 focus:ring-offset-gray-100 checked:bg-property-acc-100 checked:ring-property-acc-100 checked:border-property-acc-100 focus:outline-none;
+  }
 }
 
 body {
