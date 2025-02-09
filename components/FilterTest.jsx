@@ -3,14 +3,18 @@ import { useFilterContext } from "@/context/FilterContext";
 import { useForm, Controller } from "react-hook-form";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
+
 import {
   encodeBrackets,
   generateIntervalOptionsRent,
   generateIntervalOptionsSale,
   generateOptions,
+  handleCheckboxChange,
   handleMinMaxChange,
-} from "@/lib/functions";
+} from "@/lib/filterFunctions";
 import { useFetchLoading } from "@/context/FetchLoadingContext";
+import CheckboxGroup from "./filterComponents/CheckboxGourp";
+import AccordionSingleItem from "./filterComponents/AccordionSingleItem";
 
 export default function FilterTest() {
   const router = useRouter();
@@ -543,214 +547,42 @@ export default function FilterTest() {
           </select>
         </div>
       </div>
-
-      {/* Property types */}
-      <div>
-        <p className="text-sm font-medium text-property-txt-700 mb-2">
-          Property type
-        </p>
-        <Controller
-          name="property_type"
+      <AccordionSingleItem title="Properties" wraperClassName={"mt-2"}>
+        {/* Property types */}
+        <CheckboxGroup
+          name={"property_type"}
+          options={propertyTypes}
           control={control}
-          render={({ field }) => (
-            <div className="grid grid-cols-2 gap-3">
-              {propertyTypes.map(({ value, label }) => (
-                <label key={value} className="flex items-center space-x-2">
-                  <input
-                    type="checkbox"
-                    value={value}
-                    checked={field.value?.includes(value)}
-                    onChange={(e) => {
-                      let newValue;
-
-                      if (value === "all_properties") {
-                        // Prevent unchecking "all_properties" unless another checkbox is checked
-                        if (e.target.checked) {
-                          newValue = ["all_properties"];
-                        } else {
-                          // Only allow unchecking if another checkbox is checked
-                          if (
-                            field.value?.some((val) => val !== "all_properties")
-                          ) {
-                            newValue = [];
-                          } else {
-                            newValue = ["all_properties"];
-                          }
-                        }
-                      } else {
-                        // If any other option is checked, update the array
-                        newValue = e.target.checked
-                          ? [...field.value, value]
-                          : field.value.filter((val) => val !== value);
-
-                        // If "all_properties" is in the array and any other is selected, remove "all_properties"
-                        if (
-                          newValue.includes("all_properties") &&
-                          e.target.checked
-                        ) {
-                          newValue = newValue.filter(
-                            (val) => val !== "all_properties"
-                          );
-                        }
-                      }
-
-                      // If no checkboxes are selected, automatically check "all_properties"
-                      if (newValue.length === 0) {
-                        newValue = ["all_properties"];
-                      }
-
-                      // Handle the change in form input and filters state
-                      setFilterUrlCompare((prevState) => ({
-                        ...prevState,
-                        modifiedFilterValues: {
-                          ...prevState.modifiedFilterValues,
-                          property_type: newValue,
-                        },
-                      }));
-
-                      setFilters((prevFilters) => ({
-                        ...prevFilters,
-                        property_type: newValue, // Update the property_type in the filters
-                      }));
-
-                      field.onChange(newValue); // Also update React Hook Form state
-                    }}
-                    className="custom-checkbox"
-                  />
-                  <span>{label}</span>
-                </label>
-              ))}
-            </div>
-          )}
+          handleCheckboxChange={handleCheckboxChange}
+          allValues={"all_properties"}
+          setFilterUrlCompare={setFilterUrlCompare}
+          setFilters={setFilters}
         />
-      </div>
-
-      {/* Key features must have */}
-      <div>
-        <p className="text-sm font-medium text-property-txt-700 mb-2">
-          Must have
-        </p>
-        <Controller
-          name="key_features"
+      </AccordionSingleItem>
+      <AccordionSingleItem title="Must have">
+        {/* Key features must have */}
+        <CheckboxGroup
+          name={"key_features"}
+          options={keyFeatures}
           control={control}
-          render={({ field }) => (
-            <div className="grid grid-cols-2 gap-3">
-              {keyFeatures.map(({ value, label }) => (
-                <label key={value} className="flex items-center space-x-2">
-                  <input
-                    type="checkbox"
-                    value={value}
-                    checked={field.value?.includes(value)}
-                    onChange={(e) => {
-                      let newValue;
-
-                      if (value === "all_key_features") {
-                        // If "all_properties" is checked, uncheck all others
-                        newValue = e.target.checked ? ["all_key_features"] : [];
-                      } else {
-                        newValue = e.target.checked
-                          ? [...field.value, value]
-                          : field.value.filter((val) => val !== value);
-
-                        if (
-                          newValue.includes("all_key_features") &&
-                          e.target.checked
-                        ) {
-                          newValue = newValue.filter(
-                            (val) => val !== "all_key_features"
-                          );
-                        }
-                      }
-
-                      // Handle the change in form input and filters state
-                      setFilterUrlCompare((prevState) => ({
-                        ...prevState,
-                        modifiedFilterValues: {
-                          ...prevState.modifiedFilterValues,
-                          key_features: newValue,
-                        },
-                      }));
-
-                      setFilters((prevFilters) => ({
-                        ...prevFilters,
-                        key_features: newValue,
-                      }));
-
-                      field.onChange(newValue);
-                    }}
-                    className="custom-checkbox"
-                  />
-                  <span>{label}</span>
-                </label>
-              ))}
-            </div>
-          )}
+          handleCheckboxChange={handleCheckboxChange}
+          allValues={"all_key_features"}
+          setFilterUrlCompare={setFilterUrlCompare}
+          setFilters={setFilters}
         />
-      </div>
-
-      {/* Extra features  */}
-      <div>
-        <p className="text-sm font-medium text-property-txt-700 mb-2">
-          Features
-        </p>
-        <Controller
-          name="features"
+      </AccordionSingleItem>
+      <AccordionSingleItem title="Features">
+        {/* Extra features  */}
+        <CheckboxGroup
+          name={"features"}
+          options={extraFeatures}
           control={control}
-          render={({ field }) => (
-            <div className="grid grid-cols-2 gap-3">
-              {extraFeatures.map(({ value, label }) => (
-                <label key={value} className="flex items-center space-x-2">
-                  <input
-                    type="checkbox"
-                    value={value}
-                    checked={field.value?.includes(value)}
-                    onChange={(e) => {
-                      let newValue;
-
-                      if (value === "all_extra_features") {
-                        // If "all_properties" is checked, uncheck all others
-                        newValue = e.target.checked
-                          ? ["all_extra_features"]
-                          : [];
-                      } else {
-                        newValue = e.target.checked
-                          ? [...field.value, value]
-                          : field.value.filter((val) => val !== value);
-
-                        if (
-                          newValue.includes("all_extra_features") &&
-                          e.target.checked
-                        ) {
-                          newValue = newValue.filter(
-                            (val) => val !== "all_extra_features"
-                          );
-                        }
-                      }
-
-                      // Handle the change in form input and filters state
-                      setFilterUrlCompare((prevState) => ({
-                        ...prevState,
-                        modifiedFilterValues: {
-                          ...prevState.modifiedFilterValues,
-                          features: newValue,
-                        },
-                      }));
-                      setFilters((prevFilters) => ({
-                        ...prevFilters,
-                        features: newValue,
-                      }));
-
-                      field.onChange(newValue);
-                    }}
-                    className="custom-checkbox"
-                  />
-                  <span>{label}</span>
-                </label>
-              ))}
-            </div>
-          )}
+          handleCheckboxChange={handleCheckboxChange}
+          allValues={"all_extra_features"}
+          setFilterUrlCompare={setFilterUrlCompare}
+          setFilters={setFilters}
         />
-      </div>
+      </AccordionSingleItem>
 
       {/* Pet Friendly */}
       {filterUrlCompare?.modifiedFilterValues?.listing_type === "rent" && (
