@@ -195,6 +195,10 @@ export default function FilterTest({ citiesList }) {
         [name]: type === "checkbox" ? String(checked) : value, // Ensure checkboxes store boolean values
       };
 
+      if (name === "city" && value === "") {
+        delete updatedModifiedFilters["city"];
+      }
+
       if (value === "none") {
         if (name.endsWith("_from")) {
           delete updatedModifiedFilters[name];
@@ -327,9 +331,10 @@ export default function FilterTest({ citiesList }) {
           type="text"
           {...register("city")}
           value={searchTerm}
-          onChange={(e) =>
-            citySearchChange(e, citiesList, setSearchTerm, setFilteredCities)
-          }
+          onChange={(e) => {
+            citySearchChange(e, citiesList, setSearchTerm, setFilteredCities);
+            onChangeHandler(e);
+          }}
           placeholder="Enter city"
           className="bg-property-bg-200 border px-2 py-1 border-property-txt-700/10 placeholder:text-property-txt-700/70 text-property-txt-700 rounded focus:property-acc-100 focus:border-property-acc-100 block w-full"
         />
@@ -344,6 +349,8 @@ export default function FilterTest({ citiesList }) {
                   setSearchTerm(city); // Set the input value to the clicked suggestion
                   setValue("city", city);
                   setFilteredCities([]); // Clear the suggestions after selection
+                  const fakeEvent = { target: { name: "city", value: city } };
+                  onChangeHandler(fakeEvent); // Trigger the handler to update filters
                 }}
               >
                 {city}
