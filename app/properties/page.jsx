@@ -2,7 +2,7 @@ import FilterTest from "@/components/FilterTest";
 
 import PropertyCard from "@/components/propertiesPage/PropertyCard";
 
-import { fetchImageDataById, fetchProperties } from "@/lib/api";
+import { fetchCities, fetchImageDataById, fetchProperties } from "@/lib/api";
 
 import React, { Suspense } from "react";
 
@@ -99,6 +99,9 @@ export default async function page({ searchParams }) {
   const propertieData = await fetchProperties(filters);
   console.log("Fetched properties with filters:", propertieData);
 
+  const citiesList = await fetchCities();
+  console.log("List of cities", citiesList);
+
   // Log the filters to see the output
   console.log("Filters object:", filters);
 
@@ -147,7 +150,7 @@ export default async function page({ searchParams }) {
           </Suspense>
         </div>
         <div className=" hidden md:block w-1/3 ps-4 sticky top-0 h-screen overflow-y-auto mt-0">
-          <FilterTest />
+          <FilterTest citiesList={citiesList} />
         </div>
       </div>
     </div>

@@ -1,10 +1,11 @@
 "use client";
 import { useFilterContext } from "@/context/FilterContext";
-import { useForm, Controller } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 import {
+  citySearchChange,
   encodeBrackets,
   generateIntervalOptionsRent,
   generateIntervalOptionsSale,
@@ -16,7 +17,7 @@ import { useFetchLoading } from "@/context/FetchLoadingContext";
 import CheckboxGroup from "./filterComponents/CheckboxGourp";
 import AccordionSingleItem from "./filterComponents/AccordionSingleItem";
 
-export default function FilterTest() {
+export default function FilterTest({ citiesList }) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { filters, setFilters } = useFilterContext();
@@ -30,6 +31,9 @@ export default function FilterTest() {
     priceFrom: "",
   });
 
+  const [searchTerm, setSearchTerm] = useState("");
+  const [filteredCities, setFilteredCities] = useState([]);
+
   // Url data for comparing fetch url and browser url to stop loading indicator
   const [urlFetchFilter, setUrlFetchFilter] = useState("");
   // State to track if filters has been modified and if so submit button is clickleble othewise it is disabled to avoid unnecessary fetches
@@ -40,7 +44,7 @@ export default function FilterTest() {
     modifiedFilterValues: "",
   });
   // React hook form states with default values from filter context
-  const { register, handleSubmit, reset, control } = useForm({
+  const { register, handleSubmit, reset, control, setValue } = useForm({
     defaultValues: filters,
   });
 
@@ -183,29 +187,26 @@ export default function FilterTest() {
   };
 
   const onChangeHandler = (e) => {
-    const { name, value } = e.target;
+    const { name, type, checked, value } = e.target;
 
     setFilterUrlCompare((prevState) => {
       let updatedModifiedFilters = {
         ...prevState.modifiedFilterValues,
-        [name]: value,
+        [name]: type === "checkbox" ? String(checked) : value, // Ensure checkboxes store boolean values
       };
 
-      // If the value is 'none'
       if (value === "none") {
         if (name.endsWith("_from")) {
-          // Remove both '_from' and corresponding '_to' if the field ends with '_from'
           delete updatedModifiedFilters[name];
-          delete updatedModifiedFilters[`${name.split("_")[0]}_to`]; // Remove corresponding '_to' field
+          delete updatedModifiedFilters[`${name.split("_")[0]}_to`];
         } else if (name.endsWith("_to")) {
-          // Remove only '_to' if the field ends with '_to'
           delete updatedModifiedFilters[name];
         }
       }
 
       return {
         ...prevState,
-        modifiedFilterValues: updatedModifiedFilters, // Update modifiedFilterValues
+        modifiedFilterValues: updatedModifiedFilters,
       };
     });
   };
@@ -325,9 +326,31 @@ export default function FilterTest() {
           id="city"
           type="text"
           {...register("city")}
+          value={searchTerm}
+          onChange={(e) =>
+            citySearchChange(e, citiesList, setSearchTerm, setFilteredCities)
+          }
           placeholder="Enter city"
           className="bg-property-bg-200 border px-2 py-1 border-property-txt-700/10 placeholder:text-property-txt-700/70 text-property-txt-700 rounded focus:property-acc-100 focus:border-property-acc-100 block w-full"
         />
+
+        {filteredCities.length > 0 && (
+          <ul className="mt-2 bg-white border border-gray-300 rounded shadow-md">
+            {filteredCities.slice(0, 8).map((city, index) => (
+              <li
+                key={index}
+                className="p-2 cursor-pointer hover:bg-gray-100"
+                onClick={() => {
+                  setSearchTerm(city); // Set the input value to the clicked suggestion
+                  setValue("city", city);
+                  setFilteredCities([]); // Clear the suggestions after selection
+                }}
+              >
+                {city}
+              </li>
+            ))}
+          </ul>
+        )}
       </div>
 
       <div>
@@ -587,13 +610,16 @@ export default function FilterTest() {
       {/* Pet Friendly */}
       {filterUrlCompare?.modifiedFilterValues?.listing_type === "rent" && (
         <div>
-          <label>Pet Friendly</label>
-          <input
-            type="checkbox"
-            {...register("pet_friendly")}
-            defaultChecked={filters.pet_friendly}
-            className="appearance-none w-5 h-5 border-2 border-property-acc-100 rounded-sm bg-white text-property-txt-700 focus:ring-2 focus:ring-property-acc-100 focus:ring-offset-2 focus:ring-offset-gray-100 checked:bg-property-acc-100 checked:ring-property-acc-100 checked:border-property-acc-100 focus:outline-none"
-          />
+          <label className="flex items-center space-x-2 px-1">
+            <input
+              type="checkbox"
+              {...register("pet_friendly")}
+              defaultChecked={filters.pet_friendly}
+              onChange={onChangeHandler}
+              className="custom-checkbox"
+            />
+            <span>Pet Friendly</span>
+          </label>
         </div>
       )}
 
