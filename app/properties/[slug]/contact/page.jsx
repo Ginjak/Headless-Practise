@@ -9,7 +9,7 @@ import {
 // Generate static params for all slugs
 export async function generateStaticParams() {
   const posts = await fetchAllCptPosts({ slug: "properties" });
-  return posts.posts.map((post) => ({
+  return posts?.posts?.map((post) => ({
     slug: post.slug,
   }));
 }
