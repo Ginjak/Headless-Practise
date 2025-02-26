@@ -12,6 +12,7 @@ export const useFilterContext = () => {
 // Provider component to wrap your app and provide the filter state
 export const FilterProvider = ({ children }) => {
   const [filters, setFilters] = useState({
+    location: "",
     city: "",
     listing_type: "sale",
     radius: 5,

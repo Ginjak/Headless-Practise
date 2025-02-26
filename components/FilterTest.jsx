@@ -18,7 +18,6 @@ import CheckboxGroup from "./filterComponents/CheckboxGourp";
 import AccordionSingleItem from "./filterComponents/AccordionSingleItem";
 
 export default function FilterTest({ citiesList }) {
-  console.log("testign city list", citiesList);
   const router = useRouter();
   const searchParams = useSearchParams();
   const { filters, setFilters } = useFilterContext();
@@ -163,6 +162,7 @@ export default function FilterTest({ citiesList }) {
 
   const handleReset = () => {
     const defaultFilters = {
+      location: "",
       city: "",
       listing_type: "sale",
       radius: 5,
