@@ -29,6 +29,7 @@ export default function RootLayout({ children }) {
           <FetchLoadingProvider>
             <Header />
             {children}
+            <SpeedInsights />
           </FetchLoadingProvider>
         </FilterProvider>
       </body>

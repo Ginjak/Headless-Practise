@@ -336,11 +336,11 @@ export default function FilterTest({ citiesList }) {
             onChangeHandler(e);
           }}
           placeholder="Enter city"
-          className="bg-property-bg-200 border px-2 py-1 border-property-txt-700/10 placeholder:text-property-txt-700/70 text-property-txt-700 rounded focus:property-acc-100 focus:border-property-acc-100 block w-full"
+          className="bg-property-bg-200 border px-2 py-1 border-property-txt-700  placeholder:text-property-txt-700/70 text-property-txt-700 rounded focus:property-acc-100 focus:border-property-acc-100 block w-full"
         />
 
         {filteredCities.length > 0 && (
-          <ul className="mt-2 bg-property-bg-200  border border-gray-300 rounded">
+          <ul className="mt-2 bg-property-bg-200  border border-property-acc-100 rounded">
             {filteredCities.slice(0, 8).map((city, index) => (
               <li
                 key={index}
