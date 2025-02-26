@@ -1,4 +1,5 @@
 import "./globals.css";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import localFont from "next/font/local";
 import Header from "@/components/Header";
 import { FilterProvider } from "@/context/FilterContext";

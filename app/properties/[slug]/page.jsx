@@ -21,7 +21,7 @@ import SimilarProperties from "@/components/singlePage/SimilarProperties";
 // Generate static paths for all properties
 export async function generateStaticParams() {
   const posts = await fetchAllCptPosts({ slug: "properties" });
-  return posts?.posts?.map((post) => ({
+  return posts.posts.map((post) => ({
     slug: post.slug,
   }));
 }

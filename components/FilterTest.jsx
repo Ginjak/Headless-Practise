@@ -340,7 +340,7 @@ export default function FilterTest({ citiesList }) {
         />
 
         {filteredCities.length > 0 && (
-          <ul className="mt-2 bg-white border border-gray-300 rounded shadow-md">
+          <ul className="mt-2 bg-property-bg-200  border border-gray-300 rounded">
             {filteredCities.slice(0, 8).map((city, index) => (
               <li
                 key={index}
