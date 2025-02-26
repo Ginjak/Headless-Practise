@@ -18,6 +18,7 @@ import CheckboxGroup from "./filterComponents/CheckboxGourp";
 import AccordionSingleItem from "./filterComponents/AccordionSingleItem";
 
 export default function FilterTest({ citiesList }) {
+  console.log("testign city list", citiesList);
   const router = useRouter();
   const searchParams = useSearchParams();
   const { filters, setFilters } = useFilterContext();
