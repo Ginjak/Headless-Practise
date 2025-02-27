@@ -153,6 +153,7 @@ export default async function page({ searchParams }) {
         </div>
         <div className=" hidden md:block w-1/3 ps-4 sticky top-0 h-screen overflow-y-auto mt-0">
           <FilterTest citiesList={citiesList} />
+          <p>Delete this</p>
         </div>
       </div>
     </div>
