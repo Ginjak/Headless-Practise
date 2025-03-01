@@ -41,9 +41,10 @@ export default async function PropertyPage({ params }) {
   // Fetch images concurrently using Promise.all for better performance
   const imagePromises = [
     data?.slider_images && fetchImageDataAll(data.slider_images.split(",")),
-    data?.team_member_company_logo &&
-      fetchImageDataAll([data.team_member_company_logo]),
-    data?.team_member_picture && fetchImageDataAll([data.team_member_picture]),
+    data?.agent?.team_member_company_logo &&
+      fetchImageDataAll([data.agent.team_member_company_logo]),
+    data?.agent?.team_member_picture &&
+      fetchImageDataAll([data.agent.team_member_picture]),
     data?.featured_image && fetchImageDataAll([data.featured_image]),
   ].filter(Boolean);
 
@@ -143,9 +144,9 @@ export default async function PropertyPage({ params }) {
         {/* Agent Information (only visible on larger screens) */}
         <div className="z-50 lg:z-0 w-full fixed bottom-0 left-0 right-0 lg:block lg:w-1/3 lg:ps-4 lg:sticky lg:top-0 lg:h-screen lg:overflow-y-auto mt-0">
           <AgentSinglePage
-            name={data?.team_member_name}
-            surname={data?.team_member_surname}
-            phone={data?.team_member_phone}
+            name={data?.agent?.team_member_name}
+            surname={data?.agent?.team_member_surname}
+            phone={data?.agent?.team_member_phone}
             email={data?.team_member_email}
             agentPhoto={memberPhoto?.source_url}
             agentPhotoAlt={memberPhoto?.alt_text}
